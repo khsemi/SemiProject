@@ -24,7 +24,9 @@
 	width: 200px;
 	height: auto;
 }
-
+.logo{
+	color: white;
+}
 #list_table{
 	display: inline-block;
 }

@@ -28,7 +28,6 @@
 				<h2>메인페이지</h2>
 					<!-- 메인페이지에 표시될 게시판들을 div와 table을 이용해서 코딩하면된다. -->
 					
-				<a href="test_board_select.jsp">글입력/글보기</a>
 			</div>
 			<footer class="footer">Team.진선이와 아이들
 									1, 2, 3, 4, 5, 6

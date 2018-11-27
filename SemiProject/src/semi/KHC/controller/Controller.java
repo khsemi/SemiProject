@@ -25,10 +25,13 @@ public class Controller extends HttpServlet {
 		
 		//command 값을 받아온다.
 		String category = request.getParameter("category");
+		String command = request.getParameter("command");
 		
-		System.out.println("[ " + category + " ]");
+		System.out.println("카테고리 : [ " + category + " ]");
+		System.out.println("커맨드 : [ " + command + " ]");
 		//command 값을 비교후에 각각의 if문을 실행하게 한다.
-		if(category.equals("QA") || category.equals("TIPS") || category.equals("STUDY")) {
+		if(category.equals("QA") || category.equals("TIPS") || category.equals("STUDY") || category.equals("NOTICE") || category.equals("COMMUNITY")
+				 || category.equals("TRADE") || category.equals("JOBS") || category.equals("FOODINFO")) {
 			//View 에서 받아오는 값 
 			int page = Integer.parseInt(request.getParameter("page"));
 			
@@ -64,7 +67,20 @@ public class Controller extends HttpServlet {
 			
 			//request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
 			dispatch("board.jsp", request, response);
+		}else {
+			if ( command.equals("KHC_LOGIN")) {
+				System.out.println("로그인 페이지");
+				dispatch("khc_login.jsp", request, response);
+			}else if ( command.equals("KHC_MAIN")) {
+				
+				System.out.println("메인페이지");
+				dispatch("KHC.jsp", request, response);
+			}else if ( command.equals("KHC_MYPAGE")) {
+				System.out.println("마이페이지");
+				dispatch("khc_mypage.jsp", request, response);
+			}
 		}
+		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -18,25 +18,40 @@ $(function(){
 		$("#STUDY").addClass("active");
 	}else if(category[0]=="TIPS"){
 		$("#TIPS").addClass("active");
+	}else if(category[0]=="NOTICE"){
+		$("#NOTICE").addClass("active");
+	}else if(category[0]=="COMMUNITY"){
+		$("#COMMUNITY").addClass("active");
+	}else if(category[0]=="TRADE"){
+		$("#TRADE").addClass("active");
+	}else if(category[0]=="JOBS"){
+		$("#JOBS").addClass("active");
+	}else if(category[0]=="FOODINFO"){
+		$("#FOODINFO").addClass("active");
 	}
 })
 </script>
 <body>
 	<div class="sidebar" style="text-align: center;">
 		<div class="logo">
-			<h1>KH</h1>
-			<h3>커뮤니티</h3>
+			<h1 style="color: white;">KHCP</h1>
 		</div>
-		<div class="">로그인폼
-		</div>
+
 		<nav class="nav-sidebar">
 			<ul class="nav nav-sidebar">
-				<li id="test_board_select"><a href="sidebar.jsp">a</a></li>
-				<li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li>
-				<!--  <li id="test_board"><a href="controller.do?category=testBoard&page=1">TEST_BOARD</a></li>-->
+				<!-- 사이드바	<li id="test_board_select"><a href="sidebar.jsp">a</a></li>  -->
+				<!-- test 메뉴 <li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li> -->
+				<li id="KHC_MAIN"><a href="controller.do?command=KHC_MAIN&category=PAGE"><span>Main</span></a></li>
+				<li id="KHC_LOGIN"><a href="controller.do?command=KHC_LOGIN&category=PAGE"><span>Login</span></a></li>
+				<li id="KHC_MYPAGE"><a href="controller.do?command=KHC_MYPAGE&category=PAGE"><span>Mypage</span></a></li>
+				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1">Notice</a></li>
+				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1">Community</a></li>
+				<li id="TRADE"><a href="controller.do?category=TRADE&page=1">Trade</a></li>
+				<li id="JOBS"><a href="controller.do?category=JOBS&page=1">Jobs</a></li>
 				<li id="QA"><a href="controller.do?category=QA&page=1">QA</a></li>
-				<li id="STUDY"><a href="controller.do?category=STUDY&page=1">STUDY</a></li>
-				<li id="TIPS"><a href="controller.do?category=TIPS&page=1">TIPS</a></li>
+				<li id="TIPS"><a href="controller.do?category=TIPS&page=1">Tips</a></li>
+				<li id="FOODINFO"><a href="controller.do?category=FOODINFO&page=1">Food Info</a></li>
+				<li id="STUDY"><a href="controller.do?category=STUDY&page=1">Study</a></li>
 			</ul>
 		</nav>
 	</div>

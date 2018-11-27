@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_board">
+	
+	<resultMap type="semi.KHC.boardDto.BoardDto" id="board_Map">
+		<result property="board_seq_id" column="BOARD_SEQ_ID" />
+		<result property="board_title" column="BOARD_TITLE" />
+		<result property="board_content" column="BOARD_CONTENT" />
+		<result property="board_regdate" column="BOARD_REGDATE" />
+		<result property="view_count" column="VIEW_COUNT" />
+		<result property="user_seq" column="USER_SEQ" />
+		<result property="board_category" column="BOARD_CATEGORY" />
+		<result property="maps_id" column="MAPS_ID" />
+	</resultMap>
+	
+	<select id="totalCount" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM KH_BOARD
+		WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%'
+	</select>
+	
+	<select id="selectPage" parameterType="map" resultMap="board_Map" >
+	<![CDATA[ 
+		SELECT B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_SEQ, B.BOARD_REGDATE
+				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_SEQ, A.BOARD_REGDATE
+						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE
+								FROM KH_BOARD
+								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%'
+								ORDER BY BOARD_SEQ_ID DESC)A
+				WHERE rownum <= #{page} * 10 )B
+		WHERE B.rn >=(#{page} -1) * 10 +1
+	]]> 
+	</select>
+	
+	<select id="totalCount_search" parameterType="map" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+		FROM (SELECT BOARD_NO, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGDATE
+				FROM BOARD
+				WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A
+		WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR BOARD_WRITER LIKE '%'||#{keyword}||'%'
+	]]> 
+	</select>
+	
+	<select id="selectPage_search" parameterType="map" resultMap="board_Map" >
+	<![CDATA[ 
+		SELECT C.BOARD_NO, C.BOARD_CATEGORY, C.BOARD_TITLE, C.BOARD_CONTENT, C.BOARD_WRITER, C.BOARD_REGDATE
+		FROM (SELECT rownum AS rn, B.BOARD_NO, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.BOARD_WRITER, B.BOARD_REGDATE
+				FROM (SELECT A.BOARD_NO, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_WRITER, A.BOARD_REGDATE
+						FROM (SELECT BOARD_NO, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGDATE
+								FROM BOARD
+								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A
+						WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'  OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR BOARD_WRITER LIKE '%'||#{keyword}||'%'
+						ORDER BY BOARD_NO DESC)B
+				WHERE rownum <= #{page} * 10)C
+		WHERE C.rn >=(#{page} -1) * 10 +1
+	]]> 
+	</select>
+</mapper>

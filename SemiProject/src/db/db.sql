@@ -202,7 +202,7 @@ ALTER TABLE KH_FAVORITE
 
 
 
---테스트값 삽입
+--테스트값 삽입(제약조건으로 인해 유저 테이블 데이터를 먼저 삽입 시켜줘야함)
 --유저
 INSERT INTO KH_USER VALUES('a','a','a','a','a','a',1,'a');
 --게시글

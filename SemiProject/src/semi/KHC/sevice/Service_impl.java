@@ -51,4 +51,33 @@ public class Service_impl implements Service{
 		}
 		return null;
 	}
+	
+	@Override
+	public BoardDto board_detail(int board_seq_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = board.detail(board_seq_id);
+		return dto;
+	}
+	@Override
+	public int board_insert(String board_category, String board_title, String board_content, int user_seq) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_category, board_title, board_content, user_seq);
+		return board.insert(dto);
+	}
+	@Override
+	public int board_update(int board_seq_id, String board_title, String board_content) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_seq_id, board_title, board_content);
+		return board.update(dto);
+	}
+	@Override
+	public boolean board_delete(int board_seq_id) {
+		BoardDao board = new BoardDao_impl();
+		int result = board.delete(board_seq_id);
+		
+		if(result > 0) {
+			return true;
+		}
+		return false;		
+	}
 }

@@ -14,4 +14,9 @@ public interface BoardDao {
 	public int totalCount_search(String category, String keyword);
 	public List<BoardDto> selectPage_search(String category, int page, String keyword);
 	
+	public BoardDto detail(int board_seq_id);
+	public int insert(BoardDto dto);
+	public int update(BoardDto dto);
+	public int delete(int board_seq_id);
+	
 } 

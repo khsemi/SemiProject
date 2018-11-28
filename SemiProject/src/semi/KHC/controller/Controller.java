@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import semi.KHC.boardDto.BoardDto;
 import semi.KHC.sevice.Service;
 import semi.KHC.sevice.Service_impl;
 import semi.KHC.userDto.UserDto;
@@ -67,6 +68,36 @@ public class Controller extends HttpServlet {
 
 			// request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
 			dispatch("board.jsp", request, response);
+		} else if (category.equals("board_detail")) {
+			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
+			request.setAttribute("dto", dto);
+			dispatch("board_detail.jsp", request, response);
+		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm")) {
+			// category 값을 request에 담는다
+			request.setAttribute("category", category);
+			// board_insert.jsp 에 실어서 보낸다.
+			dispatch("board_insertForm.jsp", request, response);
+		} else if (category.equals("board_insert")) {
+			// service.board_insert 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
+			int board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
+			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
+			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+		} else if (category.equals("board_updateForm")) {
+			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
+			request.setAttribute("dto", dto);
+			dispatch("board_updateForm.jsp", request, response);
+		} else if (category.equals("board_update")) {
+			// service.board_update 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
+			int board_seq_id = service.board_update(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"));
+			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
+			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+		} else if (category.equals("board_delete")) {
+			//if(service -> dao.delete 의 결과가 true 라면, 
+			if (service.board_delete(Integer.parseInt(request.getParameter("board_seq_id")))) {
+				//response를 이용하여 controller에 category와 page를 보내주어 내가 지운 글의 category의 1page를 보여준다.
+				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1");
+				// dispatch("controller.do?category="+request.getParameter("categoryType")+"&page=1",request, response);
+			}
 		} else if (category.equals("LOGIN")) {
 			dispatch("khc_login.jsp", request, response);
 		} else if (category.equals("LOGIN_CHECK")) {

@@ -44,6 +44,13 @@ public class BoardDto {
 		this.board_content = board_content;
 		this.user_seq = user_seq;
 	}
+	public BoardDto(int board_seq_id, String board_title, String board_content) {
+		super();
+		this.board_seq_id = board_seq_id;
+		this.board_title = board_title;
+		this.board_content = board_content;
+	}
+
 
 
 	public BoardDto() {

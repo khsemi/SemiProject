@@ -82,5 +82,43 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao{
 		
 		return boardList;
 	}
+	@Override
+	public BoardDto detail(int board_seq_id) {
+		BoardDto dto = new BoardDto();
+		
+		SqlSession session = null;
+		
+		session = getSqlSessionFactory().openSession(true);
+		dto = session.selectOne(BOARD_NAMESPACE+"detail",board_seq_id);
+		return dto;
+	}
+	@Override
+	public int insert(BoardDto dto) {
+		SqlSession session = null;
+		session = getSqlSessionFactory().openSession(true);
+		session.insert(BOARD_NAMESPACE+"insert",dto);
+		//입력된 글의 번호
+		int Board_seq_id = dto.getBoard_seq_id();
+		
+		return Board_seq_id;
+	}
+	@Override
+	public int update(BoardDto dto) {
+		SqlSession session = null;
+		session = getSqlSessionFactory().openSession(true);
+		session.update(BOARD_NAMESPACE+"update",dto);
+		//입력된 글의 번호
+		int Board_seq_id = dto.getBoard_seq_id();
+		
+		return Board_seq_id;
+	}
+	@Override
+	public int delete(int board_seq_id) {
+		SqlSession session = null;
+		session = getSqlSessionFactory().openSession(true);
+		int result = session.delete(BOARD_NAMESPACE+"delete",board_seq_id);
+		
+		return result;
+	}
 
 }

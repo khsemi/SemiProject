@@ -56,4 +56,28 @@
 		WHERE C.rn >=(#{page} -1) * 10 +1
 	]]> 
 	</select>
+	
+	<select id="detail" parameterType="int" resultMap="board_Map">
+		SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE
+		FROM KH_BOARD
+		WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</select>
+	
+	<insert id="insert" parameterType="boardDto">
+		<selectKey keyProperty="board_seq_id" resultType="int" order="BEFORE">
+			SELECT KH_BOARD_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? -->
+		</selectKey>
+		INSERT INTO KH_BOARD VALUES(#{board_seq_id}, #{board_title}, #{board_content}, SYSDATE, 0, #{user_seq}, #{board_category}, NULL)
+	</insert>
+	
+	<update id="update" parameterType="boardDto">
+		<selectKey keyProperty="board_seq_id" resultType="int" order="AFTER">
+			SELECT BOARD_SEQ_ID FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
+		</selectKey>
+		UPDATE KH_BOARD SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</delete>
 </mapper>

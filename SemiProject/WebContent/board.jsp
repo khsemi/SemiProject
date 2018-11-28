@@ -17,7 +17,23 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
 
+	$(function() {
+		//category 값을 split 해주는 이유는 검색을 한번 하면, category값에 "_search"라는 값이 붙어서
+		//category 값이 넘어오기때문에, 검색 한 후 재검색을 하기위해서 여기서 split으로 "_"를 나눠 사용
+		var category = $("#category").val().split("_");
+		$("#categoryView").append(
+				"<h2><a href='controller.do?category=" + category[0]
+						+ "&page=1'>" + category[0] + "</a></h2>");
+
+	})
+	//글쓰기 버턴을 누르면 실행되는 insert() 함수 
+	function board_insert() {
+		var category = $("#category").val().split("_");
+		location.href = "controller.do?category=" + category[0] + "_insertForm";
+	}
+</script>
 <body>
 
 <!-- search,pasing에 필요한 값들을 controller 에서 받아와, hidden값으로 선언하여, search.js, pasing.js에서 사용할 수 있게 한다. -->
@@ -29,11 +45,12 @@
 				
 	<div class="layout-container">
 		<div id="main">
+		<div id="categoryView"></div>
 			<!-- sidebar를 include해준다. -->
 			<jsp:include page="sidebar.jsp"/>
 			<div class="form">
 				<!-- 내가 보고있는 게시판 TABLE(DB)의 카테고리 컬럼(즉, command가 된다) -->
-				<h2>${command }</h2>
+<%-- 				<h2>${command }</h2> --%>
 				
 					<!-- 어떠한 테이블의 리스트를 받아와도 똑같은 모양으로 출력한다. -->
 					<table class="table table-striped">
@@ -63,7 +80,7 @@
 									<c:forEach items="${boardList }" var="dto">
 										<tr>
 											<td>${dto.board_seq_id } </td>
-											<td>${dto.board_title } </td>
+											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
 											<td>${dto.user_seq } </td>
 											<td><fmt:formatDate value="${dto.board_regdate }" pattern="yy.MM.dd HH:mm"/></td>
 										</tr>
@@ -72,6 +89,7 @@
 							</c:choose>
 						</tbody>
 					</table>
+					<input type="button" class="btn btn-primary pull-right" value="글쓰기" onclick="board_insert()">
 					<!-- pasing -->
 					<nav aria-label="..." style="text-align: center;">
 						<ul class="pagination" id="pasing"></ul>

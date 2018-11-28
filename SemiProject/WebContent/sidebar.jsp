@@ -28,6 +28,10 @@ $(function(){
 		$("#JOBS").addClass("active");
 	}else if(category[0]=="FOODINFO"){
 		$("#FOODINFO").addClass("active");
+	}else if(category[0]=="LOGIN"){
+		$("#LOGIN").addClass("active");
+	}else if(category[0]=="MYPAGE"){
+		$("#MYPAGE").addClass("active");
 	}
 })
 </script>
@@ -41,9 +45,9 @@ $(function(){
 			<ul class="nav nav-sidebar">
 				<!-- 사이드바	<li id="test_board_select"><a href="sidebar.jsp">a</a></li>  -->
 				<!-- test 메뉴 <li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li> -->
-				<li id="KHC_MAIN"><a href="controller.do?command=KHC_MAIN&category=PAGE"><span>Main</span></a></li>
-				<li id="KHC_LOGIN"><a href="controller.do?command=KHC_LOGIN&category=PAGE"><span>Login</span></a></li>
-				<li id="KHC_MYPAGE"><a href="controller.do?command=KHC_MYPAGE&category=PAGE"><span>Mypage</span></a></li>
+				<li id="KHC_MAIN"><a href="controller.do?category=MAIN"><span>Main</span></a></li>
+				<li id="KHC_LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
+				<li id="KHC_MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
 				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1">Notice</a></li>
 				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1">Community</a></li>
 				<li id="TRADE"><a href="controller.do?category=TRADE&page=1">Trade</a></li>

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import semi.KHC.sevice.Service;
 import semi.KHC.sevice.Service_impl;
+import semi.KHC.userDto.UserDto;
 
 @WebServlet("/controller.do")
 public class Controller extends HttpServlet {
@@ -25,10 +26,9 @@ public class Controller extends HttpServlet {
 		
 		//command 값을 받아온다.
 		String category = request.getParameter("category");
-		String command = request.getParameter("command");
 		
 		System.out.println("카테고리 : [ " + category + " ]");
-		System.out.println("커맨드 : [ " + command + " ]");
+		
 		//command 값을 비교후에 각각의 if문을 실행하게 한다.
 		if(category.equals("QA") || category.equals("TIPS") || category.equals("STUDY") || category.equals("NOTICE") || category.equals("COMMUNITY")
 				 || category.equals("TRADE") || category.equals("JOBS") || category.equals("FOODINFO")) {
@@ -62,23 +62,29 @@ public class Controller extends HttpServlet {
 			request.setAttribute("category", category);
 			request.setAttribute("totalCount", boardMap.get("totalCount"));
 			request.setAttribute("boardList", boardMap.get("boardList"));
-			//request.setAttribute("searchType", searchType);
+			// request.setAttribute("searchType", searchType);
 			request.setAttribute("keyword", keyword);
-			
-			//request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
+
+			// request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
 			dispatch("board.jsp", request, response);
-		}else {
-			if ( command.equals("KHC_LOGIN")) {
-				dispatch("khc_login.jsp", request, response);
-			}else if ( command.equals("KHC_MAIN")) {
-				dispatch("KHC.jsp", request, response);
-			}else if ( command.equals("KHC_MYPAGE")) {
-				dispatch("khc_mypage.jsp", request, response);
-			}else if ( command.equals("KHC_JOIN")) {
-				dispatch("khc_join.jsp", request, response);
-			}
+		} else if (category.equals("LOGIN")) {
+			dispatch("khc_login.jsp", request, response);
+		} else if (category.equals("LOGIN_CHECK")) {
+			String user_id = request.getParameter("user_id");
+			String user_pw = request.getParameter("user_pw");
+			UserDto dto = service.login(user_id, user_pw);
+
+			request.setAttribute("userdto", dto);
+			dispatch("KHC.jsp", request, response);
+
+		} else if (category.equals("MAIN")) {
+			dispatch("KHC.jsp", request, response);
+		} else if (category.equals("MYPAGE")) {
+			dispatch("khc_mypage.jsp", request, response);
+		} else if (category.equals("JOIN")) {
+			dispatch("khc_join.jsp", request, response);
 		}
-		
+
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

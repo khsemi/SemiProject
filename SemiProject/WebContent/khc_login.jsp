@@ -38,13 +38,13 @@
 				<div class="col-lg-4"></div>
 				<div class="col-lg-4">
 					<div class="jumbotron" style="padding-top: 20px;">
-						<form method="post" action="#.jsp">
+						<form method="post" action="controller.do?category=LOGIN_CHECK">
 							<h3 style="text-align: center;">로그인</h3>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
+								<input type="text" class="form-control" placeholder="아이디" name="user_id" maxlength="20">
 							</div>
 							<div class="form-group">
-								<input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20">
+								<input type="password" class="form-control" placeholder="비밀번호" name="user_pw" maxlength="20">
 							</div>
 							<input type="submit" class="btn btn-primary form-control" value="로그인">
 						</form>
@@ -52,7 +52,7 @@
 						<div class="text-center">
 							<a href="#"> 아이디 찾기 </a>/
 							<a href="#"> 비밀번호 찾기 </a>/
-							<a href="khc_join.jsp"> 회원가입 </a>
+							<a href="controller.do?category=JOIN"> 회원가입 </a>
 						
 						</div>
 					</div>

@@ -5,6 +5,7 @@
 	
 	<typeAliases>
 		<typeAlias type="semi.KHC.boardDto.BoardDto" alias="boardDto" />
+		<typeAlias type="semi.KHC.userDto.UserDto" alias="userDto" />
 	</typeAliases>
 	
 	<!-- db 접속 설정 -->
@@ -22,6 +23,7 @@
 	
 	<mappers>
 		<mapper resource="db/khc_board_mapper.xml"/>
+		<mapper resource="db/khc_user_mapper.xml"/>
 	</mappers>
 	
 </configuration>

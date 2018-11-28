@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_user">
+	
+	<resultMap type="semi.KHC.userDto.UserDto" id="user_Map">
+		<result property="user_id" column="USER_ID" />
+		<result property="user_pw" column="USER_PW" />
+		<result property="user_name" column="USER_NAME" />
+		<result property="user_nickname" column="USER_NICKNAME" />
+		<result property="user_address" column="USER_ADDRESS" />
+		<result property="user_email" column="USER_EMAIL" />
+		<result property="user_emailhash" column="USER_EMAILHASH" />
+		<result property="user_emailchecked" column="USER_EMAILCHECKED" />
+		<result property="user_seq" column="USER_SEQ" />
+		<result property="user_phone" column="USER_PHONE" />
+	</resultMap>
+	
+	<select id="login" parameterType="String" resultMap="user_Map">
+		SELECT *  
+		FROM KH_USER
+		WHERE USER_ID = #{user_id}
+	</select>
+	
+	
+</mapper>

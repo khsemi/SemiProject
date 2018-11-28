@@ -69,15 +69,13 @@ public class Controller extends HttpServlet {
 			dispatch("board.jsp", request, response);
 		}else {
 			if ( command.equals("KHC_LOGIN")) {
-				System.out.println("로그인 페이지");
 				dispatch("khc_login.jsp", request, response);
 			}else if ( command.equals("KHC_MAIN")) {
-				
-				System.out.println("메인페이지");
 				dispatch("KHC.jsp", request, response);
 			}else if ( command.equals("KHC_MYPAGE")) {
-				System.out.println("마이페이지");
 				dispatch("khc_mypage.jsp", request, response);
+			}else if ( command.equals("KHC_JOIN")) {
+				dispatch("khc_join.jsp", request, response);
 			}
 		}
 		

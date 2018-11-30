@@ -91,4 +91,11 @@ public class Service_impl implements Service{
 		
 		return pointlist;
 	}
+	@Override
+	public int point(int user_seq, String point_state) {
+		PointDao dao = new PointDao_impl();
+		int point = dao.select(user_seq, point_state);
+		
+		return point;
+	}
 }

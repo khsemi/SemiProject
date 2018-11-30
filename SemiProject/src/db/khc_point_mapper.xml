@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="kh_user">
+<mapper namespace="kh_point">
 	
 	<resultMap type="semi.KHC.pointDto.PointDto" id="point_Map">
 		<result property="point_seq_id" column="POINT_SEQ_ID" />
@@ -16,6 +16,10 @@
 		WHERE USER_SEQ = #{user_seq}
 		ORDER BY POINT_SEQ_ID DESC
 	</select>
+	<select id="select" parameterType="map" resultType="int">
+		SELECT SUM(POINT_BALANCE) as mysum FROM KH_POINT WHERE USER_SEQ = #{user_seq} AND POINT_STATE = #{point_state}
+	</select>
+	
 	
 	
 </mapper>

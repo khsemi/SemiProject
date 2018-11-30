@@ -41,15 +41,13 @@
 					<div class="jumbotron jumbotron-fluid">
 						<p>포인트 조회</p>
 						<p>
-							보유 포인트 : ${dto.user_nickname }
-							
+							보유 포인트 : ${point }
 						</p>
 
 						<div class="container container-fluid">
-							<button type="button" class="btn btn-primary">반게시판</button>
-							<button type="button" class="btn btn-primary">캘린더</button>
-
+							
 							<table class="table table-striped">
+							<h6>포인트 사용 내역</h6>
 								<col width="50px">
 								<col width="300px">
 								<col width="80px">
@@ -68,7 +66,7 @@
 								</tr>
 								<tbody>
 									<c:choose>
-										<c:when test="${empty boardList }">
+										<c:when test="${empty pointlist }">
 											<tr>
 												<td colspan="4" align="center">===== 충전내역이 없습니다. =====</td>
 											</tr>
@@ -89,7 +87,9 @@
 							</table>
 
 						</div>
+						
 						<hr class="my-4">
+						
 										<p>포인트 결제</p>
 					
 									</div>

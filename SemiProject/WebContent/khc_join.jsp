@@ -27,6 +27,7 @@
 
 <body>
 
+
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->

@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,8 +49,17 @@ $(function(){
 				<!-- 사이드바	<li id="test_board_select"><a href="sidebar.jsp">a</a></li>  -->
 				<!-- test 메뉴 <li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li> -->
 				<li id="KHC_MAIN"><a href="controller.do?category=MAIN"><span>Main</span></a></li>
-				<li id="KHC_LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
-				<li id="KHC_MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
+
+				<c:choose>
+					<c:when test="${empty dto }">
+						<li id="KHC_LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
+					</c:when>
+					<c:otherwise>
+						<li id="KHC_MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
+					</c:otherwise>
+				</c:choose>
+
+
 				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1">Notice</a></li>
 				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1">Community</a></li>
 				<li id="TRADE"><a href="controller.do?category=TRADE&page=1">Trade</a></li>

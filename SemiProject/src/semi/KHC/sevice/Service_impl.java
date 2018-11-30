@@ -6,6 +6,9 @@ import java.util.Map;
 
 import semi.KHC.boardDao.BoardDao;
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.pointDao.PointDao;
+import semi.KHC.pointDao.PointDao_impl;
+import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDao.UserDao;
 import semi.KHC.userDao.UserDao_impl;
 import semi.KHC.userDto.UserDto;
@@ -79,5 +82,13 @@ public class Service_impl implements Service{
 			return true;
 		}
 		return false;		
+	}
+	
+	@Override
+	public List<PointDto> point_selectAll(int user_seq) {
+		PointDao dao = new PointDao_impl();
+		List<PointDto> pointlist = dao.selectAll(user_seq);
+		
+		return pointlist;
 	}
 }

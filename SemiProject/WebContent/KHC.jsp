@@ -27,7 +27,13 @@
 			<div class="form">
 				<h2>메인페이지</h2>
 					<!-- 메인페이지에 표시될 게시판들을 div와 table을 이용해서 코딩하면된다. -->
-					
+
+					<p>로그인 정보 </p>
+					<!-- 세션에 담긴 정보는 불러온다. -->
+					<p>아이디 : ${dto.user_id }</p>
+					<p>계정번호 : ${dto.user_seq }</p>
+					<br/>
+					<a type="button" href="controller.do?category=LOGOUT">로그아웃</a>
 			</div>
 			<footer class="footer">Team.진선이와 아이들
 									1, 2, 3, 4, 5, 6

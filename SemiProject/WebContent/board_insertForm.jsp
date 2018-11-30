@@ -24,6 +24,7 @@ $(function(){
 })
 </script>
 <body>
+
 <input type="hidden" id="categoryVal" value="${category }">
 <div class="layout-container">
 		<div id="main">

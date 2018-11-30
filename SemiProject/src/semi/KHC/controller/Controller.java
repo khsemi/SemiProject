@@ -1,6 +1,7 @@
 package semi.KHC.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -9,8 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.pointDto.PointDto;
 import semi.KHC.sevice.Service;
 import semi.KHC.sevice.Service_impl;
 import semi.KHC.userDto.UserDto;
@@ -72,7 +75,8 @@ public class Controller extends HttpServlet {
 			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
 			request.setAttribute("dto", dto);
 			dispatch("board_detail.jsp", request, response);
-		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm")) {
+		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm") || category.equals("NOTICE_insertForm") || category.equals("COMMUNITY_insertForm")
+				 || category.equals("TRADE_insertForm") || category.equals("JOBS_insertForm") || category.equals("FOODINFO_insertForm")) {
 			// category 값을 request에 담는다
 			request.setAttribute("category", category);
 			// board_insert.jsp 에 실어서 보낸다.
@@ -104,8 +108,12 @@ public class Controller extends HttpServlet {
 			String user_id = request.getParameter("user_id");
 			String user_pw = request.getParameter("user_pw");
 			UserDto dto = service.login(user_id, user_pw);
-
-			request.setAttribute("userdto", dto);
+			
+			//로그인 정보를 세션에 담아준다.
+			HttpSession session = request.getSession();
+			session.setAttribute("user_seq", dto.getUser_seq());
+			session.setAttribute("user_id", dto.getUser_id());
+			session.setAttribute("dto", dto);
 			dispatch("KHC.jsp", request, response);
 
 		} else if (category.equals("MAIN")) {
@@ -114,6 +122,18 @@ public class Controller extends HttpServlet {
 			dispatch("khc_mypage.jsp", request, response);
 		} else if (category.equals("JOIN")) {
 			dispatch("khc_join.jsp", request, response);
+		} else if (category.equals("LOGOUT")) {
+			//세션을 해지시켜준다.
+			HttpSession session = request.getSession();
+			session.invalidate();
+			dispatch("KHC.jsp", request, response);
+		} else if (category.equals("POINT")) {
+			HttpSession session = request.getSession();
+			int user_seq = 1;
+			List<PointDto> list = service.point_selectAll(user_seq);
+			request.setAttribute("pointlist", list);
+			dispatch("point.jsp", request, response);
+
 		}
 
 	}

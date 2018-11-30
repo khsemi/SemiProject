@@ -27,6 +27,7 @@ function board_cancel(){
 }
 </script>
 <body>
+
 <input type="hidden" id="board_seq_id" value="${dto.board_seq_id }">
 <div class="layout-container">
 		<div id="main">

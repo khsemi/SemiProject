@@ -21,12 +21,14 @@ import semi.KHC.userDto.UserDto;
 @WebServlet("/controller.do")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private HttpSession session = null;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("text/html; charset=UTF-8");
 		
 		Service service = new Service_impl();
+		
+		
 		
 		//command 값을 받아온다.
 		String category = request.getParameter("category");
@@ -77,11 +79,19 @@ public class Controller extends HttpServlet {
 			dispatch("board_detail.jsp", request, response);
 		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm") || category.equals("NOTICE_insertForm") || category.equals("COMMUNITY_insertForm")
 				 || category.equals("TRADE_insertForm") || category.equals("JOBS_insertForm") || category.equals("FOODINFO_insertForm")) {
-			// category 값을 request에 담는다
-			request.setAttribute("category", category);
-			// board_insert.jsp 에 실어서 보낸다.
-			dispatch("board_insertForm.jsp", request, response);
+			//로그인을 하지않았다면 글을 쓸수없다.(조건 추가)
+			if(session != null) {
+				// category 값을 request에 담는다
+				request.setAttribute("category", category);
+				// board_insert.jsp 에 실어서 보낸다.
+				dispatch("board_insertForm.jsp", request, response);
+			}else {
+				System.out.println("로그인이 되어있지 않은 상태");
+				response.sendRedirect("khc_login.jsp");
+			}
+			
 		} else if (category.equals("board_insert")) {
+			System.out.println(Integer.parseInt(request.getParameter("user_seq")));
 			// service.board_insert 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
 			int board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
@@ -103,37 +113,78 @@ public class Controller extends HttpServlet {
 				// dispatch("controller.do?category="+request.getParameter("categoryType")+"&page=1",request, response);
 			}
 		} else if (category.equals("LOGIN")) {
+			request.setAttribute("category", category);
 			dispatch("khc_login.jsp", request, response);
 		} else if (category.equals("LOGIN_CHECK")) {
 			String user_id = request.getParameter("user_id");
 			String user_pw = request.getParameter("user_pw");
-			UserDto dto = service.login(user_id, user_pw);
+			UserDto userDto = service.user_login(user_id, user_pw);
 			
-			//로그인 정보를 세션에 담아준다.
-			HttpSession session = request.getSession();
-			session.setAttribute("user_seq", dto.getUser_seq());
-			session.setAttribute("user_id", dto.getUser_id());
-			session.setAttribute("dto", dto);
-			dispatch("KHC.jsp", request, response);
+			if(userDto.getUser_emailchecked().equals("TRUE")) {
+				session = request.getSession();
+				//로그인 정보를 세션에 담아준다.
+				session.setAttribute("userDto", userDto);
+				request.setAttribute("category", category);
+				dispatch("KHC.jsp", request, response);
+			}else {
+				request.setAttribute("user_id", user_id);
+				dispatch("khc_sendEmailForm.jsp", request, response);
+			}
+			
 
 		} else if (category.equals("MAIN")) {
+			request.setAttribute("category", category);
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("MYPAGE")) {
+			int page = Integer.parseInt(request.getParameter("page"));
+			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+			Map<String, Object> boardMap = service.board(user_seq, page);
+			//내가 쓴 글 보이기 
+			request.setAttribute("page", page);
+			request.setAttribute("category", request.getParameter("category"));
+			request.setAttribute("totalCount", boardMap.get("totalCount"));
+			request.setAttribute("boardList", boardMap.get("boardList"));
 			dispatch("khc_mypage.jsp", request, response);
 		} else if (category.equals("JOIN")) {
 			dispatch("khc_join.jsp", request, response);
 		} else if (category.equals("LOGOUT")) {
 			//세션을 해지시켜준다.
-			HttpSession session = request.getSession();
-			session.invalidate();
+			if(session != null) {
+				session.invalidate(); //invalidate()를 하면 session안에 값들이 삭제되는데,
+									//null값이 되진 않아서 
+				session = null;    //다시 null로 만들어줬음 다른방법을 찾아서 적용하는게 좋아보임
+			}
+			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("POINT")) {
-			HttpSession session = request.getSession();
 			int user_seq = 1;
 			List<PointDto> list = service.point_selectAll(user_seq);
 			request.setAttribute("pointlist", list);
 			dispatch("point.jsp", request, response);
 
+		} else if(category.equals("user_insert")) {
+			String user_id = request.getParameter("user_id");
+			if(service.user_join(user_id, request.getParameter("user_pw"), request.getParameter("user_name"), request.getParameter("user_nickname"), request.getParameter("user_address"), request.getParameter("user_email"), request.getParameter("user_phone"))) {
+				request.setAttribute("user_id", user_id);
+				request.setAttribute("category", category);
+				//이메일 인증을 보냈고 이메일 링크를 클릭하라는 jsp 페이지로 보내준다.
+				dispatch("khc_sendEmailForm.jsp", request, response);
+			}else {
+				response.sendRedirect("khc_join.jsp");
+				System.out.println("회원가입 실패! 중복된 값들이 있습니다.");
+			}
+		}else if(category.equals("sendEmail")) {
+			service.user_sendEmail(request.getParameter("user_id"));
+			dispatch("khc_sendEmailForm.jsp", request, response);
+		}else if(category.equals("emailCheck")) {
+			System.out.println(request.getParameter("user_id"));
+			boolean result = service.user_setEmailCheck(request.getParameter("user_id"), request.getParameter("code"));
+			
+			if(result) {
+				response.sendRedirect("khc_login.jsp");
+			}else {
+				System.out.println("실패!");
+			}
 		}
 
 	}

@@ -4,7 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.*;
+import java.util.Properties;
+import util.SHA256;
+import util.Gmail;
+
 import semi.KHC.boardDao.BoardDao;
+import semi.KHC.boardDao.BoardDao_impl;
 import semi.KHC.boardDto.BoardDto;
 import semi.KHC.pointDao.PointDao;
 import semi.KHC.pointDao.PointDao_impl;
@@ -12,19 +20,29 @@ import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDao.UserDao;
 import semi.KHC.userDao.UserDao_impl;
 import semi.KHC.userDto.UserDto;
-import semi.KHC.boardDao.BoardDao_impl;
 
 public class Service_impl implements Service{
 	
 	@Override
 	public Map<String, Object> board(String category, int page) {
-		BoardDao board = new BoardDao_impl();
+		BoardDao boardDao = new BoardDao_impl();
 		Map<String, Object> result = new HashMap<String, Object>();
-		int totalCount = board.totalCount(category);
+		int totalCount = boardDao.totalCount(category);
 		result.put("totalCount", totalCount);
-		List<BoardDto> boardList = board.selectPage(category, page);
+		List<BoardDto> boardList = boardDao.selectPage(category, page);
 		result.put("boardList", boardList);
 		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> board(int user_seq, int page) {
+		BoardDao boardDao = new BoardDao_impl();
+		Map<String, Object> result = new HashMap<String, Object>();
+		int totalCount = boardDao.totalCount(user_seq);
+		result.put("totalCount", totalCount);
+		List<BoardDto> boardList = boardDao.selectPage(user_seq, page);
+		result.put("boardList", boardList);
 		return result;
 	}
 	
@@ -42,14 +60,10 @@ public class Service_impl implements Service{
 	}
 	
 	@Override
-	public UserDto login(String user_id, String user_pw) {
+	public UserDto user_login(String user_id, String user_pw) {
 		UserDao dao = new UserDao_impl();
 		UserDto dto = dao.login(user_id);
-		System.out.println(dto.getUser_pw());
-		System.out.println(user_pw);
 		if(dto.getUser_pw().equals(user_pw)) {
-			//로그인 성공
-			System.out.println("성공");
 			return dto;
 		}
 		return null;
@@ -91,4 +105,70 @@ public class Service_impl implements Service{
 		
 		return pointlist;
 	}
+
+	@Override
+	public boolean user_join(String user_id, String user_pw, String user_name, String user_nickname, String user_address, String user_email, String user_phone) {
+		UserDao userDao = new UserDao_impl();
+		boolean result = userDao.join(new UserDto(user_id, user_pw, user_name, user_nickname, user_address, user_email, user_phone));
+	
+		return result;
+	}
+
+	@Override
+	public boolean user_sendEmail(String user_id) {
+		UserDao userDao = new UserDao_impl();
+		String host = "http://localhost:8787/SemiProject/controller.do";
+		String from = "ggjs9812@gmail.com";
+		String to = userDao.getUser_email(user_id);
+		String subject = "KH Comunity 회원가입 이메일 인증 서비스 입니다.";
+		String content = "다음 링크에 접속하여 이메일 인증을 완료하세요!"+
+			"<a href='"+host+"?category=emailCheck&user_id="+user_id+"&code="+new SHA256().getSHA256(to)+"'>Click Here!</a>";
+		
+		Properties p = new Properties();
+		p.put("mail.smtp.user", from);
+		p.put("mail.smtp.host", "smtp.googlemail.com");
+		p.put("mail.smtp.port", "465");
+		p.put("mail.smtp.starttls.enable","true");
+		p.put("mail.smtp.auth","true");
+		p.put("mail.smtp.debug","true");
+		p.put("mail.smtp.socketFactory.port","465");
+		p.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+		p.put("mail.smtp.socketFactory.fallback","false");
+		
+		
+		try{
+			Authenticator auth = new Gmail();
+			Session ses = Session.getInstance(p, auth);
+			ses.setDebug(true);
+			MimeMessage msg = new MimeMessage(ses);
+			msg.setSubject(subject);
+			Address fromAddr = new InternetAddress(from);
+			msg.setFrom(fromAddr);
+			Address toAddr = new InternetAddress(to);
+			msg.addRecipient(Message.RecipientType.TO,toAddr);
+			msg.setContent(content,"text/html;charset=UTF8");
+			Transport.send(msg);
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean user_setEmailCheck(String user_id, String code) {
+		UserDao userDao = new UserDao_impl();
+		String userEmail= userDao.getUser_email(user_id);
+		boolean isRight = (new SHA256().getSHA256(userEmail).equals(code)) ? true : false;
+		
+		if(isRight == true){
+			userDao.setUser_email(user_id);
+			//인증 성공시
+			return true;
+		}
+		//인증 실패시(코드 유효 시간 오버)
+		return false;
+	}
+
+	
 }

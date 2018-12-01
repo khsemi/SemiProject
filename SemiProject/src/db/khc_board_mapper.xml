@@ -4,6 +4,7 @@
 	
 	<resultMap type="semi.KHC.boardDto.BoardDto" id="board_Map">
 		<result property="board_seq_id" column="BOARD_SEQ_ID" />
+		<result property="user_id" column="USER_ID"/> 
 		<result property="board_title" column="BOARD_TITLE" />
 		<result property="board_content" column="BOARD_CONTENT" />
 		<result property="board_regdate" column="BOARD_REGDATE" />
@@ -21,11 +22,30 @@
 	
 	<select id="selectPage" parameterType="map" resultMap="board_Map" >
 	<![CDATA[ 
-		SELECT B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_SEQ, B.BOARD_REGDATE
-				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_SEQ, A.BOARD_REGDATE
-						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE
-								FROM KH_BOARD
+		SELECT B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_ID, B.BOARD_REGDATE
+				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_ID, A.BOARD_REGDATE
+						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_ID, BOARD_REGDATE
+								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
 								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%'
+								ORDER BY BOARD_SEQ_ID DESC)A
+				WHERE rownum <= #{page} * 10 )B
+		WHERE B.rn >=(#{page} -1) * 10 +1
+	]]> 
+	</select>
+	
+	<select id="myPage_totalCount" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM KH_BOARD
+		WHERE USER_SEQ = #{user_seq}
+	</select>
+	
+	<select id="myPage_selectPage" parameterType="map" resultMap="board_Map" >
+	<![CDATA[ 
+		SELECT B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_ID, B.BOARD_REGDATE
+				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_ID, A.BOARD_REGDATE
+						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_ID, BOARD_REGDATE
+								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
+								WHERE USER_SEQ = #{user_seq}
 								ORDER BY BOARD_SEQ_ID DESC)A
 				WHERE rownum <= #{page} * 10 )B
 		WHERE B.rn >=(#{page} -1) * 10 +1
@@ -35,37 +55,39 @@
 	<select id="totalCount_search" parameterType="map" resultType="int">
 	<![CDATA[
 		SELECT COUNT(*)
-		FROM (SELECT BOARD_NO, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGDATE
-				FROM BOARD
+		FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_ID, BOARD_REGDATE
+				FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
 				WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A
-		WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR BOARD_WRITER LIKE '%'||#{keyword}||'%'
+		WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR USER_ID LIKE '%'||#{keyword}||'%'
 	]]> 
 	</select>
 	
 	<select id="selectPage_search" parameterType="map" resultMap="board_Map" >
 	<![CDATA[ 
-		SELECT C.BOARD_NO, C.BOARD_CATEGORY, C.BOARD_TITLE, C.BOARD_CONTENT, C.BOARD_WRITER, C.BOARD_REGDATE
-		FROM (SELECT rownum AS rn, B.BOARD_NO, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.BOARD_WRITER, B.BOARD_REGDATE
-				FROM (SELECT A.BOARD_NO, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_WRITER, A.BOARD_REGDATE
-						FROM (SELECT BOARD_NO, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGDATE
-								FROM BOARD
+		SELECT C.BOARD_SEQ_ID, C.BOARD_CATEGORY, C.BOARD_TITLE, C.BOARD_CONTENT, C.USER_ID, C.BOARD_REGDATE
+		FROM (SELECT rownum AS rn, B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_ID, B.BOARD_REGDATE
+				FROM (SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_ID, A.BOARD_REGDATE
+						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_ID, BOARD_REGDATE
+								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
 								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A
-						WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'  OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR BOARD_WRITER LIKE '%'||#{keyword}||'%'
-						ORDER BY BOARD_NO DESC)B
+						WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'  OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR USER_ID LIKE '%'||#{keyword}||'%'
+						ORDER BY BOARD_SEQ_ID DESC)B
 				WHERE rownum <= #{page} * 10)C
 		WHERE C.rn >=(#{page} -1) * 10 +1
 	]]> 
 	</select>
 	
 	<select id="detail" parameterType="int" resultMap="board_Map">
-		SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE
-		FROM KH_BOARD
+		SELECT BOARD_SEQ_ID, USER_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE 
+		FROM KH_BOARD JOIN KH_USER
+		USING(USER_SEQ)
 		WHERE BOARD_SEQ_ID = #{board_seq_id}
 	</select>
 	
 	<insert id="insert" parameterType="boardDto">
 		<selectKey keyProperty="board_seq_id" resultType="int" order="BEFORE">
-			SELECT KH_BOARD_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? -->
+			SELECT KH_BOARD_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? 
+												 anser : DUAL = 가상 테이블(KH_BOARD_SEQ.NEXTVAL을 실행 할 가상테이블)-->
 		</selectKey>
 		INSERT INTO KH_BOARD VALUES(#{board_seq_id}, #{board_title}, #{board_content}, SYSDATE, 0, #{user_seq}, #{board_category}, NULL)
 	</insert>

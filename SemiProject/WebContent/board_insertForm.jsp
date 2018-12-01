@@ -20,24 +20,25 @@
 $(function(){
 	var category = $("#categoryVal").val().split("_");
 	//input id = category 에 category[0]을 넣어준다.
-	$("#category").val(category[0]);
+	$("#categoryType").val(category[0]);
 })
 </script>
 <body>
-
 <input type="hidden" id="categoryVal" value="${category }">
+
 <div class="layout-container">
 		<div id="main">
 			<jsp:include page="sidebar.jsp"></jsp:include>
 			<div class="form">
-				<h2> 글 입력 </h2>
+				<h2> 글 입력 :: ${userDto.user_seq }</h2>
 				<form method="post" action="controller.do?category=board_insert">
+					<input type="hidden" name="user_seq" value="${userDto.user_seq }">
 				 	<table class="table" style="text-align:center; border:1px; solid #dddddd">
 							<tr>
-								<td><input name="categoryType" id="category" type="text" class="form-control" placeholder="분류" name="type" maxlength="50" readonly="readonly"></td>
+								<td><input name="categoryType" id="categoryType" type="text" class="form-control" placeholder="분류" name="type" maxlength="50" readonly="readonly"></td>
 							</tr>
 							<tr>
-				 				<td><input name="user_seq" type="text" class="form-control" placeholder="작성자" name="user_seq" maxlength="50"></td>
+				 				<td><input name="writer" type="text" class="form-control" placeholder="작성자" name="writer" maxlength="50" value="${userDto.user_name}" readonly="readonly"></td>
 				 			</tr>		 		
 				 			<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50"></td>

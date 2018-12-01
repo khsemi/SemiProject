@@ -3,6 +3,7 @@
 <mapper namespace="kh_user">
 	
 	<resultMap type="semi.KHC.userDto.UserDto" id="user_Map">
+		<result property="user_seq" column="USER_SEQ" />
 		<result property="user_id" column="USER_ID" />
 		<result property="user_pw" column="USER_PW" />
 		<result property="user_name" column="USER_NAME" />
@@ -11,15 +12,30 @@
 		<result property="user_email" column="USER_EMAIL" />
 		<result property="user_emailhash" column="USER_EMAILHASH" />
 		<result property="user_emailchecked" column="USER_EMAILCHECKED" />
-		<result property="user_seq" column="USER_SEQ" />
 		<result property="user_phone" column="USER_PHONE" />
+		<result property="user_state" column="USER_STATE"/>
+		<result property="user_type" column="USER_TYPE"/>
 	</resultMap>
 	
 	<select id="login" parameterType="String" resultMap="user_Map">
 		SELECT *  
-		FROM KH_USER
-		WHERE USER_ID = #{user_id}
+		FROM KH_USER 
+		WHERE USER_ID = #{user_id} 
 	</select>
+	
+	<insert id="join" parameterType="userDto">
+		INSERT INTO KH_USER VALUES(KH_USER_SEQ.NEXTVAL, #{user_id}, #{user_pw}, #{user_name}, #{user_nickname}, #{user_address}, #{user_email},'FALSE','FALSE', #{user_phone},'TRUE','USER')
+	</insert>
+	
+	<select id="getEmail" parameterType="String" resultType="String">
+		SELECT USER_EMAIL FROM KH_USER WHERE USER_ID = #{user_id}
+	</select>
+	
+	<update id="setEmail" parameterType="String" >
+		UPDATE KH_USER SET USER_EMAILCHECKED = 'TRUE' WHERE USER_ID = #{user_id}
+	</update>
+	
+	
 	
 	
 </mapper>

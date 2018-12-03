@@ -38,7 +38,7 @@ $(function(){
 								<td><input name="categoryType" id="categoryType" type="text" class="form-control" placeholder="분류" name="type" maxlength="50" readonly="readonly"></td>
 							</tr>
 							<tr>
-				 				<td><input name="writer" type="text" class="form-control" placeholder="작성자" name="writer" maxlength="50" value="${userDto.user_name}" readonly="readonly"></td>
+				 				<td><input name="writer" type="text" class="form-control" placeholder="작성자" name="writer" maxlength="50" value="${userDto.user_nickname}" readonly="readonly"></td>
 				 			</tr>		 		
 				 			<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50"></td>

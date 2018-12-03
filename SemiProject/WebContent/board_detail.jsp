@@ -44,7 +44,7 @@ function board_delete(){
 								<td><input name="categoryType" id="category" type="text" class="form-control" placeholder="분류" name="type" maxlength="50" readonly="readonly" value="${dto.board_category }"></td>
 							</tr>
 							<tr>
-				 				<td><input name="user_seq" type="text" class="form-control" placeholder="작성자" name="user_seq" maxlength="50" readonly="readonly" value="${dto.user_id }"></td>
+				 				<td><input type="text" class="form-control" placeholder="작성자" maxlength="50" readonly="readonly" value="${dto.user_nickname }"></td>
 				 			</tr>		 		
 				 			<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50" readonly="readonly" value="${dto.board_title }"></td>

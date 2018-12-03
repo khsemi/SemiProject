@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<properties resource="db/db.properties" />
+	
+	<typeAliases>
+		<typeAlias type="semi.KHC.boardDto.BoardDto" alias="boardDto" />
+		<typeAlias type="semi.KHC.userDto.UserDto" alias="userDto" />
+		<typeAlias type="semi.KHC.pointDto.PointDto" alias="pointDto" />
+	</typeAliases>
+	
+	<!-- db 접속 설정 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>		
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="db/khc_board_mapper.xml"/>
+		<mapper resource="db/khc_user_mapper.xml"/>
+		<mapper resource="db/khc_point_mapper.xml"/>
+	</mappers>
+	
+</configuration>

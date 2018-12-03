@@ -40,14 +40,12 @@
 				<div class="container container-fluid">
 					<div class="jumbotron jumbotron-fluid">
 						<p>포인트 조회</p>
-						<p>
-							보유 포인트 : ${point }
-						</p>
+						<p>보유 포인트 : ${point }</p>
 
 						<div class="container container-fluid">
-							
+
 							<table class="table table-striped">
-							<h6>포인트 사용 내역</h6>
+								<h6>포인트 사용 내역</h6>
 								<col width="50px">
 								<col width="300px">
 								<col width="80px">
@@ -87,12 +85,36 @@
 							</table>
 
 						</div>
-						
+
 						<hr class="my-4">
+
+						<p>포인트 결제</p>
+						<div class="container">
+							<div class="col-md-8 order-md-1">
+								<form class="needs-validation" method="post"action="controller.do?category=POINT_CHARGE">
+								<div class="form-group">
+									<label for="point">충전 금액</label> 
+									<select class="form-control form-control-lg" id="point_val">
+										<option value="">Choose...</option>
+										<option>5000</option>
+										<option>10000</option>
+										<option>20000</option>
+										<option>30000</option>
+										<option>50000</option>
+									</select>
+								</div>
+								<div class="form-group form-check">
+									<input type="checkbox" class="form-check-input" id="exampleCheck1"> 
+									<label class="form-check-label" for="exampleCheck1">포인트 충전 결제 진행에 동의합니다.</label>
+								</div>
+								
+								<button type="submit" class="btn btn-primary mb-2">카카오페이로 결제하기</button>
+								</form>
+
+							</div>
+						</div>
 						
-										<p>포인트 결제</p>
-					
-									</div>
+					</div>
 				</div>
 
 			</div>

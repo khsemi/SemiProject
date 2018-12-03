@@ -86,10 +86,10 @@
 						<p>포인트 결제</p>
 						<div class="container">
 							<div class="col-md-8 order-md-1">
-								<form class="needs-validation" method="post"action="controller.do?category=POINT_CHARGE">
+								<form class="needs-validation" method="post" action="controller.do?category=POINT_CHARGE">
 								<div class="form-group">
 									<label for="point">충전 금액</label> 
-									<select class="form-control form-control-lg" id="point_val">
+									<select class="form-control form-control-lg" name="point_val">
 										<option value="">Choose...</option>
 										<option>5000</option>
 										<option>10000</option>
@@ -99,8 +99,8 @@
 									</select>
 								</div>
 								<div class="form-group form-check">
-									<input type="checkbox" class="form-check-input" id="exampleCheck1"> 
-									<label class="form-check-label" for="exampleCheck1">포인트 충전 결제 진행에 동의합니다.</label>
+									<input type="checkbox" class="form-check-input" id="paymentCheck"> 
+									<label class="form-check-label" for="paymentCheck">포인트 충전 결제 진행에 동의합니다.</label>
 								</div>
 								
 								<button type="submit" class="btn btn-primary mb-2">카카오페이로 결제하기</button>

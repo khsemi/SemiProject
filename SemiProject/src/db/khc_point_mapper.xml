@@ -19,6 +19,10 @@
 	<select id="select" parameterType="map" resultType="int">
 		SELECT SUM(POINT_BALANCE) as mysum FROM KH_POINT WHERE USER_SEQ = #{user_seq} AND POINT_STATE = #{point_state}
 	</select>
+	<insert id="pointInsert" parameterType="map">
+		INSERT INTO KH_POINT 
+		VALUES(KH_POINT_SEQ.NEXTVAL, #{user_seq}, SYSDATE, #{point_balance}, '충전')
+	</insert>
 	
 	
 	

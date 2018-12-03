@@ -112,6 +112,15 @@ public class Service_impl implements Service{
 		
 		return point;
 	}
+	@Override
+	public boolean point_insert(int user_seq, int point_val) {
+		PointDao dao = new PointDao_impl();
+		int result = dao.pointInsert(user_seq, point_val);
+		if(result > 0) {
+			return true; //삽입 성공
+		} 
+		return false; //디비 연결 실패
+	}
 
 	@Override
 	public boolean user_join(String user_id, String user_pw, String user_name, String user_nickname, String user_address, String user_email, String user_phone) {

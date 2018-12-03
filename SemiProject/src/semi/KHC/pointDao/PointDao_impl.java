@@ -18,10 +18,15 @@ public class PointDao_impl extends SqlMapConfig implements PointDao {
 		
 		SqlSession session = null;
 		
-		session = getSqlSessionFactory().openSession(true);
-		pointlist = session.selectList(USER_NAMESPACE+"selectAll", user_seq);
-		
-		session.close();
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			pointlist = session.selectList(POINT_NAMESPACE+"selectAll", user_seq);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 		
 		return pointlist;
 	}
@@ -35,11 +40,37 @@ public class PointDao_impl extends SqlMapConfig implements PointDao {
 		map.put("point_state", point_state);
 		SqlSession session = null;
 		
-		session = getSqlSessionFactory().openSession(true);
-		point = session.selectOne(USER_NAMESPACE+"select", map);
-		
-		session.close();
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			point = session.selectOne(POINT_NAMESPACE+"select", map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 		
 		return point;
+	}
+	
+	@Override
+	public int pointInsert(int user_seq, int point_balance) {
+		int res = 0;
+		Map<String, Object> pointMap = new HashMap<String, Object>();
+		
+		pointMap.put("user_seq", user_seq);
+		pointMap.put("point_balance", point_balance);
+		SqlSession session = null;
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			res = session.insert(POINT_NAMESPACE+"pointInsert", pointMap);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return res;
 	}
 }

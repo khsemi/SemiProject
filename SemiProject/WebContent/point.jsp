@@ -25,7 +25,27 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+function CheckForm(Join){
+    
+    //체크박스 체크여부 확인 [하나]
+    var chk1=document.payment.paymentCheck;
+    var select1=document.payment.point_val;
+    if (select1.value==""){
+    	alert('결제하실 금액을 선택해주세요.');
+    	select1.focus();
+    	return false;
+    }
+    
+    if(!chk1.checked){
+        alert('결제 동의를 체크해 주세요');
+        chk1.focus();
+        return false;
+    } 
+}
 
+
+</script>
 <body>
 
 
@@ -38,7 +58,7 @@
 					<h2>포인트 관리</h2>
 				</div>
 				<div class="container container-fluid">
-					<div class="jumbotron jumbotron-fluid">
+<!-- 					<div class="jumbotron jumbotron-fluid"> -->
 						<p>포인트 조회</p>
 						<p>보유 포인트 : ${point }</p>
 
@@ -86,30 +106,32 @@
 						<p>포인트 결제</p>
 						<div class="container">
 							<div class="col-md-8 order-md-1">
-								<form class="needs-validation" method="post" action="controller.do?category=POINT_CHARGE">
+								<form class="needs-validation" method="post" action="controller.do?category=POINT_CHARGE" 
+									name="payment" onSubmit="return CheckForm(this)">
 								<div class="form-group">
 									<label for="point">충전 금액</label> 
 									<select class="form-control form-control-lg" name="point_val">
-										<option value="">Choose...</option>
-										<option>5000</option>
-										<option>10000</option>
-										<option>20000</option>
-										<option>30000</option>
-										<option>50000</option>
+										<option value="">충전할 금액을 선택해주세요.</option>
+										<option value="5000">5000</option>
+										<option value="10000">10000</option>
+										<option value="20000">20000</option>
+										<option value="30000">30000</option>
+										<option value="50000">50000</option>
 									</select>
 								</div>
 								<div class="form-group form-check">
-									<input type="checkbox" class="form-check-input" id="paymentCheck"> 
+									<input type="checkbox" class="form-check-input" id="paymentCheck" name="paymentCheck"> 
 									<label class="form-check-label" for="paymentCheck">포인트 충전 결제 진행에 동의합니다.</label>
 								</div>
 								
 								<button type="submit" class="btn btn-primary mb-2">카카오페이로 결제하기</button>
 								</form>
+								</br></br>
 
 							</div>
 						</div>
 						
-					</div>
+<!-- 					</div> -->
 				</div>
 
 			</div>

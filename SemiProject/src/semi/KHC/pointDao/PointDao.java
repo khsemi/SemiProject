@@ -9,5 +9,5 @@ public interface PointDao {
 
 	public List<PointDto> selectAll(int user_seq);
 	public int select(int user_seq, String point_state);
-	public int pointInsert(int user_seq, int point_balance);
+	public int pointInsert(int user_seq, int point_balance, String point_state);
 }

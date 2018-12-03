@@ -163,7 +163,7 @@ public class Controller extends HttpServlet {
 			//포인트 충전 성공시
 			if(request.getParameter("point_val") != null) {
 				point_val=Integer.parseInt(request.getParameter("point_val"));
-				service.point_insert(userdto.getUser_seq(), point_val);
+				service.point_insert(userdto.getUser_seq(), point_val, "충전");
 			}		
 			
 			List<PointDto> list = service.point_selectAll(userdto.getUser_seq());

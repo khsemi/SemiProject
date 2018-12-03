@@ -26,7 +26,6 @@
 		$("#categoryView").append(
 				"<h2><a href='controller.do?category=" + category[0]
 						+ "&page=1'>" + category[0] + "</a></h2>");
-
 	})
 	//글쓰기 버턴을 누르면 실행되는 insert() 함수 
 	function board_insert() {
@@ -34,8 +33,8 @@
 		location.href = "controller.do?category=" + category[0] + "_insertForm";
 	}
 </script>
-<body>
 
+<body>
 <!-- search,pasing에 필요한 값들을 controller 에서 받아와, hidden값으로 선언하여, search.js, pasing.js에서 사용할 수 있게 한다. -->
 <input type="hidden" id="totalCount" value='${totalCount }'>
 <input type="hidden" id="page" value='${page }'>
@@ -50,8 +49,16 @@
 			<jsp:include page="sidebar.jsp"/>
 			<div class="form">
 				<!-- 내가 보고있는 게시판 TABLE(DB)의 카테고리 컬럼(즉, command가 된다) -->
-<%-- 				<h2>${command }</h2> --%>
-				
+			<%-- 				<h2>${command }</h2> --%>
+					<div class="category-filter-wrapper">
+						<div class="category-filter-query pull-right">
+						검색창
+						</div>
+						<ul class="list-sort pull-left">
+						<li>gd
+						<li>ag
+						</ul>
+					</div>
 					<!-- 어떠한 테이블의 리스트를 받아와도 똑같은 모양으로 출력한다. -->
 					<table class="table table-striped">
 					
@@ -61,7 +68,8 @@
 						<col width="100px">
 						<thead>
 						<tr><!-- searchForm -->
-							<td colspan="4" align="right"><div id="search"></div></td>
+							<td colspan="2"><a href="#">최신순</a> <a href="#">추천순</a> <a href="#">댓글순</a>  <a href="#">조회순</a>  
+							<td colspan="2" align="right"><div id="search"></div></td>
 						</tr>	
 						</thead>
 						
@@ -81,7 +89,7 @@
 										<tr>
 											<td>${dto.board_seq_id } </td>
 											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
-											<td>${dto.user_seq } </td>
+											<td>${dto.user_id } </td>
 											<td><fmt:formatDate value="${dto.board_regdate }" pattern="yy.MM.dd HH:mm"/></td>
 										</tr>
 									</c:forEach>

@@ -14,7 +14,10 @@ public interface Service {
 	//public Map<String, Object> board_search(String category, int page, String searchType, String keyword);
 	//모든 조건 검색
 	public Map<String, Object> board_search(String category, int page, String keyword);
-
+	
+	//내가 작성한 게시글 보기
+	public Map<String, Object> board(int user_seq, int page);
+	
 	// board_detail
 	public BoardDto board_detail(int board_seq_id);
 
@@ -28,7 +31,16 @@ public interface Service {
 	public boolean board_delete(int board_seq_id);
 
 	// 로그인
-	public UserDto login(String user_id, String user_pw);
+	public UserDto user_login(String user_id, String user_pw);
+	
+	//회원가입
+	public boolean user_join(String user_id, String user_pw, String user_name, String user_nickname, String user_address, String user_email, String user_phone);
+	
+	//회원가입 email 보내기
+	public boolean user_sendEmail(String user_id);
+	
+	//email 인증 완료 
+	public boolean user_setEmailCheck(String user_id, String code);
 	
 	// 포인트 충전 내역
 	public List<PointDto> point_selectAll(int user_seq);

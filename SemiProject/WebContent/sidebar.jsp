@@ -39,6 +39,7 @@ $(function(){
 })
 </script>
 <body>
+	<input type="hidden" id="category" value='${category }'>
 	<div class="sidebar" style="text-align: center;">
 		<div class="logo">
 			<h1 style="color: white;">KHCP</h1>
@@ -48,14 +49,14 @@ $(function(){
 			<ul class="nav nav-sidebar">
 				<!-- 사이드바	<li id="test_board_select"><a href="sidebar.jsp">a</a></li>  -->
 				<!-- test 메뉴 <li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li> -->
-				<li id="KHC_MAIN"><a href="controller.do?category=MAIN"><span>Main</span></a></li>
+				<li id="MAIN"><a href="controller.do?category=MAIN"><span>Main</span></a></li>
 
 				<c:choose>
-					<c:when test="${empty dto }">
-						<li id="KHC_LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
+					<c:when test="${empty userDto }">
+						<li id="LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
 					</c:when>
 					<c:otherwise>
-						<li id="KHC_MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
+						<li id="MYPAGE"><a href="controller.do?category=MYPAGE&page=1&user_seq=${userDto.user_seq }"><span>Mypage</span></a></li>
 					</c:otherwise>
 				</c:choose>
 

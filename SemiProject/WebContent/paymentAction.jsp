@@ -23,7 +23,7 @@ $(function() {
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
 		    name : 'KHC 포인트 결제', //String
-		    amount : ${point_val},			//int
+		    amount : ${point_val},			//int type
 		    buyer_email : "구매자이메일",	//String
 		    buyer_name : '구매자이름',				//String
 		    buyer_tel : '010-1234-5678',		//String

@@ -28,7 +28,7 @@ public class BoardDto {
 //	    constraint kh_board_pk primary key (board_seq_id)
 //	);
 	private int board_seq_id;
-	private String user_id;
+	private String user_nickname;
 	private String board_title;
 	private String board_content;
 	private Date board_regdate;
@@ -56,10 +56,10 @@ public class BoardDto {
 	}
 
 
-	public BoardDto(int board_seq_id, String user_id, String board_title, String board_content, Date board_regdate, int view_count,
+	public BoardDto(int board_seq_id, String user_nickname, String board_title, String board_content, Date board_regdate, int view_count,
 			int user_seq, String board_category, int maps_id) {
 		this.board_seq_id = board_seq_id;
-		this.user_id = user_id;
+		this.user_nickname = user_nickname;
 		this.board_title = board_title;
 		this.board_content = board_content;
 		this.board_regdate = board_regdate;
@@ -79,12 +79,12 @@ public class BoardDto {
 		this.board_seq_id = board_seq_id;
 	}
 	
-	public String getUser_id() {
-		return user_id;
+	public String getUser_nickname() {
+		return user_nickname;
 	}
 	
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUser_nickname(String user_nickname) {
+		this.user_nickname = user_nickname;
 	}
 
 

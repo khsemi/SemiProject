@@ -157,10 +157,10 @@ public class Controller extends HttpServlet {
 			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("POINT")) {
-			HttpSession session = request.getSession();
-			List<PointDto> list = service.point_selectAll((int)session.getAttribute("user_seq"));
-			int point_charge = service.point((int)session.getAttribute("user_seq"), "충전");
-			int point_use = service.point((int)session.getAttribute("user_seq"), "사용");
+			UserDto userdto = (UserDto)session.getAttribute("userDto");
+			List<PointDto> list = service.point_selectAll(userdto.getUser_seq());
+			int point_charge = service.point(userdto.getUser_seq(), "충전");
+			int point_use = service.point(userdto.getUser_seq(), "사용");
 
 			request.setAttribute("pointlist", list);
 			request.setAttribute("point", point_charge-point_use);

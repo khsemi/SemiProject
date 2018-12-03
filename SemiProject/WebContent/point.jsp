@@ -50,12 +50,7 @@
 								<col width="300px">
 								<col width="80px">
 								<col width="100px">
-								<thead>
-									<tr>
-										<!-- searchForm -->
-										<td colspan="4" align="right"><div id="search"></div></td>
-									</tr>
-								</thead>
+								
 								<tr>
 									<th>번호
 									<th>충전날짜

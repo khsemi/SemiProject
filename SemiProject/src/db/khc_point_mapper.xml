@@ -21,7 +21,7 @@
 	</select>
 	<insert id="pointInsert" parameterType="map">
 		INSERT INTO KH_POINT 
-		VALUES(KH_POINT_SEQ.NEXTVAL, #{user_seq}, SYSDATE, #{point_balance}, '충전')
+		VALUES(KH_POINT_SEQ.NEXTVAL, #{user_seq}, SYSDATE, #{point_balance}, #{point_state})
 	</insert>
 	
 	

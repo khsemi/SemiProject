@@ -113,9 +113,9 @@ public class Service_impl implements Service{
 		return point;
 	}
 	@Override
-	public boolean point_insert(int user_seq, int point_val) {
+	public boolean point_insert(int user_seq, int point_val, String point_state) {
 		PointDao dao = new PointDao_impl();
-		int result = dao.pointInsert(user_seq, point_val);
+		int result = dao.pointInsert(user_seq, point_val, point_state);
 		if(result > 0) {
 			return true; //삽입 성공
 		} 

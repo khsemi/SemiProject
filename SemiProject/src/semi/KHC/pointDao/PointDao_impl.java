@@ -54,12 +54,13 @@ public class PointDao_impl extends SqlMapConfig implements PointDao {
 	}
 	
 	@Override
-	public int pointInsert(int user_seq, int point_balance) {
+	public int pointInsert(int user_seq, int point_balance, String point_state) {
 		int res = 0;
 		Map<String, Object> pointMap = new HashMap<String, Object>();
 		
 		pointMap.put("user_seq", user_seq);
 		pointMap.put("point_balance", point_balance);
+		pointMap.put("point_state", point_state);
 		SqlSession session = null;
 		
 		try {

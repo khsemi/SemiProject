@@ -89,7 +89,7 @@
 										<tr>
 											<td>${dto.board_seq_id } </td>
 											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
-											<td>${dto.user_id } </td>
+											<td>${dto.user_nickname } </td>
 											<td><fmt:formatDate value="${dto.board_regdate }" pattern="yy.MM.dd HH:mm"/></td>
 										</tr>
 									</c:forEach>

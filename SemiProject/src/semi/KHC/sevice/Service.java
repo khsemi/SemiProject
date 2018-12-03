@@ -44,4 +44,8 @@ public interface Service {
 	
 	// 포인트 충전 내역
 	public List<PointDto> point_selectAll(int user_seq);
+	public int point(int user_seq, String point_state);
+	
+	//포인트 충전
+	public boolean point_insert(int user_seq, int point_val);
 }

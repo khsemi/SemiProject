@@ -36,7 +36,7 @@
 				</div>
 				<div class="container container-fluid">
 					<div class="jumbotron jumbotron-fluid">
-						<h1 class="display">${dto.user_nickname }</h1>
+						<h1 class="display">${userDto.user_nickname }</h1>
 						<!-- 유저 닉네임 -->
 
 						<hr class="my-4">
@@ -85,7 +85,7 @@
 											<td>${dto.board_seq_id }</td>
 											<td>${dto.board_category }</td>
 											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
-											<td>${dto.user_id }</td>
+											<td>${dto.user_nickname }</td>
 											<td><fmt:formatDate value="${dto.board_regdate }"
 													pattern="yy.MM.dd HH:mm" /></td>
 										</tr>

@@ -40,26 +40,17 @@
 				<div class="container container-fluid">
 					<div class="jumbotron jumbotron-fluid">
 						<p>포인트 조회</p>
-						<p>
-							보유 포인트 : ${dto.user_nickname }
-							
-						</p>
+						<p>보유 포인트 : ${point }</p>
 
 						<div class="container container-fluid">
-							<button type="button" class="btn btn-primary">반게시판</button>
-							<button type="button" class="btn btn-primary">캘린더</button>
 
 							<table class="table table-striped">
+								<h6>포인트 사용 내역</h6>
 								<col width="50px">
 								<col width="300px">
 								<col width="80px">
 								<col width="100px">
-								<thead>
-									<tr>
-										<!-- searchForm -->
-										<td colspan="4" align="right"><div id="search"></div></td>
-									</tr>
-								</thead>
+								
 								<tr>
 									<th>번호
 									<th>충전날짜
@@ -68,7 +59,7 @@
 								</tr>
 								<tbody>
 									<c:choose>
-										<c:when test="${empty boardList }">
+										<c:when test="${empty pointlist }">
 											<tr>
 												<td colspan="4" align="center">===== 충전내역이 없습니다. =====</td>
 											</tr>
@@ -89,10 +80,36 @@
 							</table>
 
 						</div>
+
 						<hr class="my-4">
-										<p>포인트 결제</p>
-					
-									</div>
+
+						<p>포인트 결제</p>
+						<div class="container">
+							<div class="col-md-8 order-md-1">
+								<form class="needs-validation" method="post" action="controller.do?category=POINT_CHARGE">
+								<div class="form-group">
+									<label for="point">충전 금액</label> 
+									<select class="form-control form-control-lg" name="point_val">
+										<option value="">Choose...</option>
+										<option>5000</option>
+										<option>10000</option>
+										<option>20000</option>
+										<option>30000</option>
+										<option>50000</option>
+									</select>
+								</div>
+								<div class="form-group form-check">
+									<input type="checkbox" class="form-check-input" id="paymentCheck"> 
+									<label class="form-check-label" for="paymentCheck">포인트 충전 결제 진행에 동의합니다.</label>
+								</div>
+								
+								<button type="submit" class="btn btn-primary mb-2">카카오페이로 결제하기</button>
+								</form>
+
+							</div>
+						</div>
+						
+					</div>
 				</div>
 
 			</div>

@@ -157,12 +157,31 @@ public class Controller extends HttpServlet {
 			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("POINT")) {
-			int user_seq = 1;
-			List<PointDto> list = service.point_selectAll(user_seq);
+			UserDto userdto = (UserDto)session.getAttribute("userDto");
+			
+			int point_val = 0;
+			//포인트 충전 성공시
+			if(request.getParameter("point_val") != null) {
+				point_val=Integer.parseInt(request.getParameter("point_val"));
+				service.point_insert(userdto.getUser_seq(), point_val);
+			}		
+			
+			List<PointDto> list = service.point_selectAll(userdto.getUser_seq());
+			int point_charge = 0;
+			int point_use = 0;
+			point_charge = service.point(userdto.getUser_seq(), "충전");
+			point_use = service.point(userdto.getUser_seq(), "사용");
+			
 			request.setAttribute("pointlist", list);
+			request.setAttribute("point", point_charge-point_use);
 			dispatch("point.jsp", request, response);
 
+		} else if(category.equals("POINT_CHARGE")) {
+			int point_val = Integer.parseInt(request.getParameter("point_val"));
+			request.setAttribute("point_val", point_val);
+			dispatch("paymentAction.jsp", request, response);
 		} else if(category.equals("user_insert")) {
+	
 			String user_id = request.getParameter("user_id");
 			if(service.user_join(user_id, request.getParameter("user_pw"), request.getParameter("user_name"), request.getParameter("user_nickname"), request.getParameter("user_address"), request.getParameter("user_email"), request.getParameter("user_phone"))) {
 				request.setAttribute("user_id", user_id);

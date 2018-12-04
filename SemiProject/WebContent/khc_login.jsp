@@ -57,7 +57,7 @@
 						</div>
 					</div>
 					
-					<div class="jumbotron" style="padding-top: 20px;">
+			   <!-- <div class="jumbotron" style="padding-top: 20px;">
 						<form method="post" action="#.jsp">
 							<h3 style="text-align: center;">SNS 로그인</h3>
 							<button class="btn btn-warning form-control" value="KakaoTalk">Kakao Talk 로그인</button>&nbsp
@@ -65,7 +65,7 @@
 							<button class="btn btn-success form-control" value="naver">naver 로그인</button>
 						</form>
 						
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>

@@ -100,7 +100,7 @@ $(function(){
 				 				<td><textarea id="smarteditor" name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px"></textarea> </td>
 				 			</tr>	
 				 	</table>
-					<input type="submit" id="savebutton" class="btn btn-primary pull-right" value="글쓰기">&nbsp;
+					<input type="submit" id="savebutton" class="btn btn-primary pull-right" value="글쓰기">
 					<input type="button" value="코드" class="btn btn-primary pull-right" onclick="Popup()">
 					
 				</form>

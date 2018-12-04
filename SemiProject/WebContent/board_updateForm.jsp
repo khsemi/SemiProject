@@ -98,7 +98,7 @@ $(function(){
 				 	<input type="button" class="btn btn-primary pull-right" value="취소" onclick="board_cancel()">
 				 	<input type="button" value="코드" class="btn btn-primary pull-right" onclick="Popup()">
 				 	
-				</form>
+				</form> 
 			</div>
 		</div>
 	</div>

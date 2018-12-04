@@ -32,6 +32,7 @@ public class BoardDto {
 	private String board_title;
 	private String board_content;
 	private Date board_regdate;
+	private int comment_count;
 	private int view_count;
 	private int user_seq;
 	private String board_category;
@@ -56,13 +57,14 @@ public class BoardDto {
 	}
 
 
-	public BoardDto(int board_seq_id, String user_nickname, String board_title, String board_content, Date board_regdate, int view_count,
+	public BoardDto(int board_seq_id, String user_nickname, String board_title, String board_content, Date board_regdate, int comment_count ,int view_count,
 			int user_seq, String board_category, int maps_id) {
 		this.board_seq_id = board_seq_id;
 		this.user_nickname = user_nickname;
 		this.board_title = board_title;
 		this.board_content = board_content;
 		this.board_regdate = board_regdate;
+		this.comment_count = comment_count;
 		this.view_count = view_count;
 		this.user_seq = user_seq;
 		this.board_category = board_category;
@@ -115,6 +117,14 @@ public class BoardDto {
 
 	public void setBoard_regdate(Date board_regdate) {
 		this.board_regdate = board_regdate;
+	}
+	
+	public int getComment_count() {
+		return comment_count;
+	}
+	
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
 	}
 
 

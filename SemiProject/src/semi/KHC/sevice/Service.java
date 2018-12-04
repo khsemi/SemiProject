@@ -19,7 +19,10 @@ public interface Service {
 	public Map<String, Object> board(int user_seq, int page);
 	
 	// board_detail
-	public BoardDto board_detail(int board_seq_id);
+	public Map<String, Object> board_detail(int board_seq_id);
+	
+	//board_update
+	public BoardDto board_selectOne(int board_seq_id);
 
 	// board_insert
 	public int board_insert(String board_category, String board_title, String board_content, int user_seq);

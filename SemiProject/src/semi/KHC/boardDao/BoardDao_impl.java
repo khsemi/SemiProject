@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.commentDao.CommentDao_impl;
 
 public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 

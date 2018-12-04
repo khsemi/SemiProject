@@ -66,22 +66,25 @@
 						<col width="500px">
 						<col width="80px">
 						<col width="100px">
+						<col width="10px">
+						<col width="10px">
+						<col width="10px">
 						<thead>
 						<tr><!-- searchForm -->
 							<td colspan="2"><a href="#">최신순</a> <a href="#">추천순</a> <a href="#">댓글순</a>  <a href="#">조회순</a>  
-							<td colspan="2" align="right"><div id="search"></div></td>
+							<td colspan="5" align="right"><div id="search"></div></td>
 						</tr>	
 						</thead>
 						
 							<tr>
-								<th>번호 <th>제목 <th>작성자 <th>날짜
+								<th>번호 <th>제목 <th>작성자 <th>날짜 <th>댓글 <th>추천 <th>조회
 							</tr>
 						
 						<tbody>
 							<c:choose>
 								<c:when test="${empty boardList }">
 									<tr>
-										<td colspan="4" align="center">===== 글이 없습니다 =====</td>
+										<td colspan="7" align="center">===== 글이 없습니다 =====</td>
 									</tr>
 								</c:when>
 								<c:otherwise> 
@@ -91,6 +94,9 @@
 											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
 											<td>${dto.user_nickname } </td>
 											<td><fmt:formatDate value="${dto.board_regdate }" pattern="yy.MM.dd HH:mm"/></td>
+											<td>${dto.comment_count }</td>
+											<td></td>
+											<td>${dto.view_count }</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_comment">
+	<resultMap type="semi.KHC.commentDto.CommentDto" id="comment_Map">
+		<result property="comment_seq_id" column="COMMENT_SEQ_ID"/>
+		<result property="board_seq_id" column="BOARD_SEQ_ID"/>
+		<result property="user_seq" column="USER_SEQ"/>
+		<result property="user_nickname" column="USER_NICKNAME"/>
+		<result property="comment_content" column="COMMENT_CONTENT"/>
+		<result property="comment_regdate" column="COMMENT_REGDATE"/>
+	</resultMap>
+	
+	<select id="commentList" parameterType="int" resultMap="comment_Map">
+		SELECT U.USER_NICKNAME, C.COMMENT_CONTENT, C.COMMENT_REGDATE 
+		FROM KH_BOARD B JOIN KH_COMMENT C USING(BOARD_SEQ_ID) JOIN KH_USER U ON(C.USER_SEQ = U.USER_SEQ)
+		WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</select>
+</mapper>

@@ -3,23 +3,30 @@ package semi.KHC.sevice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.*;
-import java.util.Properties;
-import util.SHA256;
-import util.Gmail;
 
 import semi.KHC.boardDao.BoardDao;
 import semi.KHC.boardDao.BoardDao_impl;
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.commentDao.CommentDao;
+import semi.KHC.commentDao.CommentDao_impl;
+import semi.KHC.commentDto.CommentDto;
 import semi.KHC.pointDao.PointDao;
 import semi.KHC.pointDao.PointDao_impl;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDao.UserDao;
 import semi.KHC.userDao.UserDao_impl;
 import semi.KHC.userDto.UserDto;
+import util.Gmail;
+import util.SHA256;
 
 public class Service_impl implements Service{
 	
@@ -70,10 +77,22 @@ public class Service_impl implements Service{
 	}
 	
 	@Override
-	public BoardDto board_detail(int board_seq_id) {
+	public Map<String, Object> board_detail(int board_seq_id) {
 		BoardDao board = new BoardDao_impl();
-		BoardDto dto = board.detail(board_seq_id);
-		return dto;
+		CommentDao commentDao = new CommentDao_impl();
+		Map<String, Object> detailMap = new HashMap<String, Object>();
+		
+		BoardDto boardDto = board.detail(board_seq_id);
+		detailMap.put("boardDto", boardDto);
+		List<CommentDto> commentList = commentDao.selectList(board_seq_id);
+		detailMap.put("commentList", commentList);
+		return detailMap;
+	}
+	@Override
+	public BoardDto board_selectOne(int board_seq_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto boardDto = board.detail(board_seq_id);
+		return boardDto;
 	}
 	@Override
 	public int board_insert(String board_category, String board_title, String board_content, int user_seq) {
@@ -176,6 +195,5 @@ public class Service_impl implements Service{
 		//인증 실패시(코드 유효 시간 오버)
 		return false;
 	}
-
 	
 }

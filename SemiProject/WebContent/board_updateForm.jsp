@@ -16,6 +16,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="dist/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+ 
 <script type="text/javascript">
 function board_cancel(){
 	var check = confirm("글 수정을 '취소' 하시겠습니까?");
@@ -25,6 +28,38 @@ function board_cancel(){
 		return false;
 	}
 }
+
+$(function(){
+    //전역변수선언
+    var editor_object = [];
+     
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: editor_object,
+        elPlaceHolder: "smarteditor",
+        sSkinURI: "dist/SmartEditor2Skin.html",
+        htParams : {
+            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseToolbar : true,            
+            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseVerticalResizer : false,    
+            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseModeChanger : true,
+        }
+    });
+     
+    //전송버튼 클릭이벤트
+    $("#savebutton").click(function(){
+        //id가 smarteditor인 textarea에 에디터에서 대입
+        editor_object.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+
+        //폼 submit
+        $("#frm").submit();
+    })
+
+})
+
+
+	
 </script>
 <body>
 <input type="hidden" id="category" value="${dto.board_category }">
@@ -34,7 +69,7 @@ function board_cancel(){
 			<jsp:include page="sidebar.jsp"></jsp:include>
 			<div class="form">
 				<h2> ${dto.board_category } </h2>
-				<form method="post" action="controller.do?category=board_update" id="board_updateForm">
+				<form method="post" id="frm" action="controller.do?category=board_update" id="board_updateForm">
 					<input type="hidden" name="board_seq_id" id="board_seq_id" value="${dto.board_seq_id }">
 				 	<table class="table" style="text-align:center; border:1px; solid #dddddd">
 							<tr>
@@ -47,10 +82,10 @@ function board_cancel(){
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50" value="${dto.board_title }"></td>
 				 			</tr>
 				 			<tr>	
-				 				<td><textarea name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px">${dto.board_content }</textarea> </td>
+				 				<td><textarea name="content" id="smarteditor" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px">${dto.board_content }</textarea> </td>
 				 			</tr>	
-				 	</table>
-				 	<input type="submit" class="btn btn-primary pull-right" value="완료" >
+				 	</table> 
+				 	<input type="submit" class="btn btn-primary pull-right" value="완료" id="savebutton" >
 				 	<input type="button" class="btn btn-primary pull-right" value="취소" onclick="board_cancel()">
 				</form>
 			</div>

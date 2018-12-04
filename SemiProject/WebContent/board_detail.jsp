@@ -50,7 +50,7 @@ function board_delete(){
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50" readonly="readonly" value="${dto.board_title }"></td>
 				 			</tr>
 				 			<tr>	
-				 				<td><textarea name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px" readonly="readonly">${dto.board_content }</textarea> </td>
+				 				<td><div name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:auto" readonly="readonly">${dto.board_content }</div> </td>
 				 			</tr>
 				 	</table>
 				 	<!-- 로그인한 사람이 쓴 글일 경우에만 수정,삭제 버튼이 보이게 해준다. 또는 로그인한 계정의 타입이 admin일 경우에도 보인다. -->

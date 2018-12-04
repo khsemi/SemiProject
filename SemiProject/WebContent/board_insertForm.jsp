@@ -13,7 +13,7 @@
 <title>board insert</title>
 </head>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -66,6 +66,15 @@ $(function(){
     })
 })
 
+	function Popup(){
+		var message = "<div style='background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;'><pre style='margin: 0; line-height: 125%'><span  style='color: #e6db74'>"+ "<xmp>"+" "+"</xmp>" + "</span></pre></div>" + "&nbsp" ;
+
+		frames[0].window.document.getElementById("se2_iframe").contentWindow.document.body.innerHTML+=message;
+		//frames[0].window.document.getElementById("se2_iframe").contentWindow.document.body.innerHTML=message;
+	
+	
+}
+
 </script>
 <body>
 <input type="hidden" id="categoryVal" value="${category }">
@@ -84,14 +93,16 @@ $(function(){
 							<tr>
 				 				<td><input name="writer" type="text" class="form-control" placeholder="작성자" name="writer" maxlength="50" value="${userDto.user_nickname}" readonly="readonly"></td>
 				 			</tr>		 		
-				 			<tr>
+				 	 		<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50"></td>
 				 			</tr>
 				 			<tr>	
 				 				<td><textarea id="smarteditor" name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px"></textarea> </td>
 				 			</tr>	
 				 	</table>
-					<input type="submit" id="savebutton" class="btn btn-primary pull-right" value="글쓰기">
+					<input type="submit" id="savebutton" class="btn btn-primary pull-right" value="글쓰기">&nbsp;
+					<input type="button" value="코드" class="btn btn-primary pull-right" onclick="Popup()">
+					
 				</form>
 			</div>
 		</div>

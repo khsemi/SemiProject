@@ -58,6 +58,15 @@ $(function(){
 
 })
 
+	function Popup(){
+		var message = "<div style='background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;'><pre style='margin: 0; line-height: 125%'><span  style='color: #e6db74'>"+ "<xmp>"+" "+"</xmp>" + "</span></pre></div>" + "&nbsp" ;
+
+		frames[0].window.document.getElementById("se2_iframe").contentWindow.document.body.innerHTML+=message;
+		//frames[0].window.document.getElementById("se2_iframe").contentWindow.document.body.innerHTML=message;
+	
+	
+}
+
 
 	
 </script>
@@ -87,6 +96,8 @@ $(function(){
 				 	</table> 
 				 	<input type="submit" class="btn btn-primary pull-right" value="완료" id="savebutton" >
 				 	<input type="button" class="btn btn-primary pull-right" value="취소" onclick="board_cancel()">
+				 	<input type="button" value="코드" class="btn btn-primary pull-right" onclick="Popup()">
+				 	
 				</form>
 			</div>
 		</div>

@@ -115,11 +115,12 @@ public class Controller extends HttpServlet {
 		} else if (category.equals("LOGIN")) {
 			request.setAttribute("category", category);
 			dispatch("khc_login.jsp", request, response);
+			
 		} else if (category.equals("LOGIN_CHECK")) {
 			String user_id = request.getParameter("user_id");
 			String user_pw = request.getParameter("user_pw");
 			UserDto userDto = service.user_login(user_id, user_pw);
-			
+			System.out.println(userDto.getUser_id());
 			if(userDto.getUser_emailchecked().equals("TRUE")) {
 				session = request.getSession();
 				//로그인 정보를 세션에 담아준다.
@@ -204,6 +205,14 @@ public class Controller extends HttpServlet {
 			}else {
 				System.out.println("실패!");
 			}
+		}else if (category.equals("NOTE")) {
+			dispatch("note.jsp", request, response);
+		}else if (category.equals("USER_INFO")) {
+			dispatch("user_info.jsp", request, response);
+		}else if (category.equals("USER_UPDATE")) {
+			dispatch("user_update.jsp", request, response);
+		}else if (category.equals("USER_DELETE")) {
+			
 		}
 
 	}

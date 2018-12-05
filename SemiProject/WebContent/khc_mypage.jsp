@@ -19,11 +19,11 @@
 <!-- 부트스트랩이 선언되기전에 jquery가 선언되어야한다. -->
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	href="css/bootstrap.min.css">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	href="css/bootstrap-theme.min.css">
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	src="js/bootstrap.min.js"></script>
 
 <body>
 	<div class="layout-container">
@@ -42,9 +42,9 @@
 						<hr class="my-4">
 						<p class="lead">
 							<a type="button" class="btn btn-primary" >개인정보 조회/수정</a>
-							<a href="controller.do?category=POINT"type="button" class="btn btn-primary">포인트 조회/결제</a>
+							<a href="controller.do?category=POINT" type="button" class="btn btn-primary">포인트 조회/결제</a>
 							<a type="button" class="btn btn-primary">식권</a>
-							<a type="button" class="btn btn-primary">쪽지함</a>
+							<a href="controller.do?category=NOTE" type="button" class="btn btn-primary">쪽지함</a>
 						</p>
 					</div>
 				</div>

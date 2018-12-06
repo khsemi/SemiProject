@@ -59,8 +59,8 @@
 							<td>&nbsp;&nbsp;&nbsp;&nbsp;${userDto.user_phone }
 						</tr>
 					</table>
-					<a class="btn btn-warning" href="#">정보 수정</a>
-					<a class="btn btn-warning" href="#">회원 탈퇴</a>
+					<a class="btn btn-warning" href="controller.do?category=USER_UPDATEFORM">정보 수정</a>
+					<a class="btn btn-warning" href="controller.do?category=USER_DELETE">회원 탈퇴</a>
 					</br>
 					</br>
 					</br>

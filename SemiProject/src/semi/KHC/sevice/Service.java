@@ -5,6 +5,7 @@ import java.util.Map;
 //Controller 에서는 Dao를 직접 호출하지않고 Service만 호출한다.
 
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.foodticketDto.FoodticketDto;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDto.UserDto;
 public interface Service {
@@ -48,4 +49,11 @@ public interface Service {
 	
 	//포인트 충전
 	public boolean point_insert(int user_seq, int point_val, String point_state);
+	
+	//식권 조회
+	public List<FoodticketDto> foodticket_selectAll(int user_seq);
+	
+	public Map<String, Object> foodticket_insert(int user_seq, String foodticket_name, int foodticket_pay);
+	
+	public boolean foodticket_update(int foodticket_seq_id, String qrcode);
 }

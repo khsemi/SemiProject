@@ -1,6 +1,7 @@
 package semi.KHC.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.foodticketDto.FoodticketDto;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.sevice.Service;
 import semi.KHC.sevice.Service_impl;
@@ -207,12 +209,56 @@ public class Controller extends HttpServlet {
 			}
 		}else if (category.equals("NOTE")) {
 			dispatch("note.jsp", request, response);
+			
 		}else if (category.equals("USER_INFO")) {
+			//회원정보 페이지로 이동
 			dispatch("user_info.jsp", request, response);
-		}else if (category.equals("USER_UPDATE")) {
+			
+		}else if (category.equals("USER_UPDATEFORM")) {
+			//정보 수정 페이지로 이동
 			dispatch("user_update.jsp", request, response);
+			
+		}else if (category.equals("USER_UPDATE")) {
+			//정보수정 완료 할것
+			System.out.println(request.getParameter("id")+"-"+request.getParameter("pw")+"-"+request.getParameter("name")+"-"+request.getParameter("nickname")+"-"+request.getParameter("address")+"-"+request.getParameter("phone"));
+//			UserDto U_Dto = new UserDto(request.getParameter("id"), request.getParameter("pw"), request.getParameter("name"), request.getParameter("nickname"), request.getParameter("address"), request.getParameter("phone"));
+			dispatch("user_info.jsp", request, response);
+			
 		}else if (category.equals("USER_DELETE")) {
 			
+		}else if (category.equals("FOODTICKET")) {
+			UserDto userdto = (UserDto)session.getAttribute("userDto");
+			int point_charge = 0;
+			int point_use = 0;
+			point_charge = service.point(userdto.getUser_seq(), "충전");
+			point_use = service.point(userdto.getUser_seq(), "사용");
+			
+			List<FoodticketDto> foodlist = service.foodticket_selectAll(userdto.getUser_seq());
+			
+			request.setAttribute("foodlist", foodlist);
+			request.setAttribute("point", point_charge-point_use);
+			dispatch("foodticket.jsp", request, response);
+		} else if (category.equals("FOODTICKET_INSERT")) {
+			UserDto userdto = (UserDto)session.getAttribute("userDto");
+			String foodticket_name = request.getParameter("foodticket_name").split("_")[0];
+			int foodticket_pay = Integer.parseInt(request.getParameter("foodticket_name").split("_")[1]);
+			System.out.println(foodticket_name+" "+foodticket_pay);
+			Map<String, Object> FT_map = service.foodticket_insert(userdto.getUser_seq(), foodticket_name, foodticket_pay);
+
+			int foodticket_seq_id = (int)FT_map.get("foodticket_seq_id");
+			int point_val = (int)FT_map.get("foodticket_pay");
+			
+			String qrcode = ""+foodticket_seq_id+foodticket_name+foodticket_pay;
+			//큐알코드 업데이트
+			System.out.println(qrcode);
+			
+			service.foodticket_update(foodticket_seq_id, qrcode);
+//				if(service.foodticket_update(foodticket_seq_id, qrcode)) {
+			if(point_val > 0) {
+					service.point_insert(userdto.getUser_seq(), point_val, "사용");
+//				}
+			}
+			response.sendRedirect("controller.do?category=FOODTICKET");
 		}
 
 	}

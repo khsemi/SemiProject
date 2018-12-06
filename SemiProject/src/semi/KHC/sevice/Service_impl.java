@@ -14,6 +14,9 @@ import util.Gmail;
 import semi.KHC.boardDao.BoardDao;
 import semi.KHC.boardDao.BoardDao_impl;
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.foodticketDao.FoodticketDao;
+import semi.KHC.foodticketDao.FoodticketDao_impl;
+import semi.KHC.foodticketDto.FoodticketDto;
 import semi.KHC.pointDao.PointDao;
 import semi.KHC.pointDao.PointDao_impl;
 import semi.KHC.pointDto.PointDto;
@@ -183,6 +186,42 @@ public class Service_impl implements Service{
 			return true;
 		}
 		//인증 실패시(코드 유효 시간 오버)
+		return false;
+	}
+	
+	@Override
+	public List<FoodticketDto> foodticket_selectAll(int user_seq) {
+		FoodticketDao foodDao = new FoodticketDao_impl();
+		List<FoodticketDto> foodticketlist = foodDao.selectAll(user_seq);
+		
+		return foodticketlist;
+	}
+	
+	@Override
+	public Map<String, Object> foodticket_insert(int user_seq, String foodticket_name, int foodticket_pay) {
+		Map<String, Object> FT_map = new HashMap<String, Object>();
+		FoodticketDao foodDao = new FoodticketDao_impl();
+		FoodticketDto foodticketDto = new FoodticketDto(user_seq, foodticket_name, foodticket_pay);
+		int foodticket_seq_id = foodDao.insert(foodticketDto);
+		if(foodticket_seq_id > 0) {
+			FT_map.put("foodticket_seq_id", foodticket_seq_id);
+			FT_map.put("foodticket_pay", foodticket_pay);
+			
+			return FT_map;
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean foodticket_update(int foodticket_seq_id, String qrcode) {
+		FoodticketDao foodDao = new FoodticketDao_impl();
+		int res = foodDao.update(foodticket_seq_id, qrcode);
+		if(res>0) {
+			System.out.println(res);
+			return true;
+			
+		}
+		System.out.println(res);
 		return false;
 	}
 

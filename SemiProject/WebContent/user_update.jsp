@@ -37,11 +37,11 @@
 						<col width="200px">
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">아이디
-							<td><input type="text" class="form" placeholder="${userDto.user_id }"/>&nbsp;&nbsp;<button>중복검사</button>
+							<td><input name="id" type="text" class="form" value="${userDto.user_id }"/>&nbsp;&nbsp;<button>중복검사</button>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">패스워드
-							<td><input type="password" class="form" placeholder="패스워드"/>
+							<td><input name="pw" type="password" class="form" value="${userDto.user_pw }"/>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">
@@ -49,27 +49,26 @@
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">이름
-							<td><input type="text" class="form" placeholder="${userDto.user_name }"/>
+							<td><input name="name" type="text" class="form" value="${userDto.user_name }"/>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">닉네임
-							<td><input type="text" class="form" placeholder="${userDto.user_nickname }"/>&nbsp;&nbsp;<button>중복검사</button>
+							<td><input name="nickname" type="text" class="form" value="${userDto.user_nickname }"/>&nbsp;&nbsp;<button>중복검사</button>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">주소
-							<td><input type="text" class="form" placeholder="${userDto.user_address }"/>&nbsp;&nbsp;<button>주소 검색</button>
+							<td><input name="address" type="text" class="form" value="${userDto.user_address }"/>&nbsp;&nbsp;<button>주소 검색</button>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">이메일
-							<td><input type="text" class="form" placeholder="${userDto.user_email }" readonly="readonly"/>
+							<td><input type="text" class="form" value="${userDto.user_email }" readonly="readonly"/>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">전화번호
-							<td><input type="text" class="form" placeholder="${userDto.user_phone }"/>
+							<td><input name="phone" type="text" class="form" value="${userDto.user_phone }"/>
 						</tr>
 					</table>
-					<a class="btn btn-warning" href="#">정보 수정</a>
-					<a class="btn btn-warning" href="#">회원 탈퇴</a>
+					<a type="submit" class="btn btn-warning" href="controller.do?category=USER_UPDATE">저장</a>
 					</br>
 					</br>
 					</br>

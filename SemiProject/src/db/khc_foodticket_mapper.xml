@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_foodticket">
+	
+	<resultMap type="semi.KHC.foodticketDto.FoodticketDto" id="foodticket_Map">
+		<result property="foodticket_seq_id" column="FOODTICKET_SEQ_ID" />
+		<result property="user_seq" column="USER_SEQ" />
+		<result property="foodticket_qrcode" column="FOODTICKET_QRCODE" />
+		<result property="foodticket_name" column="FOODTICKET_NAME" />
+		<result property="foodticket_pay" column="FOODTICKET_PAY" />
+	</resultMap>
+	
+	<select id="selectAll" parameterType="int" resultMap="foodticket_Map" >
+		SELECT * 
+		FROM KH_FOODTICKET 
+		WHERE USER_SEQ = #{user_seq}
+		ORDER BY FOODTICKET_SEQ_ID DESC
+	</select>
+	
+	<insert id="insert" parameterType="foodticketDto">
+		<selectKey keyProperty="foodticket_seq_id" resultType="int" order="BEFORE">
+			SELECT KH_FOODTICKET_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? 
+												 anser : DUAL = 가상 테이블(KH_BOARD_SEQ.NEXTVAL을 실행 할 가상테이블)-->
+		</selectKey>
+		INSERT INTO KH_FOODTICKET 
+		VALUES(#{foodticket_seq_id} ,#{user_seq}, NULL, #{foodticket_name}, #{foodticket_pay})
+	</insert>
+	<update id="update" parameterType="map">
+		UPDATE KH_FOODTICKET 
+		SET FOODTICKET_QRCODE = #{foodticket_qrcode} 
+		WHERE FOODTICKET_SEQ_ID = #{foodticket_seq_id} 
+	</update>
+	
+	
+</mapper>

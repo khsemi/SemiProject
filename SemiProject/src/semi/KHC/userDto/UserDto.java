@@ -50,6 +50,16 @@ public class UserDto {
 	}
 	
 	public UserDto(String user_id, String user_pw, String user_name, String user_nickname, String user_address,
+			String user_phone) {
+		super();
+		this.user_id = user_id;
+		this.user_pw = user_pw;
+		this.user_name = user_name;
+		this.user_nickname = user_nickname;
+		this.user_address = user_address;
+		this.user_phone = user_phone;
+	}
+	public UserDto(String user_id, String user_pw, String user_name, String user_nickname, String user_address,
 			String user_email, String user_phone) {
 		this.user_id = user_id;
 		this.user_pw = user_pw;

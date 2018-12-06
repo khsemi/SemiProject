@@ -8,4 +8,6 @@ public interface CommentDao {
 	String COMMENTNAMESPACE = "kh_comment.";
 	
 	public List<CommentDto> selectList(int board_seq_id);
+	
+	public boolean insert(int board_seq_id, int user_seq, String comment_content);
 }

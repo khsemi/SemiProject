@@ -1,7 +1,9 @@
 package semi.KHC.commentDao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -22,5 +24,25 @@ public class CommentDao_impl extends SqlMapConfig implements CommentDao{
 			System.out.println("selectList(comment) 오류 : " + e);
 		}
 		return commentList;
+	}
+
+	@Override
+	public boolean insert(int board_seq_id, int user_seq, String comment_content) {
+		SqlSession session = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("board_seq_id", board_seq_id);
+		map.put("user_seq", user_seq);
+		map.put("comment_content", comment_content);
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.insert(COMMENTNAMESPACE+"commentInsert", map);
+		} catch (Exception e) {
+			System.out.println("comment_insert 오류 : " + e);
+			return false;
+		} finally {
+			session.close();
+		}
+		return true;
 	}
 }

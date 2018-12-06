@@ -195,5 +195,11 @@ public class Service_impl implements Service{
 		//인증 실패시(코드 유효 시간 오버)
 		return false;
 	}
+
+	@Override
+	public boolean comment_insert(int board_seq_id, int user_seq, String comment_content) {
+		CommentDao commentDao = new CommentDao_impl();
+		return commentDao.insert(board_seq_id, user_seq, comment_content);
+	}
 	
 }

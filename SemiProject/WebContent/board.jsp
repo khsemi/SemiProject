@@ -95,7 +95,7 @@
 											<td>${dto.user_nickname } </td>
 											<td><fmt:formatDate value="${dto.board_regdate }" pattern="yy.MM.dd HH:mm"/></td>
 											<td>${dto.comment_count }</td>
-											<td></td>
+											<td>${dto.favorite_count }</td>
 											<td>${dto.view_count }</td>
 										</tr>
 									</c:forEach>

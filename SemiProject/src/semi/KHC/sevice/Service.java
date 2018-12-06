@@ -32,6 +32,9 @@ public interface Service {
 
 	// board_delete
 	public boolean board_delete(int board_seq_id);
+	
+	//comment_insert
+	public boolean comment_insert(int board_seq_id, int user_seq, String comment_content);
 
 	// 로그인
 	public UserDto user_login(String user_id, String user_pw);

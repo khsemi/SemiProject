@@ -29,6 +29,8 @@ function board_delete(){
 		return false;
 	}
 }
+
+
 </script>
 <body>
 <input type="hidden" id="category" value="${boardDto.board_category }">
@@ -37,7 +39,13 @@ function board_delete(){
 		<div id="main">
 			<jsp:include page="sidebar.jsp"></jsp:include>
 			<div class="form">
-				<h2> ${boardDto.board_category } </h2>
+				<h2 class="title"> ${boardDto.board_category } </h2> 
+				<div class="detail_info">
+					댓글 : ${boardDto.comment_count } | 추천 : ${boardDto.favorite_count } | 조회 : ${boardDto.view_count }
+					<span class="timeago">
+						[ 작성일 : <fmt:formatDate value="${boardDto.board_regdate }" pattern="yy.MM.dd HH:mm" /> ]
+					</span>
+				</div>
 				<form method="post" action="controller.do?category=board_insert">
 				 	<table class="table" style="text-align:center; border:1px; solid #dddddd">
 							<tr>
@@ -60,21 +68,81 @@ function board_delete(){
 				 	</c:if>
 				</form>
 				<hr class="my-4">
-
-				<c:forEach items="${commentList }" var="commentDto">
-					<table border="1">
-					<col width="20px">
-					<col width="800px">
-					<col width="30px">
-					<tr>
-						<td align="left">${commentDto.user_nickname }</td>
-						<td align="right"><fmt:formatDate value="${commentDto.comment_regdate }" pattern="yy.MM.dd HH:mm" /></td>
-					</tr>
-					<tr>
-						<td colspan="2">${commentDto.comment_content }</td>
-					</tr>
-					</table>
-				</c:forEach>
+				<ul class="list-group">
+					<!-- 댓글창 -->
+					<c:forEach items="${commentList }" var="commentDto">
+					<li class="list-group-item note-item clearfix">
+						<div class="content-body panel-body pull-left">
+							<div class="avatar avatar-medium clearfix ">
+								<div class="avatar-info">
+								${commentDto.user_nickname }
+									<div class="date-created">
+										<span class="timeago">
+											<fmt:formatDate value="${commentDto.comment_regdate }" pattern="yy.MM.dd HH:mm" />
+										</span>
+									</div>
+								</div>
+							</div>
+						<fieldset class="form">
+							<article class="list-group-item-text note-text">
+								${commentDto.comment_content }
+								${commentDto.user_seq }
+							</article>
+						</fieldset>
+						</div>
+							<div class="content-function pull-right">
+								<div class="content-function-group">
+									<c:if test="${userDto.user_seq == commentDto.user_seq || userDto.user_type == 'ADMIN'}">
+										<div class="note-evaluate-wrapper">
+											<div class="content-function-cog note-submit-buttons clearfix">
+												<input type="button" name="comment_insert" id="button" class="btn btn-success btn-wide" value="수정">
+												<input type="button" name="comment_insert" id="button" class="btn btn-success btn-wide" value="삭제">
+											</div>
+										</div>
+									</c:if>
+								</div>
+							</div>
+						</li>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${empty userDto }">
+							<li class="list-group-item note-form clearfix">
+								<div>
+									로그인을 하시면 댓글을 달 수 있습니다.
+								</div>
+							</li>
+						</c:when>
+						<c:otherwise>
+						<!-- 댓글 입력창 -->
+							<li class="list-group-item note-form clearfix">
+								<form id="commentInsert" action="controller.do?category=comment_insert" method="post" class="note-create-form">
+									<input type="hidden" name="board_seq_id" value="${boardDto.board_seq_id }">
+									<input type="hidden" name="user_seq" value="${userDto.user_seq }">
+									<div class="content-body panel-body pull-left">
+										<div style="margin-left: 5px;">
+											<div class="avatar avatar-medium clearfix ">
+												<div class="avatar-info">
+													<div class="activity block">
+														<span class="fa fa-flash">
+															${userDto.user_nickname }
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<fieldset class="form">
+											<input type="hidden" name="note.textType" value="HTML" id="note.textType">
+											<textarea name="comment_content" id="comment_content" placeholder="댓글 쓰기" class="form-control"></textarea>
+										</fieldset>
+									</div>
+									<div class="content-function-cog note-submit-buttons clearfix">
+										<input type="submit" name="comment_insert" id="btn-create-btn" class="btn btn-success btn-wide" value="등록">
+									</div>
+								</form>
+							</li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
 			</div>
 		</div>
 	</div>

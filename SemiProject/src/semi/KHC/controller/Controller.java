@@ -22,12 +22,16 @@ import semi.KHC.userDto.UserDto;
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HttpSession session = null;
+
+	
+	int testcnt = 0;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("text/html; charset=UTF-8");
 		
 		Service service = new Service_impl();
-		
+
 		
 		
 		//command 값을 받아온다.
@@ -190,6 +194,21 @@ public class Controller extends HttpServlet {
 			}else {
 				System.out.println("실패!");
 			}
+		} else if(category.equals("comment_insert")) {
+			
+			
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+			String comment_content = request.getParameter("comment_content");
+			
+			boolean comment_insert = service.comment_insert(board_seq_id, user_seq, comment_content);
+			
+			if(comment_insert) {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}else {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}
+			
 		}
 
 	}

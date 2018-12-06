@@ -11,8 +11,13 @@
 	</resultMap>
 	
 	<select id="commentList" parameterType="int" resultMap="comment_Map">
-		SELECT U.USER_NICKNAME, C.COMMENT_CONTENT, C.COMMENT_REGDATE 
+		SELECT U.USER_NICKNAME, C.COMMENT_CONTENT, C.COMMENT_REGDATE, C.USER_SEQ 
 		FROM KH_BOARD B JOIN KH_COMMENT C USING(BOARD_SEQ_ID) JOIN KH_USER U ON(C.USER_SEQ = U.USER_SEQ)
 		WHERE BOARD_SEQ_ID = #{board_seq_id}
+		ORDER BY COMMENT_REGDATE
 	</select>
+	
+	<insert id="commentInsert" parameterType="map">
+		INSERT INTO KH_COMMENT VALUES(KH_COMMENT_SEQ.NEXTVAL, #{board_seq_id}, #{user_seq}, #{comment_content},SYSDATE)
+	</insert>
 </mapper>

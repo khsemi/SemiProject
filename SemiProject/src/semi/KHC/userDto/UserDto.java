@@ -33,6 +33,16 @@ public class UserDto {
 	public UserDto() {
 		
 	}
+	
+	public UserDto(int user_seq, String user_pw, String user_nickname, String user_address, String user_phone) {
+		super();
+		this.user_seq = user_seq;
+		this.user_pw = user_pw;
+		this.user_nickname = user_nickname;
+		this.user_address = user_address;
+		this.user_phone = user_phone;
+	}
+
 	public UserDto(String user_id, String user_pw, String user_name, String user_nickname, String user_address,
 			String user_email, String user_emailhash, String user_emailchecked, int user_seq, String user_phone, String user_state, String user_type) {
 		this.user_seq = user_seq;

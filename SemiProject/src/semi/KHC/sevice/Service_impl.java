@@ -65,10 +65,17 @@ public class Service_impl implements Service{
 	@Override
 	public UserDto user_login(String user_id, String user_pw) {
 		UserDao dao = new UserDao_impl();
-		UserDto dto = dao.login(user_id);
-		if(dto.getUser_pw().equals(user_pw)) {
-			return dto;
+		UserDto dto = null;
+		try {
+			dto = dao.login(user_id);
+			if(dto.getUser_pw().equals(user_pw)) {
+				return dto;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("로그인 실패");
 		}
+		
 		return null;
 	}
 	
@@ -224,6 +231,19 @@ public class Service_impl implements Service{
 		System.out.println(res);
 		return false;
 	}
+	
+	@Override
+	public int user_update(UserDto update_userdto) {
+		int res = 0;
+		UserDao userdao = new UserDao_impl();
+		res = userdao.update(update_userdto);
+		return res;
+	}
 
+	@Override
+	public int user_delete(int user_seq) {
+		UserDao userdao = new UserDao_impl();
+		return userdao.delete(user_seq);
+	}
 	
 }

@@ -69,18 +69,50 @@ public class UserDao_impl  extends SqlMapConfig implements UserDao {
 	
 	@Override
 	public int update(UserDto userdto) {
-		return 0;
+		SqlSession session = null;
+		int res = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			res = session.update(USER_NAMESPACE+"update", userdto);
+		} catch (Exception e) {
+			System.out.println("update 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return res;
 	}
 
 	@Override
 	public int delete(int user_seq) {
-		return 0;
+		SqlSession session = null;
+		int res = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			res = session.delete(USER_NAMESPACE+"delete", user_seq);
+		} catch (Exception e) {
+			System.out.println("delete 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return res;
 	}
 
 	@Override
 	public UserDto select(int user_seq) {
-		return null;
+		SqlSession session = null;
+		UserDto dto = null;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			dto = session.selectOne(USER_NAMESPACE+"selectOne", user_seq);
+		} catch (Exception e) {
+			System.out.println("select 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return dto;	
+		
 	}
+	
 
 	
 

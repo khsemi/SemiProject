@@ -34,7 +34,21 @@
 	<update id="setEmail" parameterType="String" >
 		UPDATE KH_USER SET USER_EMAILCHECKED = 'TRUE' WHERE USER_ID = #{user_id}
 	</update>
+	<update id="update" parameterType="userDto" >
+		UPDATE KH_USER 
+		SET USER_PW = #{user_pw}, USER_NICKNAME = #{user_nickname}, USER_ADDRESS = #{user_address}, USER_PHONE = #{user_phone}
+		WHERE USER_SEQ = #{user_seq}
+	</update>
+	<select id="selectOne" parameterType="int" resultMap="user_Map">
+		SELECT *
+		FROM KH_USER 
+		WHERE USER_SEQ = #{user_seq} 
+	</select>
+	<delete id="delete">
+		DELETE FROM KH_USER 
+		WHERE USER_SEQ = #{user_seq}
 	
+	</delete>
 	
 	
 	

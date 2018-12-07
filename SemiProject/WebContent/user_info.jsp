@@ -23,9 +23,10 @@
 
 
 	<div class="layout-container">
+	<jsp:include page="khc_mypage.jsp" />
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
-			<jsp:include page="sidebar.jsp" />
+			
 			<div class="form">
 				<div class="container container-fluid">
 					<h2>유저 정보</h2>
@@ -60,7 +61,7 @@
 						</tr>
 					</table>
 					<a class="btn btn-warning" href="controller.do?category=USER_UPDATEFORM">정보 수정</a>
-					<a class="btn btn-warning" href="controller.do?category=USER_DELETE">회원 탈퇴</a>
+					<a class="btn btn-warning" href="controller.do?category=USER_DELETE&user_seq=${userDto.user_seq }">회원 탈퇴</a>
 					</br>
 					</br>
 					</br>

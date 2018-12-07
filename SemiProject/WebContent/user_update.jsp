@@ -18,11 +18,48 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
 
+function signUpCheck() {
+    var form = document.update_form;
+    if(!form['pw'].value) {
+        alert("패스워드를 입력해주세요");
+        form['pw'].focus();
+        return false;
+    }
+    if(!form['pw_check'].value) {
+        alert("패스워드를 확인해주세요");
+        form['pw_check'].focus();
+        return false;
+    }
+    if(form['pw'].value != form['pw_check'].value) {
+        alert("입력하신 패스워드와 패스워드 확인이 틀립니다.");
+        form['pw_check'].focus();
+        return false;
+    }
+    if(!form['nickname'].value) {
+        alert("닉네임을 입력해주세요");
+        form['nickname'].focus();
+        return false;
+    }
+    if(!form['address'].value) {
+        alert("주소를 입력해주세요");
+        form['address'].focus();
+        return false;
+    }
+    if(!form['phone'].value) {
+        alert("전화번호를 입력해주세요");
+        form['phone'].focus();
+        return false;
+    }
+    alert("정보수정이 완료되었습니다. 다시 로그인 해주시기 바랍니다.");
+}
+</script>
 <body>
 
 
 	<div class="layout-container">
+	<jsp:include page="khc_mypage.jsp" />
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
 			<jsp:include page="sidebar.jsp" />
@@ -31,29 +68,31 @@
 					<h2>유저 정보 수정</h2>
 				</div>
 				<div>
-				<form action="#">
+				<form action="controller.do?category=USER_UPDATE" method="post" name="update_form" onsubmit="return signUpCheck();">
+				<input type="hidden" name="user_seq" value="${userDto.user_seq }">
 					<table class="table" style="text-align: left;">
+					
 						<col width="10px">
 						<col width="200px">
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">아이디
-							<td><input name="id" type="text" class="form" value="${userDto.user_id }"/>&nbsp;&nbsp;<button>중복검사</button>
+							<td><input type="text" class="form" value="${userDto.user_id }" readonly="readonly"/>&nbsp;&nbsp;
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">패스워드
-							<td><input name="pw" type="password" class="form" value="${userDto.user_pw }"/>
+							<td><input name="pw" type="password" class="form" placeholder="패스워드"/>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">
-							<td><input type="password" class="form" placeholder="패스워드확인"/> <!--패스워드 비교후 텍스트 출력 -->
+							<td><input name="pw_check" type="password" class="form" placeholder="패스워드확인"/> <!--패스워드 비교후 텍스트 출력 -->
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">이름
-							<td><input name="name" type="text" class="form" value="${userDto.user_name }"/>
+							<td><input type="text" class="form" value="${userDto.user_name }" readonly="readonly"/>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">닉네임
-							<td><input name="nickname" type="text" class="form" value="${userDto.user_nickname }"/>&nbsp;&nbsp;<button>중복검사</button>
+							<td><input name="nickname" type="text" class="form" value="${userDto.user_nickname }"/>&nbsp;&nbsp;<button>중복 검사</button>
 						</tr>
 						<tr>
 							<th style="background-color: #d4d4d4;text-align: center;">주소
@@ -68,7 +107,7 @@
 							<td><input name="phone" type="text" class="form" value="${userDto.user_phone }"/>
 						</tr>
 					</table>
-					<a type="submit" class="btn btn-warning" href="controller.do?category=USER_UPDATE">저장</a>
+					<input type="submit" class="btn btn-warning" value="저장" />
 					</br>
 					</br>
 					</br>

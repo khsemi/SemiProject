@@ -47,9 +47,9 @@
 <body>
 
 	<div class="layout-container">
+	<jsp:include page="khc_mypage.jsp" />
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
-			<jsp:include page="sidebar.jsp" />
 			<div class="form">
 				<div class="container container-fluid">
 					<h2>식권 관리</h2>

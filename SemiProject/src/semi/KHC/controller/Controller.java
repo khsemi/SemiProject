@@ -1,6 +1,7 @@
 package semi.KHC.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,31 +123,36 @@ public class Controller extends HttpServlet {
 			String user_id = request.getParameter("user_id");
 			String user_pw = request.getParameter("user_pw");
 			UserDto userDto = service.user_login(user_id, user_pw);
-			System.out.println(userDto.getUser_id());
-			if(userDto.getUser_emailchecked().equals("TRUE")) {
-				session = request.getSession();
-				//로그인 정보를 세션에 담아준다.
-				session.setAttribute("userDto", userDto);
-				request.setAttribute("category", category);
-				dispatch("KHC.jsp", request, response);
-			}else {
-				request.setAttribute("user_id", user_id);
-				dispatch("khc_sendEmailForm.jsp", request, response);
+			if(userDto!=null) {
+				if(userDto.getUser_emailchecked().equals("TRUE")) {
+					session = request.getSession();
+					//로그인 정보를 세션에 담아준다.
+					session.setAttribute("userDto", userDto);
+					request.setAttribute("category", category);
+					dispatch("KHC.jsp", request, response);
+				}else {
+					request.setAttribute("user_id", user_id);
+					dispatch("khc_sendEmailForm.jsp", request, response);
+				}
+			} else {
+				
+				dispatch("khc_login.jsp", request, response);
 			}
+			
 			
 
 		} else if (category.equals("MAIN")) {
 			request.setAttribute("category", category);
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("MYPAGE")) {
-			int page = Integer.parseInt(request.getParameter("page"));
-			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
-			Map<String, Object> boardMap = service.board(user_seq, page);
+//			int page = Integer.parseInt(request.getParameter("page"));
+//			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+//			Map<String, Object> boardMap = service.board(user_seq, page);
 			//내가 쓴 글 보이기 
-			request.setAttribute("page", page);
-			request.setAttribute("category", request.getParameter("category"));
-			request.setAttribute("totalCount", boardMap.get("totalCount"));
-			request.setAttribute("boardList", boardMap.get("boardList"));
+//			request.setAttribute("page", page);
+//			request.setAttribute("category", request.getParameter("category"));
+//			request.setAttribute("totalCount", boardMap.get("totalCount"));
+//			request.setAttribute("boardList", boardMap.get("boardList"));
 			dispatch("khc_mypage.jsp", request, response);
 		} else if (category.equals("JOIN")) {
 			dispatch("khc_join.jsp", request, response);
@@ -216,16 +222,26 @@ public class Controller extends HttpServlet {
 			
 		}else if (category.equals("USER_UPDATEFORM")) {
 			//정보 수정 페이지로 이동
+			
 			dispatch("user_update.jsp", request, response);
 			
 		}else if (category.equals("USER_UPDATE")) {
 			//정보수정 완료 할것
-			System.out.println(request.getParameter("id")+"-"+request.getParameter("pw")+"-"+request.getParameter("name")+"-"+request.getParameter("nickname")+"-"+request.getParameter("address")+"-"+request.getParameter("phone"));
-//			UserDto U_Dto = new UserDto(request.getParameter("id"), request.getParameter("pw"), request.getParameter("name"), request.getParameter("nickname"), request.getParameter("address"), request.getParameter("phone"));
-			dispatch("user_info.jsp", request, response);
+			//	UserDto U_Dto = new UserDto(request.getParameter("id"), request.getParameter("pw"), request.getParameter("name"), request.getParameter("nickname"), request.getParameter("address"), request.getParameter("phone"));
+			UserDto update_userdto = new UserDto(Integer.parseInt(request.getParameter("user_seq")),request.getParameter("pw"), request.getParameter("nickname"), request.getParameter("address"), request.getParameter("phone"));
+			int res = 0;
+			res=service.user_update(update_userdto);
+			if(res != 0) {
+				session.invalidate(); 
+				session = null; 
+			}
+			dispatch("KHC.jsp", request, response);
 			
 		}else if (category.equals("USER_DELETE")) {
-			
+			service.user_delete(Integer.parseInt(request.getParameter("user_seq")));
+			session.invalidate(); 
+			session = null; 
+			dispatch("KHC.jsp", request, response);
 		}else if (category.equals("FOODTICKET")) {
 			UserDto userdto = (UserDto)session.getAttribute("userDto");
 			int point_charge = 0;
@@ -242,15 +258,12 @@ public class Controller extends HttpServlet {
 			UserDto userdto = (UserDto)session.getAttribute("userDto");
 			String foodticket_name = request.getParameter("foodticket_name").split("_")[0];
 			int foodticket_pay = Integer.parseInt(request.getParameter("foodticket_name").split("_")[1]);
-			System.out.println(foodticket_name+" "+foodticket_pay);
 			Map<String, Object> FT_map = service.foodticket_insert(userdto.getUser_seq(), foodticket_name, foodticket_pay);
 
 			int foodticket_seq_id = (int)FT_map.get("foodticket_seq_id");
 			int point_val = (int)FT_map.get("foodticket_pay");
 			
-			String qrcode = ""+foodticket_seq_id+foodticket_name+foodticket_pay;
-			//큐알코드 업데이트
-			System.out.println(qrcode);
+			String qrcode = ""+foodticket_seq_id+"_"+foodticket_name+"_"+foodticket_pay;
 			
 			service.foodticket_update(foodticket_seq_id, qrcode);
 //				if(service.foodticket_update(foodticket_seq_id, qrcode)) {

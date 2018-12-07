@@ -34,6 +34,12 @@ public interface Service {
 	// 로그인
 	public UserDto user_login(String user_id, String user_pw);
 	
+	// 유저 정보 수정
+	public int user_update(UserDto update_userdto);
+	
+	// 회원 탈퇴
+	public int user_delete(int user_seq);
+	
 	//회원가입
 	public boolean user_join(String user_id, String user_pw, String user_name, String user_nickname, String user_address, String user_email, String user_phone);
 	

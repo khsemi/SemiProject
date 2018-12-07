@@ -45,62 +45,12 @@
 							<a href="controller.do?category=POINT" type="button" class="btn btn-primary">포인트 조회/결제</a>
 							<a href="controller.do?category=FOODTICKET" type="button" class="btn btn-primary">식권</a>
 							<a href="controller.do?category=NOTE" type="button" class="btn btn-primary">쪽지함</a>
+							<a href="#" type="button" class="btn btn-primary">반게시판</a>
+							<a href="#" type="button" class="btn btn-primary">캘린더</a>
 						</p>
 					</div>
 				</div>
-
-				<div class="container container-fluid">
-					<button type="button" class="btn btn-primary">반게시판</button>
-					<button type="button" class="btn btn-primary">캘린더</button>
-					
-					<table class="table table-striped">
-						<col width="50px">
-						<col width="50px">
-						<col width="300px">
-						<col width="80px">
-						<col width="100px">
-						<thead>
-							<tr>
-								<!-- searchForm -->
-								<td colspan="5" align="right"><div id="search"></div></td>
-							</tr>
-						</thead>
-							<tr>
-								<th>번호
-								<th>카테고리
-								<th>제목
-								<th>작성자
-								<th>날짜
-							</tr>
-						<tbody>
-							<c:choose>
-								<c:when test="${empty boardList }">
-									<tr>
-										<td colspan="5" align="center">===== 글이 없습니다 =====</td>
-									</tr>
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${boardList }" var="dto">
-										<tr>
-											<td>${dto.board_seq_id }</td>
-											<td>${dto.board_category }</td>
-											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
-											<td>${dto.user_nickname }</td>
-											<td><fmt:formatDate value="${dto.board_regdate }"
-													pattern="yy.MM.dd HH:mm" /></td>
-										</tr>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-						</tbody>
-					</table>
-					<!-- pasing -->
-					<nav aria-label="..." style="text-align: center;">
-						<ul class="pagination" id="pasing"></ul>
-					</nav>
-				</div>
 			</div>
-			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
 		</div>
 	</div>
 

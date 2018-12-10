@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import semi.KHC.calendarDao.*;
+
+import semi.KHC.calendarDao.Util;
+import semi.KHC.calendarDto.CalDto;
 import semi.KHC.boardDto.BoardDto;
 import semi.KHC.foodticketDto.FoodticketDto;
 import semi.KHC.pointDto.PointDto;
@@ -30,7 +34,7 @@ public class Controller extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=UTF-8");
 		
 		Service service = new Service_impl();
-		
+		 semi.KHC.calendarDao.CalDao dao = new semi.KHC.calendarDao.CalDao();
 		
 		
 		//command 값을 받아온다.
@@ -99,7 +103,7 @@ public class Controller extends HttpServlet {
 			int board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
 			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
-		} else if (category.equals("board_updateForm")) {
+		} else if (category.equals("board_updateForm")) { 
 			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
 			request.setAttribute("dto", dto);
 			dispatch("board_updateForm.jsp", request, response);
@@ -272,6 +276,53 @@ public class Controller extends HttpServlet {
 //				}
 			}
 			response.sendRedirect("controller.do?category=FOODTICKET");
+		}else if(category.equals("CALENDAR")) {
+			dispatch("calendar.jsp", request, response);
+
+		}else if(category.equals("insertcal")) {
+			String year=request.getParameter("year");
+	         String month=request.getParameter("month");
+	         String date= request.getParameter("date");
+	         String hour = request.getParameter("hour");
+	         String min = request.getParameter("min");
+	         
+	         String title=request.getParameter("title");
+	         String content=request.getParameter("content");
+	          
+	         UserDto userdto = (UserDto)session.getAttribute("userDto");
+	         String mdate = year+Util.istwo(month)+Util.istwo(date)+Util.istwo(hour)+Util.istwo(min);
+
+	         int res = dao.insert(new CalDto(userdto.getUser_seq(),title,content,mdate,"USER")); 
+	         
+	         if(res>0) {
+	             response.sendRedirect("controller.do?category=CALENDAR");
+	          }else {
+	         	 request.setAttribute("msg", "일정등록 실패");
+	         	 dispatch("error.jsp",request,response); 
+	       }
+		}else if(category.equals("callist")) {
+			String year = request.getParameter("year");
+			String month = request.getParameter("month");
+			String date = request.getParameter("date");
+			UserDto userdto = (UserDto) session.getAttribute("userDto");
+
+			String yyyyMMdd = year + Util.istwo(month) + Util.istwo(date);
+
+			HttpSession session = request.getSession();
+			session.setAttribute("ymd", yyyyMMdd);
+
+			List<CalDto> list = dao.selectAll(userdto.getUser_seq(), yyyyMMdd);
+			request.setAttribute("list", list);
+			dispatch("callist.jsp",request,response);
+		} else if(category.equals("muldel")) {
+			String[] CAL_SEQ_ID = request.getParameterValues("chk");
+			int res = dao.multiDelete(CAL_SEQ_ID);
+			if(res>0) {
+				response.sendRedirect("controller.do?category=CALENDAR");
+			}else {
+				request.setAttribute("msg", "일정등록 실패");
+				dispatch("error.jsp", request, response);
+			}
 		}
 
 	}

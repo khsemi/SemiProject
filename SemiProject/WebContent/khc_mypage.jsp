@@ -46,7 +46,7 @@
 							<a href="controller.do?category=FOODTICKET" type="button" class="btn btn-primary">식권</a>
 							<a href="controller.do?category=NOTE" type="button" class="btn btn-primary">쪽지함</a>
 							<a href="#" type="button" class="btn btn-primary">반게시판</a>
-							<a href="#" type="button" class="btn btn-primary">캘린더</a>
+							<a href="controller.do?category=CALENDAR" type="button" class="btn btn-primary">캘린더</a>
 						</p>
 					</div>
 				</div>

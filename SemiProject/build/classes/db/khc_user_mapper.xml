@@ -49,6 +49,11 @@
 		WHERE USER_SEQ = #{user_seq}
 	
 	</delete>
+	<select id="userList" resultMap="user_Map">
+		SELECT *
+		FROM KH_USER 
+		WHERE USER_STATE = 'TRUE'
+	</select>
 	
 	
 	

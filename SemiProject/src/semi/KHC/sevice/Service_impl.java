@@ -17,6 +17,9 @@ import semi.KHC.boardDto.BoardDto;
 import semi.KHC.foodticketDao.FoodticketDao;
 import semi.KHC.foodticketDao.FoodticketDao_impl;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.noteDao.NoteDao;
+import semi.KHC.noteDao.NoteDao_impl;
+import semi.KHC.noteDto.NoteDto;
 import semi.KHC.pointDao.PointDao;
 import semi.KHC.pointDao.PointDao_impl;
 import semi.KHC.pointDto.PointDto;
@@ -244,6 +247,19 @@ public class Service_impl implements Service{
 	public int user_delete(int user_seq) {
 		UserDao userdao = new UserDao_impl();
 		return userdao.delete(user_seq);
+	}
+	
+	@Override
+	public List<NoteDto> note_selectAll(String user_id) {
+		NoteDao notedao = new NoteDao_impl();
+		List<NoteDto> notelist = notedao.selectAll(user_id);
+		return notelist;
+	}
+	
+	@Override
+	public List<UserDto> userList() {
+		UserDao userdao = new UserDao_impl();
+		return userdao.userList();
 	}
 	
 }

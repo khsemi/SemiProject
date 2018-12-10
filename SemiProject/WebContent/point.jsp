@@ -98,6 +98,7 @@ function CheckForm(Join){
 
 					</div>
 
+			
 					<hr class="my-4">
 
 					<p>포인트 결제</p>

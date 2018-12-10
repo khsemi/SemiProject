@@ -1,5 +1,7 @@
 package semi.KHC.userDao;
 
+import java.util.List;
+
 import semi.KHC.userDto.UserDto;
 
 public interface UserDao {
@@ -25,5 +27,8 @@ public interface UserDao {
 	
 	//정보조회 기능
 	public UserDto select(int user_seq);
+	
+	//회원 리스트 출력
+	public List<UserDto> userList();
 	
 }

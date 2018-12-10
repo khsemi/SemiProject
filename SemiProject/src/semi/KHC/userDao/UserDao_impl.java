@@ -1,5 +1,8 @@
 package semi.KHC.userDao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import semi.KHC.boardDao.SqlMapConfig;
@@ -112,7 +115,20 @@ public class UserDao_impl  extends SqlMapConfig implements UserDao {
 		return dto;	
 		
 	}
-	
+	@Override
+	public List<UserDto> userList() {
+		SqlSession session = null;
+		List<UserDto> userlist = new ArrayList<UserDto>();
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			userlist = session.selectList(USER_NAMESPACE+"userList");
+		} catch (Exception e) {
+			System.out.println("select 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return userlist;
+	}
 
 	
 

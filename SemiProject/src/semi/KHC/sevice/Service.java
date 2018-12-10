@@ -6,6 +6,7 @@ import java.util.Map;
 
 import semi.KHC.boardDto.BoardDto;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.noteDto.NoteDto;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDto.UserDto;
 public interface Service {
@@ -62,4 +63,8 @@ public interface Service {
 	public Map<String, Object> foodticket_insert(int user_seq, String foodticket_name, int foodticket_pay);
 	
 	public boolean foodticket_update(int foodticket_seq_id, String qrcode);
+	
+	public List<NoteDto> note_selectAll(String user_id);
+	
+	public List<UserDto> userList();
 }

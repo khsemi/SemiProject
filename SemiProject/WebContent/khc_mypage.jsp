@@ -36,7 +36,7 @@
 				</div>
 				<div class="container container-fluid">
 					<div class="jumbotron jumbotron-fluid">
-						<h1 class="display">${userDto.user_nickname }</h1>
+						<h1 class="display"><img alt="프로필 사진" src="img/man.png" style="width: 150px;height: 170px;">&nbsp;${userDto.user_nickname }</h1>
 						<!-- 유저 닉네임 -->
 
 						<hr class="my-4">
@@ -46,7 +46,8 @@
 							<a href="controller.do?category=FOODTICKET" type="button" class="btn btn-primary">식권</a>
 							<a href="controller.do?category=NOTE" type="button" class="btn btn-primary">쪽지함</a>
 							<a href="#" type="button" class="btn btn-primary">반게시판</a>
-							<a href="controller.do?category=CALENDAR" type="button" class="btn btn-primary">캘린더</a>
+							<a href="#" type="button" class="btn btn-primary">캘린더</a>
+							<a href="controller.do?category=PROFILESEARCH" type="button" class="btn btn-primary">친구 찾기</a>
 						</p>
 					</div>
 				</div>

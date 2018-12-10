@@ -108,6 +108,7 @@
 					<div class="container">
 						<div class="col-md-8 order-md-1">
 							<form class="needs-validation" method="post" action="controller.do?category=FOODTICKET_INSERT" name="payment" onSubmit="return CheckForm(this)">
+							<input type="hidden" name="point" value="${point }">
 								<div class="form-group">
 
 									<labelfor="foodticket">식권 선택</label> 

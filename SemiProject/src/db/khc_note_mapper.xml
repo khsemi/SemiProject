@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_note">
+	
+	<resultMap type="semi.KHC.noteDto.NoteDto" id="note_Map">
+		<result property="note_seq_id" column="NOTE_SEQ_ID" />
+		<result property="note_regdate" column="NOTE_REGDATE" />
+		<result property="note_title" column="NOTE_TITLE" />
+		<result property="note_content" column="NOTE_CONTENT" />
+		<result property="send_user_id" column="SEND_USER_ID" />
+		<result property="recive_user_id" column="RECIVE_USER_ID" />
+	</resultMap>
+	
+	<select id="selectAll" parameterType="map" resultMap="note_Map">
+		SELECT * FROM KH_NOTE 
+		WHERE SEND_USER_ID = #{send_user_id} OR RECIVE_USER_ID = #{recive_user_id}
+	
+	</select>
+	
+	
+	
+</mapper>

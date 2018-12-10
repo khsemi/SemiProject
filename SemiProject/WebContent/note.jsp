@@ -80,20 +80,23 @@ $(function(){
 							</tr>
 							<tbody>
 								<c:choose>
-									<c:when test="${empty pointlist }">
+									<c:when test="${empty notelist }">
 										<tr>
 											<td colspan="5" align="center">===== 쪽지가 없습니다. =====</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
-										<c:forEach items="${pointlist }" var="dto">
-											<tr>
-												<td><input type="checkbox" name="chk" value="#"/></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td><fmt:formatDate value="${dto.point_regdate }" pattern="yy.MM.dd HH:mm" /></td>
-											</tr>
+										<c:forEach items="${notelist }" var="dto">
+											<c:if test="${dto.recive_user_id eq userDto.user_nickname}">
+												<tr>
+													<td><input type="checkbox" name="chk" value="#" /></td>
+													<td>${dto.note_seq_id }</td>
+													<td>${dto.send_user_id }</td>
+													<td>${dto.note_title }</td>
+													<td><fmt:formatDate value="${dto.note_regdate }"
+															pattern="yy.MM.dd HH:mm" /></td>
+												</tr>
+											</c:if>	
 										</c:forEach>
 									</c:otherwise>
 								</c:choose>
@@ -123,20 +126,23 @@ $(function(){
 							</tr>
 							<tbody>
 								<c:choose>
-									<c:when test="${empty pointlist }">
+									<c:when test="${empty notelist }">
 										<tr>
 											<td colspan="5" align="center">===== 쪽지가 없습니다. =====</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
-										<c:forEach items="${pointlist }" var="dto">
-											<tr>
-												<td><input type="checkbox" name="chk" value="#"/></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td><fmt:formatDate value="${dto.point_regdate }" pattern="yy.MM.dd HH:mm" /></td>
-											</tr>
+										<c:forEach items="${notelist }" var="dto">
+											<c:if test="${dto.send_user_id eq userDto.user_nickname}">
+												<tr>
+													<td><input type="checkbox" name="chk" value="#" /></td>
+													<td>${dto.note_seq_id }</td>
+													<td>${dto.send_user_id }</td>
+													<td>${dto.note_title }</td>
+													<td><fmt:formatDate value="${dto.note_regdate }"
+															pattern="yy.MM.dd HH:mm" /></td>
+												</tr>
+											</c:if>	
 										</c:forEach>
 									</c:otherwise>
 								</c:choose>

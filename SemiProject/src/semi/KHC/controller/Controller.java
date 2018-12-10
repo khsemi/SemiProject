@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import semi.KHC.boardDto.BoardDto;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.noteDto.NoteDto;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.sevice.Service;
 import semi.KHC.sevice.Service_impl;
@@ -214,6 +215,11 @@ public class Controller extends HttpServlet {
 				System.out.println("실패!");
 			}
 		}else if (category.equals("NOTE")) {
+			UserDto userdto = (UserDto)session.getAttribute("userDto");
+			String user_nickname = userdto.getUser_nickname();
+			List<NoteDto> notelist = service.note_selectAll(user_nickname);
+			
+			request.setAttribute("notelist", notelist);
 			dispatch("note.jsp", request, response);
 			
 		}else if (category.equals("USER_INFO")) {
@@ -255,23 +261,33 @@ public class Controller extends HttpServlet {
 			request.setAttribute("point", point_charge-point_use);
 			dispatch("foodticket.jsp", request, response);
 		} else if (category.equals("FOODTICKET_INSERT")) {
+			
 			UserDto userdto = (UserDto)session.getAttribute("userDto");
 			String foodticket_name = request.getParameter("foodticket_name").split("_")[0];
 			int foodticket_pay = Integer.parseInt(request.getParameter("foodticket_name").split("_")[1]);
-			Map<String, Object> FT_map = service.foodticket_insert(userdto.getUser_seq(), foodticket_name, foodticket_pay);
+			
+			if(Integer.parseInt(request.getParameter("point")) < foodticket_pay) {
+				response.sendRedirect("controller.do?category=FOODTICKET");
+			}else {
+				Map<String, Object> FT_map = service.foodticket_insert(userdto.getUser_seq(), foodticket_name, foodticket_pay);
 
-			int foodticket_seq_id = (int)FT_map.get("foodticket_seq_id");
-			int point_val = (int)FT_map.get("foodticket_pay");
-			
-			String qrcode = ""+foodticket_seq_id+"_"+foodticket_name+"_"+foodticket_pay;
-			
-			service.foodticket_update(foodticket_seq_id, qrcode);
-//				if(service.foodticket_update(foodticket_seq_id, qrcode)) {
-			if(point_val > 0) {
-					service.point_insert(userdto.getUser_seq(), point_val, "사용");
-//				}
+				int foodticket_seq_id = (int)FT_map.get("foodticket_seq_id");
+				int point_val = (int)FT_map.get("foodticket_pay");
+				
+				String qrcode = ""+foodticket_seq_id+"_"+foodticket_name+"_"+foodticket_pay;
+				
+				service.foodticket_update(foodticket_seq_id, qrcode);
+//					if(service.foodticket_update(foodticket_seq_id, qrcode)) {
+				if(point_val > 0) {
+						service.point_insert(userdto.getUser_seq(), point_val, "사용");
+//					}
+				}
+				response.sendRedirect("controller.do?category=FOODTICKET");
 			}
-			response.sendRedirect("controller.do?category=FOODTICKET");
+		} else if(category.equals("PROFILESEARCH")) {
+			List<UserDto> list = service.userList();
+			request.setAttribute("userlist", list);
+			dispatch("profileSearch.jsp", request, response);
 		}
 
 	}

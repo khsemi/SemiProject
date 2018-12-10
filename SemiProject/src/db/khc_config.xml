@@ -8,6 +8,8 @@
 		<typeAlias type="semi.KHC.userDto.UserDto" alias="userDto" />
 		<typeAlias type="semi.KHC.pointDto.PointDto" alias="pointDto" />
 		<typeAlias type="semi.KHC.foodticketDto.FoodticketDto" alias="foodticketDto" />
+		<typeAlias type="semi.KHC.noteDto.NoteDto" alias="noteDto" />
+		
 	</typeAliases>
 	
 	<!-- db 접속 설정 -->
@@ -28,6 +30,7 @@
 		<mapper resource="db/khc_user_mapper.xml"/>
 		<mapper resource="db/khc_point_mapper.xml"/>
 		<mapper resource="db/khc_foodticket_mapper.xml"/>
+		<mapper resource="db/khc_note_mapper.xml"/>
 	</mappers>
 	
 </configuration>

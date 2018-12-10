@@ -161,7 +161,7 @@ function isTwo(n){
 			      <td>
 			         <a class="countView" href="controller.do?category=callist&year=<%=year %>&month=<%=month %>&date=<%=i %>" style="color:<%=Util.fontColor(i,dayOfWeek)%>"><%=i %></a>
 			      
-			         <a href="insertcalboard.jsp?year=<%=year%>&month=<%=month%>&date=<%=i%>&lastday=<%=lastDay%>"><img alt="일정추가" src="img/image.png"></a>
+			         <a href="insertcalboard.jsp?year=<%=year%>&month=<%=month%>&date=<%=i%>&lastday=<%=lastDay%>"><img alt="일정추가" src="img/ooo.png"></a>
 			         <div class="clist">
 			         		<%=Util.getCalView(i,clist) %>
 			         </div>

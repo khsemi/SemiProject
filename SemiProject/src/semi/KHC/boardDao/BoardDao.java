@@ -22,4 +22,6 @@ public interface BoardDao {
 	public int update(BoardDto dto);
 	public int delete(int board_seq_id);
 	
+	public List<BoardDto> selectAll();
+	
 } 

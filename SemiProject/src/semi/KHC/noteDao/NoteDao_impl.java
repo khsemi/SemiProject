@@ -34,12 +34,33 @@ public class NoteDao_impl extends SqlMapConfig implements NoteDao {
 	}
 	@Override
 	public NoteDto selectOne(int note_seq_id) {
-		// TODO Auto-generated method stub
-		return null;
+		NoteDto notedto = new NoteDto();
+		SqlSession session = null;
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			notedto = session.selectOne(NOTE_NAMESPACE+"selectOne", note_seq_id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return notedto;
 	}
 	@Override
 	public int insert(NoteDto notedto) {
-		// TODO Auto-generated method stub
-		return 0;
+		SqlSession session = null;
+		int res = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			res = session.insert(NOTE_NAMESPACE+"insert", notedto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return res;
 	}
 }

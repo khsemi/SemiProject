@@ -2,6 +2,7 @@ package semi.KHC.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,7 +144,10 @@ public class Controller extends HttpServlet {
 			
 
 		} else if (category.equals("MAIN")) {
-			request.setAttribute("category", category);
+			List<BoardDto> boardlist = new ArrayList<BoardDto>();
+			boardlist = service.boardAll();
+			request.setAttribute("boardlist", boardlist);
+			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("MYPAGE")) {
 //			int page = Integer.parseInt(request.getParameter("page"));
@@ -277,10 +281,8 @@ public class Controller extends HttpServlet {
 				String qrcode = ""+foodticket_seq_id+"_"+foodticket_name+"_"+foodticket_pay;
 				
 				service.foodticket_update(foodticket_seq_id, qrcode);
-//					if(service.foodticket_update(foodticket_seq_id, qrcode)) {
 				if(point_val > 0) {
 						service.point_insert(userdto.getUser_seq(), point_val, "사용");
-//					}
 				}
 				response.sendRedirect("controller.do?category=FOODTICKET");
 			}
@@ -288,6 +290,32 @@ public class Controller extends HttpServlet {
 			List<UserDto> list = service.userList();
 			request.setAttribute("userlist", list);
 			dispatch("profileSearch.jsp", request, response);
+		} else if(category.equals("NOTEDETAIL")) {
+			int note_seq_id = Integer.parseInt(request.getParameter("note_seq_id"));
+			NoteDto notedto = null;
+			notedto = service.noteDetail(note_seq_id);
+			request.setAttribute("notedto", notedto);
+			
+			dispatch("noteDetail.jsp", request, response);
+		} else if(category.equals("NOTESENDINGFORM")) {
+			String recive_user_id = request.getParameter("recive_user_id");
+			request.setAttribute("recive_user_id", recive_user_id);
+			dispatch("noteSendingForm.jsp", request, response);
+		} else if(category.equals("NOTESEND")) {
+			String send_user_id = request.getParameter("user_nickname");
+			String recive_user_id = request.getParameter("recive_user_id");
+			String note_title = request.getParameter("note_title");
+			String note_content = request.getParameter("note_content");
+			
+			NoteDto notedto = new NoteDto(note_title, note_content, send_user_id, recive_user_id);
+			service.noteInsert(notedto);
+			response.setContentType("text/html; charset=utf-8");
+
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('쪽지를 보냈습니다.');");
+			out.println("window.close();");
+			out.println("</script>");
 		}
 
 	}

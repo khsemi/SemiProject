@@ -13,6 +13,7 @@ public interface Service {
 	//일반 게시판을 보여주기위해 category와 page를 이용하여 Dao의 totalCount와 boardList를 구한다.
 	public Map<String, Object> board(String category, int page);
 	//조건 선택 검색 
+	public List<BoardDto> boardAll();
 	//public Map<String, Object> board_search(String category, int page, String searchType, String keyword);
 	//모든 조건 검색
 	public Map<String, Object> board_search(String category, int page, String keyword);
@@ -67,4 +68,8 @@ public interface Service {
 	public List<NoteDto> note_selectAll(String user_id);
 	
 	public List<UserDto> userList();
+	
+	public NoteDto noteDetail(int note_seq_id);
+	
+	public int noteInsert(NoteDto notedto);
 }

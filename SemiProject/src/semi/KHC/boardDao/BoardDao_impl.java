@@ -28,6 +28,20 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 
 		return totalCount;
 	}
+	@Override
+	public List<BoardDto> selectAll() {
+		SqlSession session = null;
+		List<BoardDto> boardList = new ArrayList<BoardDto>();
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			boardList = session.selectList(BOARD_NAMESPACE + "selectAll");
+		} catch (Exception e) {
+			System.out.println("selectPage 오류 : " + e);
+		} finally {
+			session.close();
+		}
+		return boardList;
+	}
 
 	@Override
 	public List<BoardDto> selectPage(String category, int page) {

@@ -25,7 +25,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 function openWin(btn){  
-	window.open("noteSendingForm.jsp?user_nickname="+btn, "쪽지 보내기", "width=520, height=330, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
+	window.open("controller.do?category=NOTESENDINGFORM&recive_user_id="+btn, "쪽지 보내기", "width=520, height=330, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
 
 }  
 </script>

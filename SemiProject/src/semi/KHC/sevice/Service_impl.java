@@ -40,6 +40,13 @@ public class Service_impl implements Service{
 		
 		return result;
 	}
+	@Override
+	public List<BoardDto> boardAll(){
+		List<BoardDto> boardlist = null;
+		BoardDao boardDao = new BoardDao_impl();
+		boardlist = boardDao.selectAll();
+		return boardlist;
+	}
 	
 	@Override
 	public Map<String, Object> board(int user_seq, int page) {
@@ -260,6 +267,17 @@ public class Service_impl implements Service{
 	public List<UserDto> userList() {
 		UserDao userdao = new UserDao_impl();
 		return userdao.userList();
+	}
+	
+	@Override
+	public NoteDto noteDetail(int note_seq_id) {
+		NoteDao notedao = new NoteDao_impl();
+		return notedao.selectOne(note_seq_id);
+	}
+	@Override
+	public int noteInsert(NoteDto notedto) {
+		NoteDao notedao = new NoteDao_impl();
+		return notedao.insert(notedto);
 	}
 	
 }

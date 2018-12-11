@@ -29,11 +29,23 @@ function allChk(bool){
 		chks[i].checked=bool;
 	}
 }
+function allChk1(bool){
+	var chks = document.getElementsByName("chk1");
+	for(var i = 0 ; i < chks.length ; i++){
+		chks[i].checked=bool;
+	}
+}
 //체크를 하나도 안하면 submit 이벤트 취소
 //(유효값 처리)
 $(function(){
 	$("#notelist_recive").submit(function(){
 		if($("#notelist_recive input:checked").length==0){
+			alert("하나 이상 체크해 주세요!");
+			return false;
+		}
+	});
+	$("#notelist_send").submit(function(){
+		if($("#notelist_send input:checked").length==0){
 			alert("하나 이상 체크해 주세요!");
 			return false;
 		}
@@ -45,7 +57,19 @@ $(function(){
            $("input[name=all]").prop("checked",false);
         }
      });
+	$("input[name=chk1]").click(function(){
+        if($("input[name=chk1]:checked").length==$("input[name=chk1]").length){
+           $("input[name=all1]").prop("checked",true);
+        }else{
+           $("input[name=all1]").prop("checked",false);
+        }
+     });
 });
+
+function openWin(btn){  
+	window.open("controller.do?category=NOTEDETAIL&note_seq_id="+btn, "쪽지 읽기", "width=520, height=420, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
+
+}  
 </script>
 <body>
 
@@ -63,7 +87,7 @@ $(function(){
 
 					<div class="container container-fluid">
 						<form action="#" method="post" id="notelist_recive">
-						<table class="table table-striped">
+						<table class="table table-hover row-clickable" id="tableId">
 							<h6>받은 쪽지</h6>
 							<col width="30px">
 							<col width="50px">
@@ -72,10 +96,10 @@ $(function(){
 							<col width="100px">
 
 							<tr>
-								<th><input type="checkbox" name="all" onclick="allChk(this.checked)" /></th>
+								<th><input type="checkbox" name="all1" onclick="allChk1(this.checked)" /></th>
 								<th>번호
 								<th>보낸 사람
-								<th>내용
+								<th>제목
 								<th>받은 날짜
 							</tr>
 							<tbody>
@@ -88,8 +112,8 @@ $(function(){
 									<c:otherwise>
 										<c:forEach items="${notelist }" var="dto">
 											<c:if test="${dto.recive_user_id eq userDto.user_nickname}">
-												<tr>
-													<td><input type="checkbox" name="chk" value="#" /></td>
+												<tr onClick="openWin('${dto.note_seq_id }');">
+													<td><input type="checkbox" name="chk1" value="#" /></td>
 													<td>${dto.note_seq_id }</td>
 													<td>${dto.send_user_id }</td>
 													<td>${dto.note_title }</td>
@@ -102,6 +126,7 @@ $(function(){
 								</c:choose>
 							</tbody>
 						</table>
+						
 							<input type="submit" value="삭제" class="btn btn-primary"/>
 						
 						</form>
@@ -109,7 +134,7 @@ $(function(){
 					<hr class="my-4">
 					<div class="container container-fluid">
 						<form action="#" method="post" id="notelist_send">
-						<table class="table table-striped">
+						<table class="table table-hover">
 							<h6>보낸 쪽지</h6>
 							<col width="30px">
 							<col width="50px">
@@ -121,7 +146,7 @@ $(function(){
 								<th><input type="checkbox" name="all" onclick="allChk(this.checked)" /></th>
 								<th>번호
 								<th>받은 사람
-								<th>내용
+								<th>제목
 								<th>보낸 날짜
 							</tr>
 							<tbody>
@@ -134,10 +159,10 @@ $(function(){
 									<c:otherwise>
 										<c:forEach items="${notelist }" var="dto">
 											<c:if test="${dto.send_user_id eq userDto.user_nickname}">
-												<tr>
+												<tr onClick="openWin('${dto.note_seq_id }');">
 													<td><input type="checkbox" name="chk" value="#" /></td>
 													<td>${dto.note_seq_id }</td>
-													<td>${dto.send_user_id }</td>
+													<td>${dto.recive_user_id }</td>
 													<td>${dto.note_title }</td>
 													<td><fmt:formatDate value="${dto.note_regdate }"
 															pattern="yy.MM.dd HH:mm" /></td>
@@ -152,7 +177,6 @@ $(function(){
 						
 						</form>
 						</br></br>
-						<a class="btn btn-primary" href="#">쪽지 쓰기</a>
 					</br></br>
 					</div>
 					<!-- 					</div> -->

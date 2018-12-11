@@ -13,7 +13,10 @@
 		<result property="board_category" column="BOARD_CATEGORY" />
 		<result property="maps_id" column="MAPS_ID" />
 	</resultMap>
-	
+	<select id="selectAll" resultMap="board_Map">
+		SELECT * FROM KH_BOARD
+		ORDER BY BOARD_REGDATE DESC
+	</select>
 	<select id="totalCount" parameterType="string" resultType="int">
 		SELECT count(*)
 		FROM KH_BOARD
@@ -102,4 +105,5 @@
 	<delete id="delete" parameterType="int">
 		DELETE FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
 	</delete>
+	
 </mapper>

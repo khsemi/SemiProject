@@ -14,8 +14,18 @@
 	<select id="selectAll" parameterType="map" resultMap="note_Map">
 		SELECT * FROM KH_NOTE 
 		WHERE SEND_USER_ID = #{send_user_id} OR RECIVE_USER_ID = #{recive_user_id}
+		ORDER BY NOTE_REGDATE DESC
 	
 	</select>
+	<select id="selectOne" parameterType="int" resultMap="note_Map">
+		SELECT * FROM KH_NOTE 
+		WHERE NOTE_SEQ_ID=#{note_seq_id}
+	
+	</select>
+	<insert id="insert" parameterType="noteDto">
+		INSERT INTO KH_NOTE 
+		VALUES(KH_NOTE_SEQ.NEXTVAL, SYSDATE, #{note_title}, #{note_content}, #{send_user_id}, #{recive_user_id})
+	</insert>
 	
 	
 	

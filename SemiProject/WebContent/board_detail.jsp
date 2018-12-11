@@ -45,6 +45,7 @@ function board_delete(){
 
 function comment_delete(comment_seq_id){
 	alert(comment_seq_id);
+	alert(comment_seq_id);
 }
 
 /* function comment_update(comment_seq_id){

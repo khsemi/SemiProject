@@ -36,6 +36,9 @@ public interface Service {
 	// 로그인
 	public UserDto user_login(String user_id, String user_pw);
 	
+	//아이디찾기
+	public String find_id(String user_email);
+	
 	// 유저 정보 수정
 	public int user_update(UserDto update_userdto);
 	

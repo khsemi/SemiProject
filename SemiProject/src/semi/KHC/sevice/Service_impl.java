@@ -279,5 +279,11 @@ public class Service_impl implements Service{
 		NoteDao notedao = new NoteDao_impl();
 		return notedao.insert(notedto);
 	}
+	@Override
+	public String find_id(String user_email) {
+		UserDao userDao = new UserDao_impl();
+		
+		return userDao.find_id(user_email);
+	}
 	
 }

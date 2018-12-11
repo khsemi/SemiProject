@@ -28,6 +28,7 @@ $(function(){
 		}
 	});
 });
+
 function board_update(){
 	location.href="controller.do?category=board_updateForm&board_seq_id="+$("#board_seq_id").val();
 }
@@ -35,7 +36,7 @@ function board_delete(){
 	var check = confirm("글을 '삭제' 하시겠습니까?");
 	if(check == true){
 		var category = $("#category").val().split("_");
-		location.href="controller.do?category=board_delete&board_seq_id="+$("#board_seq_id").val()+"&categoryType="+category[0];
+		location.href="controller.do?category=board_delete&board_seq_id="+$("#board_seq_id").val()+"&categoryType="+category[0]+"&maps_id="+$("#maps_id").val();
 	}else {
 		return false;
 	}
@@ -158,6 +159,7 @@ function favorite_down(){
 <body>
 <input type="hidden" id="category" value="${boardDto.board_category }">
 <input type="hidden" id="board_seq_id" value="${boardDto.board_seq_id }">
+<input type="hidden" id="maps_id" value="${boardDto.maps_id }">
 <input type="hidden" id="user_seq" value="${userDto.user_seq }">
 <input type="hidden" id="favorite_check" value="${favorite }">
 <div class="layout-container">
@@ -182,6 +184,18 @@ function favorite_down(){
 				 			<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50" readonly="readonly" value="${boardDto.board_title }"></td>
 				 			</tr>
+				 			
+				 			<c:if test="${boardDto.board_category eq 'FOODINFO' || boardDto.board_category eq 'STUDY' }">
+				 			<tr>				 				
+				 				<td>
+				 				<c:if test="${boardDto.board_category eq 'STUDY' }">
+				 				<h3>스터디 장소: ${mapdto.maps_name}</h3>
+				 				</c:if>
+				 				<div id="map" style="width:100%;height:350px;"></div>
+				 				</td>
+				 			</tr>
+				 			</c:if>
+				 			
 				 			<tr>
 				 				<!--  <td><textarea name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px" readonly="readonly">${boardDto.board_content }</textarea> </td>-->
 				 				<td><div class="form-control" style="height:350px; width:1050px;">${boardDto.board_content }</div></td>
@@ -283,5 +297,74 @@ function favorite_down(){
 			</div>
 		</div>
 	</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bad3b4587d72464d66aa25f00a8c89b4"></script>
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new daum.maps.LatLng(${mapdto.maps_x},${mapdto.maps_y}), // 지도의 중심좌표 => 전달받은 좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+var positions = [
+    {
+        title: 'KH정보교육원 강남1관', 
+        latlng: new daum.maps.LatLng(37.498992, 127.032878)
+    }
+    ]
+    
+var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+
+for (var i = 0; i < positions.length; i ++) {
+    
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new daum.maps.Size(24, 35); 
+    
+    // 마커 이미지를 생성합니다    
+    var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize); 
+    
+    // 마커를 생성합니다
+    var marker = new daum.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image : markerImage // 마커 이미지 
+    });
+}
+
+// 마커를 표시할 위치입니다 
+var position =  new daum.maps.LatLng(${mapdto.maps_x},${mapdto.maps_y}); 
+
+// 마커를 생성합니다
+var marker = new daum.maps.Marker({
+  position: position
+});
+
+// 마커를 지도에 표시합니다.
+marker.setMap(map);
+
+// 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
+var iwContent = '<div style="padding:5px;">${mapdto.maps_name}</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+// 인포윈도우를 생성합니다
+var infowindow = new daum.maps.InfoWindow({
+    content : iwContent
+});
+
+// 마커에 마우스오버 이벤트를 등록합니다
+daum.maps.event.addListener(marker, 'mouseover', function() {
+  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+    infowindow.open(map, marker);
+});
+
+// 마커에 마우스아웃 이벤트를 등록합니다
+daum.maps.event.addListener(marker, 'mouseout', function() {
+    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+    infowindow.close();
+});
+</script>
+	
 </body>
 </html>

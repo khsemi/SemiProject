@@ -24,6 +24,9 @@ import semi.KHC.favoriteDao.FavoriteDao_impl;
 import semi.KHC.foodticketDao.FoodticketDao;
 import semi.KHC.foodticketDao.FoodticketDao_impl;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.mapDao.MapDao;
+import semi.KHC.mapDao.MapDao_impl;
+import semi.KHC.mapDto.MapDto;
 import semi.KHC.noteDao.NoteDao;
 import semi.KHC.noteDao.NoteDao_impl;
 import semi.KHC.noteDto.NoteDto;
@@ -116,10 +119,22 @@ public class Service_impl implements Service{
 		return board.insert(dto);
 	}
 	@Override
+	public int board_insert_map(String board_category, String board_title, String board_content, int user_seq, int maps_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_category, board_title, board_content, user_seq, maps_id);
+		return board.insert_m(dto);
+	}
+	@Override
 	public int board_update(int board_seq_id, String board_title, String board_content) {
 		BoardDao board = new BoardDao_impl();
 		BoardDto dto = new BoardDto(board_seq_id, board_title, board_content);
 		return board.update(dto);
+	}
+	@Override
+	public int board_update_map(int board_seq_id, String board_title, String board_content, int maps_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_seq_id, board_title,board_content,maps_id);
+		return board.update_m(dto);
 	}
 	@Override
 	public boolean board_delete(int board_seq_id) {
@@ -370,6 +385,38 @@ public class Service_impl implements Service{
 	public boolean favorite_delete(int board_seq_id, int user_seq) {
 		FavoriteDao favoriteDao = new FavoriteDao_impl();
 		return favoriteDao.favorite_delete(board_seq_id, user_seq);
+	}
+
+	@Override
+	public MapDto map_detail(int map_seq_id) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = map.detailMap(map_seq_id);
+		return mapdto;
+	}
+
+	@Override
+	public int maps_insert(String maps_name, String maps_x, String maps_y) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = new MapDto(maps_name, maps_x, maps_y);
+		return map.insertMap(mapdto); // => map_seq_id 리턴
+	}
+
+	@Override
+	public int maps_update(int maps_seq_id, String maps_name, String maps_x, String maps_y) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = new MapDto(maps_seq_id, maps_name, maps_x, maps_y);
+		return map.updateMap(mapdto);
+	}
+
+	@Override
+	public boolean maps_delete(int maps_seq_id) {
+		MapDao map = new MapDao_impl();
+		int result = map.deleteMap(maps_seq_id);
+		
+		if(result > 0 ) {
+			return true;
+		}
+		return false;
 	}
 	
 }

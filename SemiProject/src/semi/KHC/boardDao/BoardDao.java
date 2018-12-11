@@ -18,9 +18,15 @@ public interface BoardDao {
 	public List<BoardDto> selectPage_search(String category, int page, String keyword, String sortType);
 	
 	public BoardDto detail(int board_seq_id);
+	public BoardDto detail_m(int map_id, int board_seq_id);
+	
 	public boolean updateViewCount(int board_seq_id);
 	public int insert(BoardDto dto);
+	public int insert_m(BoardDto dto);
+	
 	public int update(BoardDto dto);
+	public int update_m(BoardDto dto);
+	
 	public int delete(int board_seq_id);
 	
 	public List<BoardDto> selectAll();

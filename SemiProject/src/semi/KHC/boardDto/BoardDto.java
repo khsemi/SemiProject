@@ -40,18 +40,36 @@ public class BoardDto {
 	private int maps_id;
 
 	
-	//insert & update
+	//insert
 	public BoardDto(String board_category, String board_title, String board_content, int user_seq) {
 		this.board_category = board_category;
 		this.board_title = board_title;
 		this.board_content = board_content;
 		this.user_seq = user_seq;
 	}
+	//insert_map
+		public BoardDto(String board_category, String board_title, String board_content, int user_seq, int maps_id) {
+			this.board_category = board_category;
+			this.board_title = board_title;
+			this.board_content = board_content;
+			this.user_seq = user_seq;
+			this.maps_id = maps_id;
+	}
+	//update
 	public BoardDto(int board_seq_id, String board_title, String board_content) {
 		this.board_seq_id = board_seq_id;
 		this.board_title = board_title;
 		this.board_content = board_content;
 	}
+	//update_map
+	public BoardDto(int board_seq_id, String board_title, String board_content, int maps_id) {
+		this.board_seq_id = board_seq_id;
+		this.board_title = board_title;
+		this.board_content = board_content;
+		this.maps_id = maps_id;
+	}
+	
+	
 
 
 	public BoardDto() {

@@ -374,7 +374,7 @@ public class Controller extends HttpServlet {
 			request.setAttribute("user_id", service.find_id(user_email));
 			
 			dispatch("khc_findResult_id.jsp", request, response);
-			
+			System.out.println();
 		}
 
 	}

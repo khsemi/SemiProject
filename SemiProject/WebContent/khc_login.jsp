@@ -50,22 +50,26 @@
 						</form>
 						
 						<div class="text-center">
-							<a href="#"> 아이디 찾기 </a>/
-							<a href="#"> 비밀번호 찾기 </a>/
-							<a href="controller.do?category=JOIN"> 회원가입 </a>
-						
+							&nbsp
+							<div>아이디를 잊어버리셨나요?</div>
+							<div>
+								<a href="controller.do?category=FINDID">아이디 찾기</a>
+							</div>
+							&nbsp
+							<div>비밀번호를 잊어버리셨나요?</div>
+							<div>
+								<a href="controller.do?category=FINDPW">비밀번호 찾기</a>
+							</div>
+							&nbsp
+							<div>아직 계정이 없으신가요?
+							<div>
+								<a href="controller.do?category=JOIN"> 회원가입 </a>
+							</div>
+							</div>
 						</div>
 					</div>
 					
-			   <!-- <div class="jumbotron" style="padding-top: 20px;">
-						<form method="post" action="#.jsp">
-							<h3 style="text-align: center;">SNS 로그인</h3>
-							<button class="btn btn-warning form-control" value="KakaoTalk">Kakao Talk 로그인</button>&nbsp
-							<button class="btn btn-danger form-control" value="Google">Google 로그인</button>&nbsp
-							<button class="btn btn-success form-control" value="naver">naver 로그인</button>
-						</form>
-						
-					</div> -->
+			  
 				</div>
 			</div>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>

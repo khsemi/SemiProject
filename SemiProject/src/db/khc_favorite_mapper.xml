@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_favorite">
+
+	<resultMap type="semi.KHC.favoriteDto.FavoriteDto" id="favorite_Map">
+		<result property="favorite_seq_id" column="FAVORITE_SEQ_ID"/>
+		<result property="board_seq_id" column="BOARD_SEQ_ID"/>
+		<result property="user_seq" column="USER_SEQ"/>
+		<result property="favorite_count" column="FAVORITE_COUNT"/>
+	</resultMap>
+	
+	<select id="favoriteSelect" parameterType="map" resultType="int">
+		SELECT SUM(FAVORITE_COUNT)
+		FROM KH_FAVORITE
+		WHERE BOARD_SEQ_ID = #{board_seq_id} AND USER_SEQ = #{user_seq}
+	</select>
+	
+	<insert id="favoriteInsert_up" parameterType="map">
+		INSERT INTO KH_FAVORITE VALUES(KH_FAVORITE_SEQ.NEXTVAL,#{board_seq_id},#{user_seq},1)
+	</insert>
+	
+	<insert id="favoriteInsert_down" parameterType="map">
+		INSERT INTO KH_FAVORITE VALUES(KH_FAVORITE_SEQ.NEXTVAL,#{board_seq_id},#{user_seq},-1)
+	</insert>
+	
+	<delete id="favoriteDelete" parameterType="map">
+		DELETE FROM KH_FAVORITE WHERE BOARD_SEQ_ID = #{board_seq_id} AND USER_SEQ = #{user_seq}
+	</delete>
+	
+	<select id="favoriteCheck" parameterType="map" resultType="int">
+		SELECT FAVORITE_SEQ_ID, BOARD_SEQ_ID, USER_SEQ, FAVORITE_COUNT
+		FROM KH_FAVORITE
+		WHERE BOARD_SEQ_ID = #{board_seq_id} AND USER_SEQ = #{user_seq}
+	</select>
+</mapper>

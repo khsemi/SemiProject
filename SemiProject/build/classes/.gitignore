@@ -1,2 +1,12 @@
-/semi/
+/common/
 /db/
+/semi/
+<<<<<<< HEAD
+/db/
+=======
+/util/
+/favoriteDao/
+/favoriteDto/
+/commentDao/
+/commentDto/
+>>>>>>> refs/remotes/origin/master

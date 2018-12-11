@@ -23,6 +23,10 @@
 		WHERE USER_ID = #{user_id} 
 	</select>
 	
+	<select id="findId" parameterType="String" resultType="String">
+		SELECT USER_ID FROM KH_USER WHERE USER_EMAIL = #{user_email}
+	</select>
+	
 	<insert id="join" parameterType="userDto">
 		INSERT INTO KH_USER VALUES(KH_USER_SEQ.NEXTVAL, #{user_id}, #{user_pw}, #{user_name}, #{user_nickname}, #{user_address}, #{user_email},'FALSE','FALSE', #{user_phone},'TRUE','USER')
 	</insert>

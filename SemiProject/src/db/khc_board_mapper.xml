@@ -17,13 +17,13 @@
 	</resultMap>
 	
 	<select id="selectAll" resultMap="board_Map">
-		SELECT * FROM KH_BOARD
-		ORDER BY BOARD_REGDATE DESC
+		SELECT * FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
+		ORDER BY BOARD_REGDATE DESC 
 	</select>
 	
 	<select id="totalCount" parameterType="string" resultType="int">
 		SELECT count(*)
-		FROM KH_BOARD
+		FROM KH_BOARD 
 		WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%'
 	</select>
 	

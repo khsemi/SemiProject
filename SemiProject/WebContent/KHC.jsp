@@ -23,7 +23,11 @@
 <script src="js/bootstrap.min.js"></script>
 
 <body>
-
+	<input type="hidden" id="totalCount" value='${totalCount }'>
+	<input type="hidden" id="page" value='${page }'>
+	<input type="hidden" id="category" value='${category }'>
+	<input type="hidden" id="searchType" value='${searchType }'>
+	<input type="hidden" id="keyword" value='${keyword }'>
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->

@@ -56,7 +56,7 @@ $(function(){
 						<li id="LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
 					</c:when>
 					<c:otherwise>
-						<li id="MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
+						<li id="MYPAGE"><a href="controller.do?category=MYPAGE&page=1"><span>Mypage</span></a></li>
 					</c:otherwise>
 				</c:choose>
 

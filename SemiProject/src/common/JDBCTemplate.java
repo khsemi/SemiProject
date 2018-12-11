@@ -12,28 +12,28 @@ public class JDBCTemplate {
 	public static Connection getConnection() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			System.out.println("01. 드라이버 연결");
+//			System.out.println("01. 드라이버 연결");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			System.out.println("01. 드라이버 연결실패");
+//			System.out.println("01. 드라이버 연결실패");
 			e.printStackTrace();
 		}
 		
 		String url="jdbc:oracle:thin:@localhost:1521:xe";
-		String id="kh";
-		String pw="kh";
+		String id="test";
+		String pw="test";
 		
 		Connection con = null;
 		
 		try {
 			con=DriverManager.getConnection(url, id, pw);
-			System.out.println("02. 계정 연결");
+//			System.out.println("02. 계정 연결");
 			
 			con.setAutoCommit(false); //내가 원할때 커밋 할수있따.
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("02. 계정 연결 실패");
+//			System.out.println("02. 계정 연결 실패");
 			e.printStackTrace();
 		}
 		return con;

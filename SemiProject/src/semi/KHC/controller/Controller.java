@@ -169,15 +169,17 @@ public class Controller extends HttpServlet {
 			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("MYPAGE")) {
-//			int page = Integer.parseInt(request.getParameter("page"));
-//			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
-//			Map<String, Object> boardMap = service.board(user_seq, page);
-			//내가 쓴 글 보이기 
-//			request.setAttribute("page", page);
-//			request.setAttribute("category", request.getParameter("category"));
-//			request.setAttribute("totalCount", boardMap.get("totalCount"));
-//			request.setAttribute("boardList", boardMap.get("boardList"));
-			dispatch("khc_mypage.jsp", request, response);
+			UserDto userDto = (UserDto)session.getAttribute("userDto");
+			int page = Integer.parseInt(request.getParameter("page"));
+			int user_seq = userDto.getUser_seq();
+			
+			Map<String, Object> boardMap = service.board(user_seq, page);
+//			내가 쓴 글 보이기 
+			request.setAttribute("page", page);
+			request.setAttribute("category", request.getParameter("category"));
+			request.setAttribute("totalCount", boardMap.get("totalCount"));
+			request.setAttribute("boardList", boardMap.get("boardList"));
+			dispatch("myboard.jsp", request, response);
 		} else if (category.equals("JOIN")) {
 			dispatch("khc_join.jsp", request, response);
 		} else if (category.equals("LOGOUT")) {

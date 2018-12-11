@@ -184,16 +184,30 @@ function favorite_down(){
 				 			<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50" readonly="readonly" value="${boardDto.board_title }"></td>
 				 			</tr>
-				 			
-				 			<c:if test="${boardDto.board_category eq 'FOODINFO' || boardDto.board_category eq 'STUDY' }">
+				 			<!-- 요식업체 소개 -->
+				 			<c:if test="${boardDto.board_category eq 'FOODINFO' }">
 				 			<tr>				 				
-				 				<td>
-				 				<c:if test="${boardDto.board_category eq 'STUDY' }">
-				 				<h3>스터디 장소: ${mapdto.maps_name}</h3>
-				 				</c:if>
+				 				<td>				 				
+				 				<h3>제휴업체명: 『${mapdto.maps_name}』</h3>				 				
 				 				<div id="map" style="width:100%;height:350px;"></div>
 				 				</td>
 				 			</tr>
+				 			</c:if>
+				 			
+				 			<!-- 스터디 모집 -->
+				 			<c:if test="${boardDto.board_category eq 'STUDY' }">
+				 			<c:if test="${boardDto.maps_id eq '0' }">
+				 			</c:if>
+				 			<c:if test="${boardDto.maps_id ne '0' }">
+				 			<tr>				 				
+				 				<td>
+				 				
+				 				<h3>스터디 장소: ${mapdto.maps_name}</h3>
+				 			
+				 				<div id="map" style="width:100%;height:350px;"></div>
+				 				</td>
+				 			</tr>
+				 			</c:if>
 				 			</c:if>
 				 			
 				 			<tr>

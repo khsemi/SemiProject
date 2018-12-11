@@ -61,4 +61,20 @@ public class CommentDao_impl extends SqlMapConfig implements CommentDao{
 		}
 		return true;
 	}
+
+	@Override
+	public boolean mul_delete(int board_seq_id) {
+		SqlSession session = null;
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.delete(COMMENTNAMESPACE+"commentDelete_mul",board_seq_id);
+		} catch (Exception e) {
+			System.out.println("comment_delete 오류 : "+e);
+			return false;
+		} finally {
+			session.close();
+		}
+		return true;
+	}
 }

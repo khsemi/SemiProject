@@ -24,4 +24,8 @@
 	<delete id="commentDelete" parameterType="int">
 		DELETE FROM KH_COMMENT WHERE COMMENT_SEQ_ID = #{comment_seq_id}
 	</delete>
+	
+	<delete id="commentDelete_mul" parameterType="int">
+		DELETE FROM KH_COMMENT WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</delete>
 </mapper>

@@ -133,7 +133,7 @@ public class Controller extends HttpServlet {
 			//if(service -> dao.delete 의 결과가 true 라면, 
 			if (service.board_delete(Integer.parseInt(request.getParameter("board_seq_id")))) {
 				//response를 이용하여 controller에 category와 page를 보내주어 내가 지운 글의 category의 1page를 보여준다.
-				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1");
+				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1&sortType=BOARD_REGDATE");
 				// dispatch("controller.do?category="+request.getParameter("categoryType")+"&page=1",request, response);
 			}
 		} else if (category.equals("LOGIN")) {

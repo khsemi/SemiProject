@@ -380,6 +380,16 @@ public class Controller extends HttpServlet {
 				request.setAttribute("msg", "일정등록 실패");
 				dispatch("error.jsp", request, response);
 			}
+		}else if(category.equals("FINDID")) {
+			dispatch("khc_findId.jsp", request, response);
+			
+		}else if(category.equals("FIND_ID")) {
+			String user_email = request.getParameter("user_email");
+			
+			request.setAttribute("user_id", service.find_id(user_email));
+			
+			dispatch("khc_findResult_id.jsp", request, response);
+			System.out.println();
 		}
 
 	}

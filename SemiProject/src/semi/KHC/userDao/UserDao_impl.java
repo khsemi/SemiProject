@@ -130,6 +130,23 @@ public class UserDao_impl  extends SqlMapConfig implements UserDao {
 		return userlist;
 	}
 
+	@Override
+	public String find_id(String user_email) {
+		SqlSession session = null;
+		String result_id = null;
+		UserDto dto = new UserDto(); 
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			result_id = session.selectOne(USER_NAMESPACE+"findId",user_email);
+		} catch (Exception e) {
+			System.out.println("find_id 오류 : " + e);
+		}finally {
+			session.close();
+		}
+		return result_id;
+	}
+
 	
 
 	

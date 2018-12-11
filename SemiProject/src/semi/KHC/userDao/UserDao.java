@@ -10,6 +10,9 @@ public interface UserDao {
 	//로그인 기능
 	public UserDto login(String user_id);
 	
+	//아이디찾기
+	public String find_id(String user_email);
+	
 	//회원가입 기능
 	public boolean join(UserDto userDto);
 	

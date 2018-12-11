@@ -5,56 +5,59 @@
 <%@page import="java.util.Calendar"%>
 <%@page import="semi.KHC.calendarDao.Util"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
-<% response.setContentType("text/html; charset=UTF-8"); %>    
-    
+<% response.setContentType("text/html; charset=UTF-8"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+#calendar {
+	border-collapse: collapse;
+	border: 1px solid gray;
+}
 
-   #calendar{
-      border-collapse : collapse;
-      border : 1px solid gray;
-   }
-   #calendar th{
-      width: 80px;
-      border : 1px solid gray;
-   }
-   #calendar td{
-   width : 80px;
-   height : 80px;
-   border  :1px solid gray;
-   text-align :left;
-   vertical-align : top;
-   position : relative;
-   }
-   a{
-      text-decoration : none;
-   }
-   
-   .f > p{ 
-      font-size:10px;
-      margin:1px;
-      background-color : skyblue;
-   }
-   .cPreview{
-      position:absolute;
-      top:-30px;
-      left:10px;
-      background-color:yellow;
-      width:40px;
-      height:40px;
-      text-align:center;
-      line-height:40px;
-      border-radius:40px 40px 40px 1px;
-      
-   }
+#calendar th {
+	width: 80px;
+	border: 1px solid gray;
+}
+
+#calendar td {
+	width: 80px;
+	height: 80px;
+	border: 1px solid gray;
+	text-align: left;
+	vertical-align: top;
+	position: relative;
+}
+
+a {
+	text-decoration: none;
+}
+
+.clist>p {
+	font-size: 10px;
+	margin: 1px;
+	background-color: skyblue;
+}
+
+.cPreview {
+	position: absolute;
+	top: -30px;
+	left: 10px;
+	background-color: yellow;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	border-radius: 40px 40px 40px 1px;
+}
 </style>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 
 
@@ -71,7 +74,7 @@ $(function(){
          $.ajax({
                   url:"CalListCountAjax.do",
                   type: "post",
-                  data:"user_seq=1&yyyyMMdd="+yyyyMMdd, 
+                  data: "yyyyMMdd="+yyyyMMdd, 
                   async: false,
                   datatype: "json",
                   success: function(msg){
@@ -126,75 +129,69 @@ function isTwo(n){
    
    UserDto userdto = (UserDto) session.getAttribute("userDto");
 
-   List<CalDto> clist = dao.getCalViewList(1,yyyyMM);
+   List<CalDto> clist = dao.getCalViewList(userdto.getUser_seq(),yyyyMM);
 %>
 <body>
-<div class="layout-container" >
-   <jsp:include page="khc_mypage.jsp" />
-      <div id="main">
-   <table id="calendar" class="table" style="text-align:center; border:1px; solid #dddddd;"> 
-      <caption style="text-align:center">
-         <a href="calendar.jsp?year=<%=year-1%>&month=<%=month%>">◁</a>
-         <a href="calendar.jsp?year=<%=year%>&month=<%=month-1%>">◀</a>
-         <span class="y"><%=year %></span>년   
-         <span class="m"><%=month %></span>월
-         <a href="calendar.jsp?year=<%=year%>&month=<%=month+1%>">▶</a>
-         <a href="calendar.jsp?year=<%=year+1%>&month=<%=month%>">▷</a>
-      </caption>
-      
-      <tr>
-         <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
-      </tr>   
-   
-      <tr>
-       
-         <% //공백    
-         int count=0;
-         for(int i=0;i<dayOfWeek-1;i++){
-            out.print("<td>&nbsp;</td>");
-            count++;
-         }
-         
-         for(int i=1;i<=lastDay;i++){ 
-            
-         %>
-               <td>
-                  <a class="countView" href="controller.do?category=callist&year=<%=year %>&month=<%=month %>&date=<%=i %>" style="color:<%=Util.fontColor(i,dayOfWeek)%>"><%=i %></a>
-               
-                  <a href="insertcalboard.jsp?year=<%=year%>&month=<%=month%>&date=<%=i%>&lastday=<%=lastDay%>"><img alt="일정추가" src="img/ooo.png"></a>
-                  <div class="clist">
-                  <p>a<%=i %>, <%=clist %></p>
-                  
-                        <%=Util.getCalView(i,clist) %>
-                  </div>
-               </td>
-         <%
-            count++;
-            if(count%7==0){
-               out.println("</tr><tr>");
-            }
-         }
-         
+	<div class="layout-container">
+		<jsp:include page="khc_mypage.jsp" />
+		<div id="main">
+			<table id="calendar" class="table"
+				style="text-align: center; border: 1px;">
+				<caption style="text-align: center">
+					<a href="calendar.jsp?year=<%=year-1%>&month=<%=month%>">◁</a> <a
+						href="calendar.jsp?year=<%=year%>&month=<%=month-1%>">◀</a> <span
+						class="y"><%=year %></span>년 <span class="m"><%=month %></span>월 <a
+						href="calendar.jsp?year=<%=year%>&month=<%=month+1%>">▶</a> <a
+						href="calendar.jsp?year=<%=year+1%>&month=<%=month%>">▷</a>
+				</caption>
+
+				<tr>
+					<th>일</th>
+					<th>월</th>
+					<th>화</th>
+					<th>수</th>
+					<th>목</th>
+					<th>금</th>
+					<th>토</th>
+				</tr>
+
+				<tr>
+
+<% //공백    
+	int count=0;
+	for(int i=0;i<dayOfWeek-1;i++){
+		out.print("<td>&nbsp;</td>");
+		count++;
+	} 
+	for(int i=1;i<=lastDay;i++){ 
+%>
+					<td><a class="countView"
+						href="controller.do?category=callist&year=<%=year %>&month=<%=month %>&date=<%=i %>"
+						style="color:<%=Util.fontColor(i,dayOfWeek)%>"><%=i %></a> <a
+						href="insertcalboard.jsp?year=<%=year%>&month=<%=month%>&date=<%=i%>&lastday=<%=lastDay%>"><img
+							alt="일정추가" src="img/ooo.png"></a>
+						<div class="clist">
+							<%=Util.getCalView(i,clist) %>
+						</div></td>
+<%
+		count++;
+		if(count%7==0){
+			out.println("</tr><tr>");
+		}
+	}
          //dayOfWeek-1+lastDay)%7 : 마지막 날의 요일
          //7-(dayOfWeek-1+lastDay)%7 : 남은 칸 수
-         for(int i=0;i<(7-(dayOfWeek-1+lastDay)%7)%7;i++){
-            out.print("<td>&nbsp</td>");
-         }
-         
-         %>
-      
-      
-      
-      
-      </tr>
-   
-   
-   
-   
-   </table>
-   </div>
-   </div>
-      
-   
+	for(int i=0;i<(7-(dayOfWeek-1+lastDay)%7)%7;i++){
+		out.print("<td>&nbsp</td>");
+	}
+%>
+				</tr>
+			</table>
+			</br></br></br>
+			<hr>
+			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br></br></br>
+		</div>
+	</div>
 </body>
 </html>

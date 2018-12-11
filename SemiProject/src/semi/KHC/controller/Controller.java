@@ -150,7 +150,7 @@ public class Controller extends HttpServlet {
 					//로그인 정보를 세션에 담아준다.
 					session.setAttribute("userDto", userDto);
 					request.setAttribute("category", category);
-					dispatch("KHC.jsp", request, response);
+					dispatch("controller.do?category=MAIN", request, response);
 				}else {
 					request.setAttribute("user_id", user_id);
 					dispatch("khc_sendEmailForm.jsp", request, response);
@@ -190,7 +190,7 @@ public class Controller extends HttpServlet {
 				session = null;    //다시 null로 만들어줬음 다른방법을 찾아서 적용하는게 좋아보임
 			}
 			
-			dispatch("KHC.jsp", request, response);
+			dispatch("controller.do?category=MAIN", request, response);
 		} else if (category.equals("POINT")) {
 			UserDto userdto = (UserDto)session.getAttribute("userDto");
 			

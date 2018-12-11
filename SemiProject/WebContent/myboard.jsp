@@ -35,7 +35,8 @@
 	<jsp:include page="khc_mypage.jsp" />
 		<div id="main">
 			<div>
-			<table class="table table-striped">
+			<h2>내가 작성한 게시물</h2>
+			<table class="table table-hover">
 					
 						<col width="50px">
 						<col width="500px">
@@ -77,11 +78,10 @@
 					</nav>
 			</div>
 			</br></br></br>
+			<hr>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br></br></br>
 		</div>
 	</div>
-
-	<script type="text/javascript" src="js/search.js"></script>
-	<hr>
 </body>
 </html>

@@ -123,7 +123,7 @@
 	</select>
 	
 	<select id="detail" parameterType="int" resultMap="board_Map">
-				SELECT BOARD.BOARD_SEQ_ID, USER_NICKNAME, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, BOARD.VIEW_COUNT
+				SELECT BOARD.BOARD_SEQ_ID, USER_NICKNAME, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE, MAPS_ID, COMMENT_COUNT, FAVORITE_COUNT, BOARD.VIEW_COUNT
 				FROM KH_BOARD BOARD JOIN KH_USER USING(USER_SEQ) JOIN (SELECT D.BOARD_SEQ_ID ,COUNT(F.COMMENT_CONTENT) AS COMMENT_COUNT
 													FROM KH_BOARD D LEFT JOIN KH_COMMENT F ON (D.BOARD_SEQ_ID = F.BOARD_SEQ_ID) 
 													GROUP BY D.BOARD_SEQ_ID) COMMENT_TABLE ON (BOARD.BOARD_SEQ_ID = COMMENT_TABLE.BOARD_SEQ_ID) 
@@ -145,6 +145,14 @@
 		INSERT INTO KH_BOARD VALUES(#{board_seq_id}, #{board_title}, #{board_content}, SYSDATE, 0, #{user_seq}, #{board_category}, NULL)
 	</insert>
 	
+	<insert id="insert_m" parameterType="boardDto">
+		<selectKey keyProperty="board_seq_id" resultType="int" order="BEFORE">
+			SELECT KH_BOARD_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? 
+												 anser : DUAL = 가상 테이블(KH_BOARD_SEQ.NEXTVAL을 실행 할 가상테이블)-->
+		</selectKey>
+		INSERT INTO KH_BOARD VALUES(#{board_seq_id}, #{board_title}, #{board_content}, SYSDATE, 0, #{user_seq}, #{board_category}, #{maps_id})
+	</insert>
+	
 	<update id="update" parameterType="boardDto">
 		<selectKey keyProperty="board_seq_id" resultType="int" order="AFTER">
 			SELECT BOARD_SEQ_ID FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
@@ -152,7 +160,18 @@
 		UPDATE KH_BOARD SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} WHERE BOARD_SEQ_ID = #{board_seq_id}
 	</update>
 	
+	<update id="update_m" parameterType="boardDto">
+		<selectKey keyProperty="board_seq_id" resultType="int" order="AFTER">
+			SELECT BOARD_SEQ_ID FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
+		</selectKey>
+		UPDATE KH_BOARD SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</update>
+	
 	<delete id="delete" parameterType="int">
+		DELETE FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</delete>
+	
+	<delete id="delete_m" parameterType="int">
 		DELETE FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
 	</delete>
 	

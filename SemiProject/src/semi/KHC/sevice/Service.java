@@ -6,6 +6,7 @@ import java.util.Map;
 
 import semi.KHC.boardDto.BoardDto;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.mapDto.MapDto;
 import semi.KHC.noteDto.NoteDto;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDto.UserDto;
@@ -38,10 +39,10 @@ public interface Service {
 		
 	// board_insert
 	public int board_insert(String board_category, String board_title, String board_content, int user_seq);
-
+	public int board_insert_map(String board_category, String board_title, String board_content, int user_seq, int maps_id);
 	// board_update
 	public int board_update(int board_seq_id, String board_title, String board_content);
-
+	public int board_update_map(int board_seq_id, String board_title, String board_content, int maps_id);
 	// board_delete
 	public boolean board_delete(int board_seq_id);
 
@@ -87,4 +88,16 @@ public interface Service {
 	public NoteDto noteDetail(int note_seq_id);
 	
 	public int noteInsert(NoteDto notedto);
+	
+	//map 출력 : map_detail
+	public MapDto map_detail(int map_seq_id);
+
+	// map 좌표값 삽입 : map_insert
+	public int maps_insert(String maps_name, String maps_x, String maps_y);
+
+	// map_update
+	public int maps_update(int maps_seq_id, String maps_name, String maps_x, String maps_y);
+
+	// maps_delete
+	public boolean maps_delete(int maps_seq_id);
 }

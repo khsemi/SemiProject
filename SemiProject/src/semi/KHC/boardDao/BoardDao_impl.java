@@ -166,6 +166,23 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		}
 		return dto;
 	}
+	@Override
+	public BoardDto detail_m(int map_id, int board_seq_id) {
+		BoardDto dto = new BoardDto();
+
+		SqlSession session = null;
+
+		try {
+			session = getSqlSessionFactory().openSession(true); //outo commit
+			dto = session.selectOne(BOARD_NAMESPACE + "detail_m", board_seq_id);
+															//??
+		} catch (Exception e) {
+			System.out.println("detail 오류 : " + e);
+		} finally {
+			session.close();
+		}
+		return dto;
+	}
 
 	@Override
 	public int insert(BoardDto dto) {
@@ -183,6 +200,22 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		}
 		return board_seq_id;
 	}
+	@Override
+	public int insert_m(BoardDto dto) {
+		SqlSession session = null;
+		int board_seq_id = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.insert(BOARD_NAMESPACE + "insert_m", dto);
+			// insert가 성공하면, 그 성공한 객체의 seq를 가져온다.
+			board_seq_id = dto.getBoard_seq_id();
+		} catch (Exception e) {
+			System.out.println("insert 오류 : " + e);
+		} finally {
+			session.close();
+		}
+		return board_seq_id;
+	}
 
 	@Override
 	public int update(BoardDto dto) {
@@ -191,6 +224,21 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		try {
 			session = getSqlSessionFactory().openSession(true);
 			session.update(BOARD_NAMESPACE + "update", dto);
+			board_seq_id = dto.getBoard_seq_id();
+		} catch (Exception e) {
+			System.out.println("update 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return board_seq_id;
+	}
+	@Override
+	public int update_m(BoardDto dto) {
+		SqlSession session = null;
+		int board_seq_id = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.update(BOARD_NAMESPACE + "update_m", dto);
 			board_seq_id = dto.getBoard_seq_id();
 		} catch (Exception e) {
 			System.out.println("update 오류 : "+e);

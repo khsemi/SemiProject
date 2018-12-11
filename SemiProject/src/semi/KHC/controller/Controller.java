@@ -22,16 +22,13 @@ import semi.KHC.userDto.UserDto;
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HttpSession session = null;
-
-	
-	int testcnt = 0;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("text/html; charset=UTF-8");
 		
 		Service service = new Service_impl();
-
+		
 		
 		
 		//command 값을 받아온다.
@@ -78,9 +75,23 @@ public class Controller extends HttpServlet {
 			// request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
 			dispatch("board.jsp", request, response);
 		} else if (category.equals("board_detail")) {
-			Map<String, Object> detailMap = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			System.out.println("board_seq_id : " + board_seq_id);
+			
+			System.out.println(session != null);
+			
+			if(session != null) {
+				int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+				//System.out.println("Controller.board_detail.favorite_select : "+service.favorite_select(board_seq_id, user_seq));
+				System.out.println("user_seq : "+user_seq);
+				request.setAttribute("favorite", service.favorite_select(board_seq_id, user_seq));
+			}
+			
+			Map<String, Object> detailMap = service.board_detail(board_seq_id);
+			
 			request.setAttribute("boardDto", detailMap.get("boardDto"));
 			request.setAttribute("commentList", detailMap.get("commentList"));
+			
 			dispatch("board_detail.jsp", request, response);
 		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm") || category.equals("NOTICE_insertForm") || category.equals("COMMUNITY_insertForm")
 				 || category.equals("TRADE_insertForm") || category.equals("JOBS_insertForm") || category.equals("FOODINFO_insertForm")) {
@@ -109,9 +120,10 @@ public class Controller extends HttpServlet {
 			// service.board_update 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
 			int board_seq_id = service.board_update(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
-			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+			response.sendRedirect("controller.do?category=board_detail&board_seq_id="+board_seq_id+"&user_seq="+Integer.parseInt(request.getParameter("user_seq")));
 		} else if (category.equals("board_delete")) {
-			//if(service -> dao.delete 의 결과가 true 라면, 
+			System.out.println(request.getParameter("board_seq_id"));
+			//if(service -> dao.delete 의 결과가 true 라면,
 			if (service.board_delete(Integer.parseInt(request.getParameter("board_seq_id")))) {
 				//response를 이용하여 controller에 category와 page를 보내주어 내가 지운 글의 category의 1page를 보여준다.
 				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1");
@@ -195,22 +207,26 @@ public class Controller extends HttpServlet {
 				System.out.println("실패!");
 			}
 		} else if(category.equals("comment_insert")) {
-			
-			
 			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
 			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
 			String comment_content = request.getParameter("comment_content");
 			
-			boolean comment_insert = service.comment_insert(board_seq_id, user_seq, comment_content);
-			
-			if(comment_insert) {
+			//댓글 입력이 성공하면,
+			if(service.comment_insert(board_seq_id, user_seq, comment_content)) {
 				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
 			}else {
+				//실패하면,
 				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
 			}
-			
+		//} else if(category.equals("comment_update")) {
+			//System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
+		} else if(category.equals("comment_delete")) {
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			if(service.comment_delete(Integer.parseInt(request.getParameter("comment_seq_id")))) {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}
+			System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
 		}
-
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

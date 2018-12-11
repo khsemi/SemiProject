@@ -26,6 +26,9 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <body>
+<input type="hidden" id="totalCount" value='${totalCount }'>
+<input type="hidden" id="page" value='${page }'>
+<input type="hidden" id="user_seq" value='${userDto.user_seq }'>
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
@@ -84,7 +87,7 @@
 										<tr>
 											<td>${dto.board_seq_id }</td>
 											<td>${dto.board_category }</td>
-											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}&user_seq=${userDto.user_seq }">${dto.board_title }</a></td>
 											<td>${dto.user_nickname }</td>
 											<td><fmt:formatDate value="${dto.board_regdate }"
 													pattern="yy.MM.dd HH:mm" /></td>

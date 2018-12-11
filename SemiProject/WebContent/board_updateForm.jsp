@@ -20,7 +20,7 @@
 function board_cancel(){
 	var check = confirm("글 수정을 '취소' 하시겠습니까?");
 	if(check == true){
-		location.href="controller.do?category=board_detail&board_seq_id="+$("#board_seq_id").val();
+		location.href="controller.do?category=board_detail&board_seq_id="+$("#board_seq_id").val()+"&user_seq="+$("#user_seq").val();
 	}else {
 		return false;
 	}
@@ -36,6 +36,7 @@ function board_cancel(){
 				<h2> ${dto.board_category } </h2>
 				<form method="post" action="controller.do?category=board_update" id="board_updateForm">
 					<input type="hidden" name="board_seq_id" id="board_seq_id" value="${dto.board_seq_id }">
+					<input type="hidden" id="user_seq"	value="${userDto.user_seq }">
 				 	<table class="table" style="text-align:center; border:1px; solid #dddddd">
 							<tr>
 								<td><input name="categoryType" id="category" type="text" class="form-control" placeholder="분류" name="type" maxlength="50" readonly="readonly" value="${dto.board_category }"></td>

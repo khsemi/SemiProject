@@ -19,6 +19,8 @@ import semi.KHC.boardDto.BoardDto;
 import semi.KHC.commentDao.CommentDao;
 import semi.KHC.commentDao.CommentDao_impl;
 import semi.KHC.commentDto.CommentDto;
+import semi.KHC.favoriteDao.FavoriteDao;
+import semi.KHC.favoriteDao.FavoriteDao_impl;
 import semi.KHC.pointDao.PointDao;
 import semi.KHC.pointDao.PointDao_impl;
 import semi.KHC.pointDto.PointDto;
@@ -79,10 +81,15 @@ public class Service_impl implements Service{
 	@Override
 	public Map<String, Object> board_detail(int board_seq_id) {
 		BoardDao board = new BoardDao_impl();
+		BoardDto boardDto = null;
 		CommentDao commentDao = new CommentDao_impl();
 		Map<String, Object> detailMap = new HashMap<String, Object>();
 		
-		BoardDto boardDto = board.detail(board_seq_id);
+		//detail을 클릭하면 viewCount가 하나올라가고 성공했다면,
+		if(board.updateViewCount(board_seq_id)) {
+			boardDto = board.detail(board_seq_id);
+		}
+		
 		detailMap.put("boardDto", boardDto);
 		List<CommentDto> commentList = commentDao.selectList(board_seq_id);
 		detailMap.put("commentList", commentList);
@@ -201,5 +208,69 @@ public class Service_impl implements Service{
 		CommentDao commentDao = new CommentDao_impl();
 		return commentDao.insert(board_seq_id, user_seq, comment_content);
 	}
+	
+	@Override
+	public boolean comment_delete(int comment_seq_id) {
+		CommentDao commentDao = new CommentDao_impl();
+		return commentDao.delete(comment_seq_id);
+	}
+
+	@Override
+	public boolean favorite_up(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		//if(favoriteDao.favorite_check(board_seq_id, user_seq)) {
+		//	System.out.println("추천 가능한 user입니다!");
+			if(favoriteDao.favorite_insert_up(board_seq_id, user_seq)) {
+				System.out.println("추천에 성공하였습니다. [ service_impl : return true ] ");
+				return true;
+			}
+		//}
+		System.out.println("추천에 실패하였습니다. [ service_impl : return false ] ");
+		return false;
+	}
+
+	@Override
+	public boolean favorite_down(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		//if(favoriteDao.favorite_check(board_seq_id, user_seq)) {
+			//System.out.println("비추천 가능한 user입니다!");
+			if(favoriteDao.favorite_insert_down(board_seq_id, user_seq)) {
+				System.out.println("비추천에 성공하였습니다. [ service_impl : return true ] ");
+				return true;
+			}
+		//}
+		System.out.println("비추천에 실패하였습니다. [ service_impl : return false ] ");
+		return false;
+	}
+	
+	//존재가치 생각중
+	/*
+	@Override
+	public boolean favorite_check(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		
+		if(favoriteDao.favorite_check(board_seq_id,user_seq)) {
+			return false;
+		}
+		
+		return true;
+	}
+	*/
+
+	@Override
+	public int favorite_select(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		Integer result = favoriteDao.favorite_select(board_seq_id, user_seq);
+		//KH_FAVORITE 테이블에 SELECT 해본 후 값이 없으면 0을 리턴한다.(추천/비추천을 하지않았다는 뜻)
+		return result == null? 0 : result;
+	}
+
+	@Override
+	public boolean favorite_delete(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		return favoriteDao.favorite_delete(board_seq_id, user_seq);
+	}
+
+	
 	
 }

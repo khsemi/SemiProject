@@ -150,6 +150,23 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		}
 		return dto;
 	}
+	
+	@Override
+	public boolean updateViewCount(int board_seq_id) {
+		SqlSession session = null;
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.update(BOARD_NAMESPACE+"updateViewCount",board_seq_id);
+			
+		}catch (Exception e) {
+			System.out.println("updateViewCount_up 오류 : "+e);
+			return false;
+		}finally {
+			session.close();
+		}
+		return true;
+	}
 
 	@Override
 	public int insert(BoardDto dto) {
@@ -198,7 +215,4 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		}
 		return result;
 	}
-
-	
-
 }

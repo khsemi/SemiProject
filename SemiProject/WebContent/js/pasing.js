@@ -16,6 +16,7 @@ $(function(){
 	var totalCount = $("#totalCount").val();
 	var page = $("#page").val();
 	var category = $("#category").val();
+	var user_seq = $("#user_seq").val();
 	
 	//----------------검색을 위해 필요한 값들 가져오기-------------------
 	var searchType = $("#searchType").val();
@@ -52,13 +53,13 @@ $(function(){
 	//.append 해주는 코드 안에 <a>태그 말고 <li>로 해도됨 (원하는 형식대로 출력하게하면됨)
 	
 	if(startPage > 1){
-		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page=1&searchType="+searchType+"&keyword="+keyword+"' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page=1&searchType="+searchType+"&keyword="+keyword+"&user_seq="+user_seq+"' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
 	}else{
 		$("#pasing").append("<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
 	}
 	
 	if(page > 1){
-		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+(page-1)+"&searchType="+searchType+"&keyword="+keyword+"' aria-label='Previous'><span aria-hidden='true'>&lang;</span></a></li>");
+		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+(page-1)+"&searchType="+searchType+"&keyword="+keyword+"&user_seq="+user_seq+"' aria-label='Previous'><span aria-hidden='true'>&lang;</span></a></li>");
 	}else{
 		$("#pasing").append("<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&lang;</span></a></li>");
 	}
@@ -67,18 +68,18 @@ $(function(){
 		if (iCount == page) {
 	       $("#pasing").append("<li class='active'><a href='#'>"+iCount+"<span class='sr-only'></span></a></li>");
 	    } else {
-	    	$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+iCount+"&searchType="+searchType+"&keyword="+keyword+"'>" + iCount + "<span class='sr-only'></span></a></li>");
+	    	$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+iCount+"&searchType="+searchType+"&keyword="+keyword+"&user_seq="+user_seq+"'>" + iCount + "<span class='sr-only'></span></a></li>");
 	    }
 	}
 	
 	if(page < totalPage){
-		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+(Number(page)+1)+"&searchType="+searchType+"&keyword="+keyword+"' aria-label='Next'><span aria-hidden='true'>&rang;</span></a></li>");
+		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+(Number(page)+1)+"&searchType="+searchType+"&keyword="+keyword+"&user_seq="+user_seq+"' aria-label='Next'><span aria-hidden='true'>&rang;</span></a></li>");
 	}else{
 		$("#pasing").append("<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&rang;</span></a></li>");
 	}
 	
 	if(endPage < totalPage){
-		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+totalPage+"&searchType="+searchType+"&keyword="+keyword+"' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
+		$("#pasing").append("<li class=''><a href='controller.do?category="+category+"&page="+totalPage+"&searchType="+searchType+"&keyword="+keyword+"&user_seq="+user_seq+"' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
 	}else{
 		$("#pasing").append("<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
 	}

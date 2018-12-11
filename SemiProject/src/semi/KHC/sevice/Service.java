@@ -21,6 +21,13 @@ public interface Service {
 	// board_detail
 	public Map<String, Object> board_detail(int board_seq_id);
 	
+	//favorite
+	//public boolean favorite_check(int board_seq_id, int user_seq);
+	public boolean favorite_up(int board_seq_id, int user_seq);
+	public boolean favorite_down(int board_seq_id, int user_seq);
+	public int favorite_select(int board_seq_id, int user_seq);
+	public boolean favorite_delete(int board_seq_id, int user_seq);
+	
 	//board_update
 	public BoardDto board_selectOne(int board_seq_id);
 
@@ -35,6 +42,8 @@ public interface Service {
 	
 	//comment_insert
 	public boolean comment_insert(int board_seq_id, int user_seq, String comment_content);
+	
+	public boolean comment_delete(int comment_seq_id);
 
 	// 로그인
 	public UserDto user_login(String user_id, String user_pw);

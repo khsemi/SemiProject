@@ -12,4 +12,6 @@ public interface CommentDao {
 	public boolean insert(int board_seq_id, int user_seq, String comment_content);
 	
 	public boolean delete(int comment_seq_id);
+	
+	public boolean mul_delete(int board_seq_id);
 }

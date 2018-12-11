@@ -23,6 +23,7 @@
 <script src="js/bootstrap.min.js"></script>
 
 <body>
+<h1>a</h1>
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->

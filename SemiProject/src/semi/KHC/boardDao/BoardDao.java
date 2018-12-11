@@ -9,13 +9,13 @@ public interface BoardDao {
 	
 	//일반 게시판 조회
 	public int totalCount(String category);
-	public List<BoardDto> selectPage(String category, int page);
+	public List<BoardDto> selectPage(String category, int page, String sortType);
 	//내가 쓴 글 조회
 	public int totalCount(int user_seq);
 	public List<BoardDto> selectPage(int user_seq, int page);
 	//검색 게시판 조회
 	public int totalCount_search(String category, String keyword);
-	public List<BoardDto> selectPage_search(String category, int page, String keyword);
+	public List<BoardDto> selectPage_search(String category, int page, String keyword, String sortType);
 	
 	public BoardDto detail(int board_seq_id);
 	public boolean updateViewCount(int board_seq_id);

@@ -47,11 +47,12 @@ public class Controller extends HttpServlet {
 				 || category.equals("TRADE") || category.equals("JOBS") || category.equals("FOODINFO")) {
 			//View 에서 받아오는 값 
 			int page = Integer.parseInt(request.getParameter("page"));
-			
+			String sortType = request.getParameter("sortType");
 			//service를 통해 값을 전달받아 boardMap에 저장한다.
-			Map<String, Object> boardMap = service.board(category, page);
+			Map<String, Object> boardMap = service.board(category, page, sortType);
 			
 			//다시 View에 넘겨주기위해 필요한 값들을 request에 setAttribute 해준다.
+			request.setAttribute("sortType", sortType);
 			request.setAttribute("page", page);
 			request.setAttribute("category", category);
 			request.setAttribute("totalCount",boardMap.get("totalCount"));
@@ -66,11 +67,13 @@ public class Controller extends HttpServlet {
 			int page = Integer.parseInt(request.getParameter("page"));
 			//String searchType = request.getParameter("searchType");
 			String keyword = request.getParameter("keyword");
+			String sortType = request.getParameter("sortType");
 			
 			//service를 통해 값을 전달받아 boardMap에 저장한다.
-			Map<String, Object> boardMap = service.board_search(category, page, keyword);
+			Map<String, Object> boardMap = service.board_search(category, page, keyword, sortType);
 			
 			//다시 View에 넘겨주기위해 필요한 값들을 request에 setAttribute 해준다.
+			request.setAttribute("sortType", sortType);
 			request.setAttribute("page", page);
 			request.setAttribute("category", category);
 			request.setAttribute("totalCount", boardMap.get("totalCount"));

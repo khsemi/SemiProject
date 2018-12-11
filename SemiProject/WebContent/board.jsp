@@ -1,16 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="css/KHC.css">
-<title>board</title>
+<title>board </title>
 </head>
 <!-- 부트스트랩이 선언되기전에 jquery가 선언되어야한다. -->
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
@@ -35,8 +34,17 @@
 </script>
 
 <body>
+<!-- 
+정렬 될 수 있는 것 4가지
+BOARD_REGDATE 
+COMMENT_COUNT 
+FAVORITE_COUNT 
+BOARD.VIEW_COUNT
+
+ -->
 <!-- search,pasing에 필요한 값들을 controller 에서 받아와, hidden값으로 선언하여, search.js, pasing.js에서 사용할 수 있게 한다. -->
 <input type="hidden" id="totalCount" value='${totalCount }'>
+<input type="hidden" id="sortType" value='${sortType }'>
 <input type="hidden" id="page" value='${page }'>
 <input type="hidden" id="category" value='${category }'>
 <input type="hidden" id="searchType" value='${searchType }'>
@@ -60,7 +68,11 @@
 						<col width="10px">
 						<thead>
 						<tr><!-- searchForm -->
-							<td colspan="2"><a href="#">최신순</a> <a href="#">추천순</a> <a href="#">댓글순</a>  <a href="#">조회순</a>  
+							<td colspan="2">
+							<a href="controller.do?category=${category }&page=${page}&searchType=${searchType }&keyword=${keyword }&sortType=board_regdate">최신순</a> 
+							<a href="controller.do?category=${category }&page=${page}&searchType=${searchType }&keyword=${keyword }&sortType=favorite_count">추천순</a> 
+							<a href="controller.do?category=${category }&page=${page}&searchType=${searchType }&keyword=${keyword }&sortType=comment_count">댓글순</a>  
+							<a href="controller.do?category=${category }&page=${page}&searchType=${searchType }&keyword=${keyword }&sortType=view_count">조회순</a>  
 							<td colspan="5" align="right"><div id="search"></div></td>
 						</tr>	
 						</thead>
@@ -102,7 +114,7 @@
 					
 				</div>
 				<footer class="footer">Team.진선이와 아이들
-									1, 2, 3, 4, 5, 6
+									1, 2, 3, 4, 5, 6  sortType : ${sortType }
 				</footer>
 			</div>
 		</div>

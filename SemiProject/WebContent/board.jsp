@@ -38,7 +38,7 @@
 <!-- search,pasing에 필요한 값들을 controller 에서 받아와, hidden값으로 선언하여, search.js, pasing.js에서 사용할 수 있게 한다. -->
 <input type="hidden" id="totalCount" value='${totalCount }'>
 <input type="hidden" id="page" value='${page }'>
-<input type="hidden" id="category" value='${category }'>
+<input type="hidden" id="category" value='${category }'> 
 <input type="hidden" id="searchType" value='${searchType }'>
 <input type="hidden" id="keyword" value='${keyword }'>
 				

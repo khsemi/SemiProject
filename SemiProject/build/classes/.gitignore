@@ -2,3 +2,7 @@
 /db/
 /semi/
 /util/
+/favoriteDao/
+/favoriteDto/
+/commentDao/
+/commentDto/

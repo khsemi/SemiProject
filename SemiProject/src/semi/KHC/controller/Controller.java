@@ -81,8 +81,23 @@ public class Controller extends HttpServlet {
 			// request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
 			dispatch("board.jsp", request, response);
 		} else if (category.equals("board_detail")) {
-			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
-			request.setAttribute("dto", dto);
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			System.out.println("board_seq_id : " + board_seq_id);
+			
+			System.out.println(session != null);
+			
+			if(session != null) {
+				int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+				//System.out.println("Controller.board_detail.favorite_select : "+service.favorite_select(board_seq_id, user_seq));
+				System.out.println("user_seq : "+user_seq);
+				request.setAttribute("favorite", service.favorite_select(board_seq_id, user_seq));
+			}
+			
+			Map<String, Object> detailMap = service.board_detail(board_seq_id);
+			
+			request.setAttribute("boardDto", detailMap.get("boardDto"));
+			request.setAttribute("commentList", detailMap.get("commentList"));
+			
 			dispatch("board_detail.jsp", request, response);
 		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm") || category.equals("NOTICE_insertForm") || category.equals("COMMUNITY_insertForm")
 				 || category.equals("TRADE_insertForm") || category.equals("JOBS_insertForm") || category.equals("FOODINFO_insertForm")) {
@@ -104,7 +119,7 @@ public class Controller extends HttpServlet {
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
 			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
 		} else if (category.equals("board_updateForm")) { 
-			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
+			BoardDto dto = service.board_selectOne(Integer.parseInt(request.getParameter("board_seq_id")));
 			request.setAttribute("dto", dto);
 			dispatch("board_updateForm.jsp", request, response);
 		} else if (category.equals("board_update")) {

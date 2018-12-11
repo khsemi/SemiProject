@@ -110,7 +110,7 @@ function favorite_down(){
 		}
 	}
 	if($("#favorite_check").val() == 0){
-		$("#favorite_check").val(2);
+		$("#favorite_check").val(-1);
 		$.ajax({
 			url:"ajax.do",
 			type:"post",
@@ -120,7 +120,7 @@ function favorite_down(){
 				user_seq : $("#user_seq").val(),
 			},
 			success:function(){
-				alert("비추천 하였습니다.");
+				alert("비추천 하였습니다 .");
 				$("#favorite").val(Number($("#favorite").val())-1);
 			},
 			error:function(){	
@@ -172,18 +172,19 @@ function favorite_down(){
 					</span>
 				</div>
 				<form method="post" action="controller.do?category=board_insert">
-				 	<table class="table" style="text-align:center; border:1px; solid #dddddd">
+				 	<table class="table" style="border:1px; solid #dddddd">
 							<tr>
 								<td><input name="categoryType" id="category" type="text" class="form-control" placeholder="분류" name="type" maxlength="50" readonly="readonly" value="${boardDto.board_category }"></td>
 							</tr>
 							<tr>
 				 				<td><input type="text" class="form-control" placeholder="작성자" maxlength="50" readonly="readonly" value="${boardDto.user_nickname }"></td>
-				 			</tr>		 		
+				 			</tr>
 				 			<tr>
 				 				<td><input name="title" type="text" class="form-control" placeholder="제목" name="title" maxlength="50" readonly="readonly" value="${boardDto.board_title }"></td>
 				 			</tr>
-				 			<tr>	
-				 				<td><textarea name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px" readonly="readonly">${boardDto.board_content }</textarea> </td>
+				 			<tr>
+				 				<!--  <td><textarea name="content" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px" readonly="readonly">${boardDto.board_content }</textarea> </td>-->
+				 				<td><div class="form-control" style="height:350px; width:1050px;">${boardDto.board_content }</div></td>
 				 			</tr>
 				 	</table>
 				 	<div>

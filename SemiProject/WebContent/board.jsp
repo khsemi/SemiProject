@@ -48,17 +48,6 @@
 			<!-- sidebar를 include해준다. -->
 			<jsp:include page="sidebar.jsp"/>
 			<div class="form">
-				<!-- 내가 보고있는 게시판 TABLE(DB)의 카테고리 컬럼(즉, command가 된다) -->
-			<%-- 				<h2>${command }</h2> --%>
-					<div class="category-filter-wrapper">
-						<div class="category-filter-query pull-right">
-						검색창
-						</div>
-						<ul class="list-sort pull-left">
-						<li>gd
-						<li>ag
-						</ul>
-					</div>
 					<!-- 어떠한 테이블의 리스트를 받아와도 똑같은 모양으로 출력한다. -->
 					<table class="table table-striped">
 					

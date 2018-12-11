@@ -111,13 +111,12 @@ public class Controller extends HttpServlet {
 				System.out.println("로그인이 되어있지 않은 상태");
 				response.sendRedirect("khc_login.jsp");
 			}
-			
 		} else if (category.equals("board_insert")) {
-			System.out.println(Integer.parseInt(request.getParameter("user_seq")));
 			// service.board_insert 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
 			int board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
-			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+			request.setAttribute("user_seq", Integer.parseInt(request.getParameter("user_seq")));
+			dispatch("controller.do?category=board_detail&board_seq_id=" + board_seq_id, request, response);
 		} else if (category.equals("board_updateForm")) { 
 			BoardDto dto = service.board_selectOne(Integer.parseInt(request.getParameter("board_seq_id")));
 			request.setAttribute("dto", dto);
@@ -126,7 +125,7 @@ public class Controller extends HttpServlet {
 			// service.board_update 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
 			int board_seq_id = service.board_update(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
-			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id+"&user_seq="+Integer.parseInt(request.getParameter("user_seq")));
 		} else if (category.equals("board_delete")) {
 			//if(service -> dao.delete 의 결과가 true 라면, 
 			if (service.board_delete(Integer.parseInt(request.getParameter("board_seq_id")))) {

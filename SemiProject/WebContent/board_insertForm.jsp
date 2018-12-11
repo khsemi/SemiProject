@@ -83,7 +83,7 @@ $(function(){
 		<div id="main">
 			<jsp:include page="sidebar.jsp"></jsp:include>
 			<div class="form">
-				<h2> 글 입력 :: ${userDto.user_seq }</h2>
+				<h2> 글 입력 </h2>
 				<form id="frm" method="post" action="controller.do?category=board_insert">
 					<input type="hidden" name="user_seq" value="${userDto.user_seq }">
 				 	<table class="table" style="text-align:center; border:1px; solid #dddddd">

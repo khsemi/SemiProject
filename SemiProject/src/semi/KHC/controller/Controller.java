@@ -390,6 +390,26 @@ public class Controller extends HttpServlet {
 			
 			dispatch("khc_findResult_id.jsp", request, response);
 			System.out.println();
+		}else if(category.equals("comment_insert")) {
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+			String comment_content = request.getParameter("comment_content");
+			
+			//댓글 입력이 성공하면,
+			if(service.comment_insert(board_seq_id, user_seq, comment_content)) {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}else {
+				//실패하면,
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}
+		//} else if(category.equals("comment_update")) {
+			//System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
+		} else if(category.equals("comment_delete")) {
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			if(service.comment_delete(Integer.parseInt(request.getParameter("comment_seq_id")))) {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}
+			System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
 		}
 
 	}

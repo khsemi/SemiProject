@@ -41,16 +41,9 @@ function board_delete(){
 	}
 }
 
-
-
 function comment_delete(comment_seq_id){
 	alert(comment_seq_id);
-	alert(comment_seq_id);
 }
-
-/* function comment_update(comment_seq_id){
-	alert(comment_seq_id);
-} */
 
 function favorite_up(){
 	if($("#user_seq").val() == 0){
@@ -72,8 +65,7 @@ function favorite_up(){
 				board_seq_id : $("#board_seq_id").val(),
 				user_seq : $("#user_seq").val(),
 			},
-			success:function(data){
-				alert(data);
+			success:function(){
 				alert("추천하였습니다!");
 				$("#favorite").val(Number($("#favorite").val())+1);
 			},
@@ -93,8 +85,7 @@ function favorite_up(){
 					board_seq_id : $("#board_seq_id").val(),
 					user_seq : $("#user_seq").val(),
 				},
-				success:function(data){
-					alert(data);
+				success:function(){
 					alert("추천을 취소하였습니다.");
 					$("#favorite").val(Number($("#favorite").val())-1);
 				},
@@ -128,9 +119,8 @@ function favorite_down(){
 				board_seq_id : $("#board_seq_id").val(),
 				user_seq : $("#user_seq").val(),
 			},
-			success:function(data){
-				alert(data);
-				alert("이 글을 싫어합니다.");
+			success:function(){
+				alert("비추천 하였습니다.");
 				$("#favorite").val(Number($("#favorite").val())-1);
 			},
 			error:function(){	
@@ -149,8 +139,7 @@ function favorite_down(){
 					board_seq_id : $("#board_seq_id").val(),
 					user_seq : $("#user_seq").val(),
 				},
-				success:function(data){
-					alert(data);
+				success:function(){
 					alert("비추천을 취소하였습니다.");
 					$("#favorite").val(Number($("#favorite").val())+1);
 				},

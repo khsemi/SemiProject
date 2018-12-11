@@ -24,10 +24,13 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
-function openWin(btn){  
-	window.open("controller.do?category=NOTESENDINGFORM&recive_user_id="+btn, "쪽지 보내기", "width=520, height=330, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );  
+	function openWin(btn) {
+		window
+				.open("controller.do?category=NOTESENDINGFORM&recive_user_id="
+						+ btn, "쪽지 보내기",
+						"width=520, height=330, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 
-}  
+	}
 </script>
 <body>
 
@@ -41,7 +44,7 @@ function openWin(btn){
 				<h2>친구 찾기</h2>
 
 			</div>
-			
+
 			<div class="container container-fluid">
 				<form class="needs-validation" action="#" method="post">
 					<input type="text" class="" placeholder="Search...">
@@ -55,7 +58,7 @@ function openWin(btn){
 					<thead>
 						<tr>
 							<th>회원 목록</th>
-							
+
 						</tr>
 					</thead>
 					<tbody>
@@ -66,10 +69,13 @@ function openWin(btn){
 							<c:otherwise>
 								<c:forEach items="${userlist }" var="dto">
 									<tr>
-										<td><img alt="프로필 사진" src="img/man.png" style="width: 50px;height: 60px;"></td>
+										<td><img alt="프로필 사진" src="img/man.png"
+											style="width: 50px; height: 60px;"></td>
 										<td><a href="#"><strong Style="font-size: 18px;">${dto.user_nickname }</strong></a></td>
-										<td><button class="btn" value="${dto.user_nickname }" onclick="openWin(this.value);" >
-												<img src="img/sendingIcon.png" style="height: 30px;width: 30px;">&nbsp;쪽지보내기
+										<td><button class="btn" value="${dto.user_nickname }"
+												onclick="openWin(this.value);">
+												<img src="img/sendingIcon.png"
+													style="height: 30px; width: 30px;">&nbsp;쪽지보내기
 											</button></td>
 									</tr>
 								</c:forEach>
@@ -79,15 +85,15 @@ function openWin(btn){
 				</table>
 
 			</div>
-			</br> </br> </br>
+			</br> </br> </br> </br>
+			</br>
+			</br>
+			<hr>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br>
+			</br>
+			</br>
 		</div>
 	</div>
-
-	<div id="pasingInfo" style="text-align: center;"></div>
-	<br>
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="js/pasing.js"></script>
-	<hr>
 </body>
 </html>

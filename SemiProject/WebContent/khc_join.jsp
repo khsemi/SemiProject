@@ -15,7 +15,8 @@
 <meta charset="UTF-8">
 <!-- google -->
 <meta name="google-signin-scope" content="profile email">
-<meta name="google-signin-client_id" content="176135213372-ecvs65c2k7vbbdpp1hhgu6hqnf7sstoj.apps.googleusercontent.com">
+<meta name="google-signin-client_id"
+	content="176135213372-ecvs65c2k7vbbdpp1hhgu6hqnf7sstoj.apps.googleusercontent.com">
 
 <link rel="stylesheet" type="text/css" href="css/KHC.css">
 <title>KH Community</title>
@@ -68,12 +69,9 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-<link rel="stylesheet"
-	href="css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="css/bootstrap-theme.min.css">
-<script
-	src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script src="js/bootstrap.min.js"></script>
 <script type="text/javascript"
 	src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
 	charset="utf-8"></script>
@@ -97,28 +95,39 @@
 						<form method="post" action="controller.do?category=user_insert">
 							<h3 style="text-align: center;">회원가입 화면</h3>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="아이디" name="user_id" maxlength="20">
+								<input type="text" class="form-control" placeholder="아이디"
+									name="user_id" maxlength="20">
 							</div>
 							<div class="form-group">
-								<input type="password" class="form-control" placeholder="비밀번호" name="user_pw" maxlength="20">
+								<input type="password" class="form-control" placeholder="비밀번호"
+									name="user_pw" maxlength="20">
 							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="이름"name="user_name" id="name" maxlength="20">
+								<input type="text" class="form-control" placeholder="이름"
+									name="user_name" id="name" maxlength="20">
 							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="닉네임"name="user_nickname" id="nickname" maxlength="20">
+								<input type="text" class="form-control" placeholder="닉네임"
+									name="user_nickname" id="nickname" maxlength="20">
 							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" id="roadAddress"placeholder="주소" name="user_address" maxlength="20"readonly="readonly"> &nbsp <input type="button"value="주소검색" class="btn btn-primary form-control"onclick="roadaddr()">
+								<input type="text" class="form-control" id="roadAddress"
+									placeholder="주소" name="user_address" maxlength="20"
+									readonly="readonly"> &nbsp <input type="button"
+									value="주소검색" class="btn btn-primary form-control"
+									onclick="roadaddr()">
 							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="이메일"name="user_email" id="email" maxlength="25">
+								<input type="text" class="form-control" placeholder="이메일"
+									name="user_email" id="email" maxlength="25">
 							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="전화번호"name="user_phone" maxlength="20">
+								<input type="text" class="form-control" placeholder="전화번호"
+									name="user_phone" maxlength="20">
 							</div>
 
-							<input type="submit" class="btn btn-primary form-control"value="회원가입">
+							<input type="submit" class="btn btn-primary form-control"
+								value="회원가입">
 
 						</form>
 					</div>
@@ -126,26 +135,32 @@
 						<form method="post" action="KHC.jsp">
 							<h3 style="text-align: center;">SNS 로그인</h3>
 							<!-- kakao login -->
-							<a id="kakao-login-btn"></a> 
-							<a href="http://developers.kakao.com/logout"></a>
+							<a id="kakao-login-btn"></a> <a
+								href="http://developers.kakao.com/logout"></a>
 							<script type='text/javascript'>
 								//<![CDATA[
 								// 사용할 앱의 JavaScript 키를 설정해 주세요.
 								//3853ad64b43b2a8cba8111cf4b7be9b4
 								Kakao.init('3853ad64b43b2a8cba8111cf4b7be9b4');
 								// 카카오 로그인 버튼을 생성합니다.
-								Kakao.Auth.createLoginButton({
+								Kakao.Auth
+										.createLoginButton({
 											container : '#kakao-login-btn',
 											success : function(authObj) {
 												// 로그인 성공시, API를 호출합니다.
-												Kakao.API.request({
+												Kakao.API
+														.request({
 															url : '/v2/user/me',
-															success : function(res) {
+															success : function(
+																	res) {
 																//alert(JSON.stringify(res));
-																document.getElementById("nickname").value = res.properties.nickname;																
+																document
+																		.getElementById("nickname").value = res.properties.nickname;
 															},
-															fail : function(error) {
-																alert(JSON.stringify(error));
+															fail : function(
+																	error) {
+																alert(JSON
+																		.stringify(error));
 															}
 														});
 											},
@@ -157,117 +172,137 @@
 							</script>
 							&nbsp
 							<!-- google login -->
-							 <div class="g-signin2" data-width="220" data-height="50" data-onsuccess="onSignIn" data-theme="dark"></div>
-							 <script>
-						      function onSignIn(googleUser) {
-						        // Useful data for your client-side scripts:
-						        var profile = googleUser.getBasicProfile();
-						        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-						        console.log('Full Name: ' + profile.getName());
-						        console.log('Given Name: ' + profile.getGivenName());
-						        console.log('Family Name: ' + profile.getFamilyName());
-						        console.log("Image URL: " + profile.getImageUrl());
-						        console.log("Email: " + profile.getEmail());
-						        
-						        document.getElementById("name").value = profile.getName();
-								document.getElementById("email").value = profile.getEmail();
-						        
-						        var id_token = googleUser.getAuthResponse().id_token;
-						        console.log("ID Token: " + id_token);
-						      };
-						    </script>
+							<div class="g-signin2" data-width="220" data-height="50"
+								data-onsuccess="onSignIn" data-theme="dark"></div>
+							<script>
+								function onSignIn(googleUser) {
+									// Useful data for your client-side scripts:
+									var profile = googleUser.getBasicProfile();
+									console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+									console.log('Full Name: '
+											+ profile.getName());
+									console.log('Given Name: '
+											+ profile.getGivenName());
+									console.log('Family Name: '
+											+ profile.getFamilyName());
+									console.log("Image URL: "
+											+ profile.getImageUrl());
+									console.log("Email: " + profile.getEmail());
+
+									document.getElementById("name").value = profile
+											.getName();
+									document.getElementById("email").value = profile
+											.getEmail();
+
+									var id_token = googleUser.getAuthResponse().id_token;
+									console.log("ID Token: " + id_token);
+								};
+							</script>
 							&nbsp
 							<!--naver login -->
 							<div id="naver_id_login"></div>
 							<script type="text/javascript">
-							//"E5rJW2stR52BfztsAF_h","http://localhost:8787/SemiProject/khc_join.jsp"
-								var naver_id_login = new naver_id_login("E5rJW2stR52BfztsAF_h","http://localhost:8787/SemiProject/khc_join.jsp");
+								//"E5rJW2stR52BfztsAF_h","http://localhost:8787/SemiProject/khc_join.jsp"
+								var naver_id_login = new naver_id_login(
+										"E5rJW2stR52BfztsAF_h",
+										"http://localhost:8787/SemiProject/khc_join.jsp");
 								var state = naver_id_login.getUniqState();
 								naver_id_login.setButton("green", 2.5, 48);
-								naver_id_login.setDomain("http://localhost:8787/SemiProject/khc_join.jsp");
+								naver_id_login
+										.setDomain("http://localhost:8787/SemiProject/khc_join.jsp");
 								naver_id_login.setState(state);
 								naver_id_login.init_naver_id_login();
 							</script>
 							<script type="text/javascript">
 								function naverSignInCallback() {
-									document.getElementById("name").value = naver_id_login.getProfileData('name');
-									document.getElementById("email").value = naver_id_login.getProfileData('email');
+									document.getElementById("name").value = naver_id_login
+											.getProfileData('name');
+									document.getElementById("email").value = naver_id_login
+											.getProfileData('email');
 								}
 
-								naver_id_login.get_naver_userprofile("naverSignInCallback()");
+								naver_id_login
+										.get_naver_userprofile("naverSignInCallback()");
 							</script>
 							&nbsp
 							<!-- facebook login -->
 							<div id="fb_id_login"></div>
 							<script>
-							  function statusChangeCallback(response) {
-							    if (response.status === 'connected') {
-							      testAPI();
-							    }
-							  }
-							
-							  function checkLoginState() {
-							    FB.getLoginStatus(function(response) {
-							      statusChangeCallback(response);
-							    });
-							  }
-							
-							  window.fbAsyncInit = function() {
-							    FB.init({
-							      appId      : '325126211551688',
-							      cookie     : true,  // enable cookies to allow the server to access the session
-							      xfbml      : true,  // parse social plugins on this page
-							      version    : 'v2.8' // use graph api version 2.8
-							    });
-							
-							    FB.getLoginStatus(function(response) {
-							      statusChangeCallback(response);
-							    });
-							
-							  };
-							
-							  (function(d, s, id) {
-							    var js, fjs = d.getElementsByTagName(s)[0];
-							    if (d.getElementById(id)) return;
-							    js = d.createElement(s); js.id = id;
-							    js.src = "https://connect.facebook.net/en_US/sdk.js";
-							    fjs.parentNode.insertBefore(js, fjs);
-							  }(document, 'script', 'facebook-jssdk'));
-							
-							  function testAPI() {
-							    FB.api('/me',{fields: 'email,name'}, function(response) {
-							      document.getElementById('name').value = response.name;
-							    });
-							  }
-							  
-							  var finished_rendering = function() {
-								  var spinner = document.getElementById("spinner");
-								  spinner.removeAttribute("style");
-								  spinner.removeChild(spinner.childNodes[0]);
+								function statusChangeCallback(response) {
+									if (response.status === 'connected') {
+										testAPI();
+									}
 								}
-								FB.Event.subscribe('xfbml.render', finished_rendering);
+
+								function checkLoginState() {
+									FB.getLoginStatus(function(response) {
+										statusChangeCallback(response);
+									});
+								}
+
+								window.fbAsyncInit = function() {
+									FB.init({
+										appId : '325126211551688',
+										cookie : true, // enable cookies to allow the server to access the session
+										xfbml : true, // parse social plugins on this page
+										version : 'v2.8' // use graph api version 2.8
+									});
+
+									FB.getLoginStatus(function(response) {
+										statusChangeCallback(response);
+									});
+
+								};
+
+								(function(d, s, id) {
+									var js, fjs = d.getElementsByTagName(s)[0];
+									if (d.getElementById(id))
+										return;
+									js = d.createElement(s);
+									js.id = id;
+									js.src = "https://connect.facebook.net/en_US/sdk.js";
+									fjs.parentNode.insertBefore(js, fjs);
+								}(document, 'script', 'facebook-jssdk'));
+
+								function testAPI() {
+									FB
+											.api(
+													'/me',
+													{
+														fields : 'email,name'
+													},
+													function(response) {
+														document
+																.getElementById('name').value = response.name;
+													});
+								}
+
+								var finished_rendering = function() {
+									var spinner = document
+											.getElementById("spinner");
+									spinner.removeAttribute("style");
+									spinner.removeChild(spinner.childNodes[0]);
+								}
+								FB.Event.subscribe('xfbml.render',
+										finished_rendering);
 							</script>
-							<div
-						    class="fb-login-button"
-						    data-max-rows="1"
-						    data-size="large"
-						    data-width="220" data-height="50"
-						    data-button-type="continue_with"
-						    data-use-continue-as="true"
-						    ></div>
+							<div class="fb-login-button" data-max-rows="1" data-size="large"
+								data-width="220" data-height="50"
+								data-button-type="continue_with" data-use-continue-as="true"></div>
 						</form>
 
 					</div>
 				</div>
 			</div>
+			</br>
+			</br>
+			</br>
+			<hr>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br>
+			</br>
+			</br>
 		</div>
 	</div>
-
-	<div id="pasingInfo" style="text-align: center;"></div>
-	<br>
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="js/pasing.js"></script>
-	<hr>
 </body>
 </html>

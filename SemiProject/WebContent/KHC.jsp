@@ -23,10 +23,7 @@
 <script src="js/bootstrap.min.js"></script>
 
 <body>
-<<<<<<< HEAD
-=======
-<h1>a</h1>
->>>>>>> refs/remotes/origin/master
+
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
@@ -331,16 +328,12 @@
 					</table>
 				</div>
 			</div>
-			
-			</br> </br> </br>
+			</br></br></br>
+			<hr>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br></br></br>
 		</div>
 	</div>
 
-	<div id="pasingInfo" style="text-align: center;"></div>
-	<br>
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="js/pasing.js"></script>
-	<hr>
 </body>
 </html>

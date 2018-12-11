@@ -139,10 +139,12 @@ public class Service_impl implements Service{
 	@Override
 	public boolean board_delete(int board_seq_id) {
 		BoardDao board = new BoardDao_impl();
-		int result = board.delete(board_seq_id);
+		CommentDao commentDao = new CommentDao_impl();
 		
-		if(result > 0) {
-			return true;
+		if(commentDao.mul_delete(board_seq_id)) {
+			if(board.delete(board_seq_id) > 0) {
+				return true;
+			}
 		}
 		return false;		
 	}

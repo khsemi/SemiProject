@@ -135,6 +135,10 @@ $(function(){
 					
 				</form>
 			</div>
+			</br></br></br>
+			<hr>
+			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br></br></br>
 		</div>
 	</div>
 	<div id="clickLatlng"></div>

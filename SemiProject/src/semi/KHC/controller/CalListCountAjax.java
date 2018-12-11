@@ -36,12 +36,12 @@ public class CalListCountAjax extends HttpServlet {
 		UserDto userdto = (UserDto) session.getAttribute("userDto");
 		int user_seq = userdto.getUser_seq();
 		String yyyyMMdd=request.getParameter("yyyyMMdd");
-		System.out.println("전달된 param : " + user_seq +"," + yyyyMMdd);
+//		System.out.println("전달된 param : " + user_seq +"," + yyyyMMdd);
 
 		CalDao dao = new CalDao();
 		
 		int count = dao.getCalViewCount(user_seq, yyyyMMdd);
-		System.out.println("일정객수" + count);
+//		System.out.println("일정객수" + count);
 		Map<String,Integer>map = new HashMap<String,Integer>();
 		map.put("calCount",count);
 		JSONObject obj = JSONObject.fromObject(map);

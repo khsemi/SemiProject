@@ -202,7 +202,7 @@ public class Controller extends HttpServlet {
 			//if(service -> dao.delete 의 결과가 true 라면, 
 			if (service.board_delete(Integer.parseInt(request.getParameter("board_seq_id")))) {
 				//response를 이용하여 controller에 category와 page를 보내주어 내가 지운 글의 category의 1page를 보여준다.
-				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1");
+				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1&sortType=BOARD_REGDATE");
 				// dispatch("controller.do?category="+request.getParameter("categoryType")+"&page=1",request, response);
 			}
 		} else if (category.equals("LOGIN")) {
@@ -219,7 +219,7 @@ public class Controller extends HttpServlet {
 					//로그인 정보를 세션에 담아준다.
 					session.setAttribute("userDto", userDto);
 					request.setAttribute("category", category);
-					dispatch("KHC.jsp", request, response);
+					dispatch("controller.do?category=MAIN", request, response);
 				}else {
 					request.setAttribute("user_id", user_id);
 					dispatch("khc_sendEmailForm.jsp", request, response);
@@ -238,15 +238,17 @@ public class Controller extends HttpServlet {
 			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("MYPAGE")) {
-//			int page = Integer.parseInt(request.getParameter("page"));
-//			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
-//			Map<String, Object> boardMap = service.board(user_seq, page);
-			//내가 쓴 글 보이기 
-//			request.setAttribute("page", page);
-//			request.setAttribute("category", request.getParameter("category"));
-//			request.setAttribute("totalCount", boardMap.get("totalCount"));
-//			request.setAttribute("boardList", boardMap.get("boardList"));
-			dispatch("khc_mypage.jsp", request, response);
+			UserDto userDto = (UserDto)session.getAttribute("userDto");
+			int page = Integer.parseInt(request.getParameter("page"));
+			int user_seq = userDto.getUser_seq();
+			
+			Map<String, Object> boardMap = service.board(user_seq, page);
+//			내가 쓴 글 보이기 
+			request.setAttribute("page", page);
+			request.setAttribute("category", request.getParameter("category"));
+			request.setAttribute("totalCount", boardMap.get("totalCount"));
+			request.setAttribute("boardList", boardMap.get("boardList"));
+			dispatch("myboard.jsp", request, response);
 		} else if (category.equals("JOIN")) {
 			dispatch("khc_join.jsp", request, response);
 		} else if (category.equals("LOGOUT")) {
@@ -257,7 +259,7 @@ public class Controller extends HttpServlet {
 				session = null;    //다시 null로 만들어줬음 다른방법을 찾아서 적용하는게 좋아보임
 			}
 			
-			dispatch("KHC.jsp", request, response);
+			dispatch("controller.do?category=MAIN", request, response);
 		} else if (category.equals("POINT")) {
 			UserDto userdto = (UserDto)session.getAttribute("userDto");
 			

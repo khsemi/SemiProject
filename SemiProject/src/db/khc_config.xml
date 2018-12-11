@@ -11,6 +11,7 @@
 		<typeAlias type="semi.KHC.noteDto.NoteDto" alias="noteDto" />
 		<typeAlias type="semi.KHC.commentDto.CommentDto" alias="commentDto" />
 		<typeAlias type="semi.KHC.favoriteDto.FavoriteDto" alias="favoriteDto" />
+		<typeAlias type="semi.KHC.mapDto.MapDto" alias = "mapDto" />
 		
 	</typeAliases>
 	
@@ -35,6 +36,7 @@
 		<mapper resource="db/khc_note_mapper.xml"/>
 		<mapper resource="db/khc_comment_mapper.xml"/>
 		<mapper resource="db/khc_favorite_mapper.xml"/>
+		<mapper resource="db/khc_map_mapper.xml"/>
 	</mappers>
 	
 </configuration>

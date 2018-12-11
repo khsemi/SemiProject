@@ -23,10 +23,7 @@
 <script src="js/bootstrap.min.js"></script>
 
 <body>
-<<<<<<< HEAD
-=======
-<h1>a</h1>
->>>>>>> refs/remotes/origin/master
+
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->

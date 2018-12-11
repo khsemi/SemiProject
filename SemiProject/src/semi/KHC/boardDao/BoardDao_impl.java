@@ -44,13 +44,14 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 	}
 
 	@Override
-	public List<BoardDto> selectPage(String category, int page) {
+	public List<BoardDto> selectPage(String category, int page, String sortType) {
 		SqlSession session = null;
 		List<BoardDto> boardList = new ArrayList<BoardDto>();
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		System.out.println("여기는 boardDao_impl sortType : " + sortType);
 		map.put("category", category);
 		map.put("page", page);
+		map.put("sortType", sortType);
 
 		try {
 			session = getSqlSessionFactory().openSession(true);
@@ -123,17 +124,19 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 	}
 
 	@Override
-	public List<BoardDto> selectPage_search(String category, int page, String keyword) {
+	public List<BoardDto> selectPage_search(String category, int page, String keyword, String sortType) {
 		SqlSession session = null;
 		// 넘어온 category를 split해주는 이유는 검색을 하면
 		// category에 "_search"가 붙기 때문이다.
 		String[] category_split = category.split("_");
 		List<BoardDto> boardList = new ArrayList<BoardDto>();
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		System.out.println("여기는 service_impl search sortType : " + sortType);
 		map.put("category", category_split[0]);
 		map.put("page", page);
 		map.put("keyword", keyword);
+		map.put("sortType", sortType);
+		
 
 		
 		try {

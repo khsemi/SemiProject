@@ -61,14 +61,14 @@ $(function(){
 				</c:choose>
 
 
-				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1">Notice</a></li>
-				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1">Community</a></li>
-				<li id="TRADE"><a href="controller.do?category=TRADE&page=1">Trade</a></li>
-				<li id="JOBS"><a href="controller.do?category=JOBS&page=1">Jobs</a></li>
-				<li id="QA"><a href="controller.do?category=QA&page=1">QA</a></li>
-				<li id="TIPS"><a href="controller.do?category=TIPS&page=1">Tips</a></li>
-				<li id="FOODINFO"><a href="controller.do?category=FOODINFO&page=1">Food Info</a></li>
-				<li id="STUDY"><a href="controller.do?category=STUDY&page=1">Study</a></li>
+				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1&sortType=BOARD_REGDATE">Notice</a></li>
+				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1&sortType=BOARD_REGDATE">Community</a></li>
+				<li id="TRADE"><a href="controller.do?category=TRADE&page=1&sortType=BOARD_REGDATE">Trade</a></li>
+				<li id="JOBS"><a href="controller.do?category=JOBS&page=1&sortType=BOARD_REGDATE">Jobs</a></li>
+				<li id="QA"><a href="controller.do?category=QA&page=1&sortType=BOARD_REGDATE">QA</a></li>
+				<li id="TIPS"><a href="controller.do?category=TIPS&page=1&sortType=BOARD_REGDATE">Tips</a></li>
+				<li id="FOODINFO"><a href="controller.do?category=FOODINFO&page=1&sortType=BOARD_REGDATE">Food Info</a></li>
+				<li id="STUDY"><a href="controller.do?category=STUDY&page=1&sortType=BOARD_REGDATE">Study</a></li>
 			</ul>
 		</nav>
 	</div>

@@ -11,12 +11,12 @@ import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDto.UserDto;
 public interface Service {
 	//일반 게시판을 보여주기위해 category와 page를 이용하여 Dao의 totalCount와 boardList를 구한다.
-	public Map<String, Object> board(String category, int page);
+	public Map<String, Object> board(String category, int page, String sortType);
 	//조건 선택 검색 
 	public List<BoardDto> boardAll();
 	//public Map<String, Object> board_search(String category, int page, String searchType, String keyword);
 	//모든 조건 검색
-	public Map<String, Object> board_search(String category, int page, String keyword);
+	public Map<String, Object> board_search(String category, int page, String keyword, String sortType);
 	
 	//내가 작성한 게시글 보기
 	public Map<String, Object> board(int user_seq, int page);

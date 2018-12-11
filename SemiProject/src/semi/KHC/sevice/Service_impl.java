@@ -40,12 +40,13 @@ public class Service_impl implements Service{
 	
 	//일반 게시판
 	@Override
-	public Map<String, Object> board(String category, int page) {
+	public Map<String, Object> board(String category, int page, String sortType) {
+		System.out.println("여기는 service_impl sortType : " + sortType);
 		BoardDao boardDao = new BoardDao_impl();
 		Map<String, Object> result = new HashMap<String, Object>();
 		int totalCount = boardDao.totalCount(category);
 		result.put("totalCount", totalCount);
-		List<BoardDto> boardList = boardDao.selectPage(category, page);
+		List<BoardDto> boardList = boardDao.selectPage(category, page, sortType);
 		result.put("boardList", boardList);
 		
 		return result;
@@ -72,14 +73,14 @@ public class Service_impl implements Service{
 	}
 	
 	@Override
-	public Map<String, Object> board_search(String category, int page, String keyword) {
+	public Map<String, Object> board_search(String category, int page, String keyword, String sortType) {
 		BoardDao board = new BoardDao_impl();
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		int totalCount_search = board.totalCount_search(category, keyword);
 		result.put("totalCount", totalCount_search);
-		
-		List<BoardDto> boardList= board.selectPage_search(category,page, keyword);
+		System.out.println("여기는 service_impl search sortType : " + sortType);
+		List<BoardDto> boardList= board.selectPage_search(category,page, keyword, sortType);
 		result.put("boardList", boardList);
 		return result;
 	}

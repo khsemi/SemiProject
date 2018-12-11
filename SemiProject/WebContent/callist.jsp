@@ -56,13 +56,13 @@
 			<c:choose>
 				<c:when test="${empty list }">
 						<tr>
-							<td colspan="5" class="form-control">-----일정이 업습니다</td>
+							<td colspan="5">-----일정이 업습니다</td>
 						</tr>
 				</c:when>
 				
 				<c:otherwise>
 					<c:forEach items="${list }" var ="dto">
-						<tr>
+						<tr> 
 							<td><input type="checkbox" class="form-control" name="chk" value="${dto.cal_seq_id }"></td>
 							<td>${dto.cal_seq_id }</td>
 							<td><a>${dto.cal_title }</a></td>

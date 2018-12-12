@@ -124,7 +124,7 @@
 								</div>
 
 								<button type="submit" class="btn btn-primary mb-2">구입하기</button>
-								</br> </br> </br>
+								
 							</form>
 
 						</div>
@@ -133,14 +133,11 @@
 				</div>
 
 			</div>
+			</br></br></br>
+			<hr>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br></br></br>
 		</div>
 	</div>
-
-	<div id="pasingInfo" style="text-align: center;"></div>
-	<br>
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="js/pasing.js"></script>
-	<hr>
 </body>
 </html>

@@ -8,35 +8,68 @@
 		<result property="board_title" column="BOARD_TITLE" />
 		<result property="board_content" column="BOARD_CONTENT" />
 		<result property="board_regdate" column="BOARD_REGDATE" />
+		<result property="comment_count" column="COMMENT_COUNT"/>
+		<result property="favorite_count" column="FAVORITE_COUNT"/>
 		<result property="view_count" column="VIEW_COUNT" />
 		<result property="user_seq" column="USER_SEQ" />
 		<result property="board_category" column="BOARD_CATEGORY" />
 		<result property="maps_id" column="MAPS_ID" />
 	</resultMap>
+	
 	<select id="selectAll" resultMap="board_Map">
-		SELECT * FROM KH_BOARD
-		ORDER BY BOARD_REGDATE DESC
+	<![CDATA[ 
+		SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.USER_SEQ, USER_NICKNAME
+    		FROM(SELECT DENSE_RANK() OVER (PARTITION BY BOARD_CATEGORY ORDER BY BOARD_SEQ_ID DESC) RN, 
+            		BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, USER_SEQ
+            		FROM KH_BOARD) A JOIN KH_USER B ON A.USER_SEQ = B.USER_SEQ
+            WHERE RN <= 5
+    ]]>
 	</select>
+	
 	<select id="totalCount" parameterType="string" resultType="int">
 		SELECT count(*)
-		FROM KH_BOARD
+		FROM KH_BOARD 
 		WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%'
 	</select>
 	
 	<select id="selectPage" parameterType="map" resultMap="board_Map" >
 	<![CDATA[ 
-		SELECT B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_NICKNAME, B.BOARD_REGDATE
-				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE
-						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE
-								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
-								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%'
-								ORDER BY BOARD_SEQ_ID DESC)A
-				WHERE rownum <= #{page} * 10 )B
-		WHERE B.rn >=(#{page} -1) * 10 +1
+		SELECT tenSel.BOARD_SEQ_ID, tenSel.BOARD_CATEGORY, tenSel.BOARD_TITLE, tenSel.BOARD_CONTENT, tenSel.USER_NICKNAME, tenSel.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, tenSel.VIEW_COUNT 
+			FROM(SELECT rownum AS rn, sel.BOARD_SEQ_ID, sel.BOARD_CATEGORY, sel.BOARD_TITLE, sel.BOARD_CONTENT, sel.USER_NICKNAME, sel.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, sel.VIEW_COUNT 
+					FROM (SELECT BOARD.BOARD_SEQ_ID, BOARD.BOARD_CATEGORY, BOARD.BOARD_TITLE, BOARD.BOARD_CONTENT, BOARD.USER_NICKNAME, BOARD.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, BOARD.VIEW_COUNT 
+							FROM (SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE, A.VIEW_COUNT
+									FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE, VIEW_COUNT
+											FROM KH_BOARD JOIN KH_USER USING(USER_SEQ) 
+											WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A )BOARD 
+                        			JOIN (SELECT D.BOARD_SEQ_ID ,COUNT(F.COMMENT_CONTENT) AS COMMENT_COUNT
+                               				FROM KH_BOARD D  LEFT JOIN KH_COMMENT F ON D.BOARD_SEQ_ID = F.BOARD_SEQ_ID 
+                                			GROUP BY D.BOARD_SEQ_ID) COMMENT_TABLE ON (BOARD.BOARD_SEQ_ID = COMMENT_TABLE.BOARD_SEQ_ID) 
+                                			JOIN (SELECT BOARD_SEQ_ID, NVL(SUM(FAVORITE_COUNT),0) AS FAVORITE_COUNT
+                                        			FROM KH_BOARD LEFT JOIN KH_FAVORITE USING(BOARD_SEQ_ID) 
+                                        			GROUP BY BOARD_SEQ_ID) FAVORITE ON(BOARD.BOARD_SEQ_ID = FAVORITE.BOARD_SEQ_ID)
+                	ORDER BY ${sortType} DESC)sel 
+					WHERE rownum <= #{page} * 10)tenSel
+			WHERE tenSel.rn >= (#{page} -1) * 10 +1
 	]]> 
 	</select>
+<!-- 	<select id="selectPage" parameterType="map" resultMap="board_Map" > -->
+<!-- 	<![CDATA[  -->
+<!-- 		SELECT BOARD.BOARD_SEQ_ID, BOARD.BOARD_CATEGORY, BOARD.BOARD_TITLE, BOARD.BOARD_CONTENT, BOARD.USER_NICKNAME, BOARD.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, BOARD.VIEW_COUNT  -->
+<!-- 				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE, A.VIEW_COUNT -->
+<!-- 						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE, VIEW_COUNT -->
+<!-- 								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)  -->
+<!-- 								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A  -->
+<!-- 		WHERE rownum <= #{page} * 10)BOARD JOIN (SELECT D.BOARD_SEQ_ID ,COUNT(F.COMMENT_CONTENT) AS COMMENT_COUNT -->
+<!-- 													FROM KH_BOARD D  LEFT JOIN KH_COMMENT F ON D.BOARD_SEQ_ID = F.BOARD_SEQ_ID  -->
+<!-- 													GROUP BY D.BOARD_SEQ_ID) COMMENT_TABLE ON (BOARD.BOARD_SEQ_ID = COMMENT_TABLE.BOARD_SEQ_ID)  -->
+<!-- 								 			JOIN (SELECT BOARD_SEQ_ID, NVL(SUM(FAVORITE_COUNT),0) AS FAVORITE_COUNT -->
+<!-- 													FROM KH_BOARD LEFT JOIN KH_FAVORITE USING(BOARD_SEQ_ID)  -->
+<!-- 													GROUP BY BOARD_SEQ_ID) FAVORITE ON(BOARD.BOARD_SEQ_ID = FAVORITE.BOARD_SEQ_ID) -->
+<!-- 		WHERE BOARD.rn >= (#{page} -1) * 10 +1 ORDER BY ${sortType} DESC -->
+<!-- 	]]>  -->
+<!-- 	</select> -->
 	
-	<select id="myPage_totalCount" parameterType="string" resultType="int">
+	<select id="myPage_totalCount" parameterType="int" resultType="int">
 		SELECT count(*)
 		FROM KH_BOARD
 		WHERE USER_SEQ = #{user_seq}
@@ -44,14 +77,24 @@
 	
 	<select id="myPage_selectPage" parameterType="map" resultMap="board_Map" >
 	<![CDATA[ 
-		SELECT B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_NICKNAME, B.BOARD_REGDATE
-				FROM (SELECT rownum AS rn, A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE
-						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE
-								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
-								WHERE USER_SEQ = #{user_seq}
-								ORDER BY BOARD_SEQ_ID DESC)A
-				WHERE rownum <= #{page} * 10 )B
-		WHERE B.rn >=(#{page} -1) * 10 +1
+		SELECT tenSel.BOARD_SEQ_ID, tenSel.BOARD_CATEGORY, tenSel.BOARD_TITLE, tenSel.BOARD_CONTENT, tenSel.USER_NICKNAME, tenSel.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, tenSel.VIEW_COUNT 
+			FROM(SELECT rownum AS rn, sel.BOARD_SEQ_ID, sel.BOARD_CATEGORY, sel.BOARD_TITLE, sel.BOARD_CONTENT, sel.USER_NICKNAME, sel.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, sel.VIEW_COUNT 
+					FROM (SELECT BOARD.BOARD_SEQ_ID, BOARD.BOARD_CATEGORY, BOARD.BOARD_TITLE, BOARD.BOARD_CONTENT, BOARD.USER_NICKNAME, BOARD.BOARD_REGDATE, COMMENT_COUNT, FAVORITE_COUNT, BOARD.VIEW_COUNT 
+							FROM (SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE, A.VIEW_COUNT
+									FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE, VIEW_COUNT
+											FROM KH_BOARD JOIN KH_USER USING(USER_SEQ) 
+											WHERE USER_SEQ = #{user_seq})A )BOARD 
+                        			JOIN (SELECT D.BOARD_SEQ_ID ,COUNT(F.COMMENT_CONTENT) AS COMMENT_COUNT
+                               				FROM KH_BOARD D  LEFT JOIN KH_COMMENT F ON D.BOARD_SEQ_ID = F.BOARD_SEQ_ID 
+                                			GROUP BY D.BOARD_SEQ_ID) COMMENT_TABLE ON (BOARD.BOARD_SEQ_ID = COMMENT_TABLE.BOARD_SEQ_ID) 
+                                			JOIN (SELECT BOARD_SEQ_ID, NVL(SUM(FAVORITE_COUNT),0) AS FAVORITE_COUNT
+                                        			FROM KH_BOARD LEFT JOIN KH_FAVORITE USING(BOARD_SEQ_ID) 
+                                        			GROUP BY BOARD_SEQ_ID) FAVORITE ON(BOARD.BOARD_SEQ_ID = FAVORITE.BOARD_SEQ_ID)
+                	ORDER BY BOARD_REGDATE DESC)sel 
+					WHERE rownum <= #{page} * 10)tenSel
+			WHERE tenSel.rn >= (#{page} -1) * 10 +1
+			
+		
 	]]> 
 	</select>
 	
@@ -67,25 +110,37 @@
 	
 	<select id="selectPage_search" parameterType="map" resultMap="board_Map" >
 	<![CDATA[ 
-		SELECT C.BOARD_SEQ_ID, C.BOARD_CATEGORY, C.BOARD_TITLE, C.BOARD_CONTENT, C.USER_NICKNAME, C.BOARD_REGDATE
-		FROM (SELECT rownum AS rn, B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_NICKNAME, B.BOARD_REGDATE
-				FROM (SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE
-						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE
+		SELECT BOARD.BOARD_SEQ_ID, BOARD.BOARD_CATEGORY, BOARD.BOARD_TITLE, BOARD.BOARD_CONTENT, BOARD.USER_NICKNAME, BOARD.BOARD_REGDATE, COMMENT_COUNT, BOARD.VIEW_COUNT, FAVORITE_COUNT
+		FROM (SELECT rownum AS rn, B.BOARD_SEQ_ID, B.BOARD_CATEGORY, B.BOARD_TITLE, B.BOARD_CONTENT, B.USER_NICKNAME, B.BOARD_REGDATE, B.VIEW_COUNT
+				FROM (SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.BOARD_CONTENT, A.USER_NICKNAME, A.BOARD_REGDATE, A.VIEW_COUNT
+						FROM (SELECT BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_NICKNAME, BOARD_REGDATE, VIEW_COUNT
 								FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
 								WHERE BOARD_CATEGORY LIKE '%'||#{category}||'%')A
-						WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'  OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR USER_NICKNAME LIKE '%'||#{keyword}||'%'
-						ORDER BY BOARD_SEQ_ID DESC)B
-				WHERE rownum <= #{page} * 10)C
-		WHERE C.rn >=(#{page} -1) * 10 +1
+						WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'  OR BOARD_CONTENT LIKE '%'||#{keyword}||'%' OR USER_NICKNAME LIKE '%'||#{keyword}||'%')B
+				WHERE rownum <= #{page} * 10)BOARD JOIN (SELECT D.BOARD_SEQ_ID ,COUNT(F.COMMENT_CONTENT) AS COMMENT_COUNT
+																	FROM KH_BOARD D LEFT JOIN KH_COMMENT F ON D.BOARD_SEQ_ID = F.BOARD_SEQ_ID 
+																	GROUP BY D.BOARD_SEQ_ID)COMMENT_TABLE ON (BOARD.BOARD_SEQ_ID = COMMENT_TABLE.BOARD_SEQ_ID)
+												   JOIN (SELECT BOARD_SEQ_ID, NVL(SUM(FAVORITE_COUNT),0) AS FAVORITE_COUNT
+																	FROM KH_BOARD LEFT JOIN KH_FAVORITE USING(BOARD_SEQ_ID) 
+																	GROUP BY BOARD_SEQ_ID) FAVORITE ON(BOARD.BOARD_SEQ_ID = FAVORITE.BOARD_SEQ_ID)
+		WHERE BOARD.rn >= (#{page} -1) * 10 +1 ORDER BY #{sortType} DESC
 	]]> 
 	</select>
 	
 	<select id="detail" parameterType="int" resultMap="board_Map">
-		SELECT BOARD_SEQ_ID, USER_NICKNAME, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE 
-		FROM KH_BOARD JOIN KH_USER
-		USING(USER_SEQ)
-		WHERE BOARD_SEQ_ID = #{board_seq_id}
+				SELECT BOARD.BOARD_SEQ_ID, USER_NICKNAME, BOARD_CATEGORY, BOARD_TITLE, BOARD_CONTENT, USER_SEQ, BOARD_REGDATE, MAPS_ID, COMMENT_COUNT, FAVORITE_COUNT, BOARD.VIEW_COUNT
+				FROM KH_BOARD BOARD JOIN KH_USER USING(USER_SEQ) JOIN (SELECT D.BOARD_SEQ_ID ,COUNT(F.COMMENT_CONTENT) AS COMMENT_COUNT
+													FROM KH_BOARD D LEFT JOIN KH_COMMENT F ON (D.BOARD_SEQ_ID = F.BOARD_SEQ_ID) 
+													GROUP BY D.BOARD_SEQ_ID) COMMENT_TABLE ON (BOARD.BOARD_SEQ_ID = COMMENT_TABLE.BOARD_SEQ_ID) 
+								 	JOIN (SELECT BOARD_SEQ_ID, NVL(SUM(FAVORITE_COUNT),0) AS FAVORITE_COUNT
+													FROM KH_BOARD LEFT JOIN KH_FAVORITE USING(BOARD_SEQ_ID) 
+													GROUP BY BOARD_SEQ_ID) FAVORITE ON(BOARD.BOARD_SEQ_ID = FAVORITE.BOARD_SEQ_ID)
+				WHERE BOARD.BOARD_SEQ_ID = #{board_seq_id}
 	</select>
+	
+	<update id="updateViewCount" parameterType="int">
+		UPDATE KH_BOARD SET VIEW_COUNT = VIEW_COUNT + 1 WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</update>
 	
 	<insert id="insert" parameterType="boardDto">
 		<selectKey keyProperty="board_seq_id" resultType="int" order="BEFORE">
@@ -95,6 +150,14 @@
 		INSERT INTO KH_BOARD VALUES(#{board_seq_id}, #{board_title}, #{board_content}, SYSDATE, 0, #{user_seq}, #{board_category}, NULL)
 	</insert>
 	
+	<insert id="insert_m" parameterType="boardDto">
+		<selectKey keyProperty="board_seq_id" resultType="int" order="BEFORE">
+			SELECT KH_BOARD_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? 
+												 anser : DUAL = 가상 테이블(KH_BOARD_SEQ.NEXTVAL을 실행 할 가상테이블)-->
+		</selectKey>
+		INSERT INTO KH_BOARD VALUES(#{board_seq_id}, #{board_title}, #{board_content}, SYSDATE, 0, #{user_seq}, #{board_category}, #{maps_id})
+	</insert>
+	
 	<update id="update" parameterType="boardDto">
 		<selectKey keyProperty="board_seq_id" resultType="int" order="AFTER">
 			SELECT BOARD_SEQ_ID FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
@@ -102,7 +165,18 @@
 		UPDATE KH_BOARD SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} WHERE BOARD_SEQ_ID = #{board_seq_id}
 	</update>
 	
+	<update id="update_m" parameterType="boardDto">
+		<selectKey keyProperty="board_seq_id" resultType="int" order="AFTER">
+			SELECT BOARD_SEQ_ID FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
+		</selectKey>
+		UPDATE KH_BOARD SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</update>
+	
 	<delete id="delete" parameterType="int">
+		DELETE FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</delete>
+	
+	<delete id="delete_m" parameterType="int">
 		DELETE FROM KH_BOARD WHERE BOARD_SEQ_ID = #{board_seq_id}
 	</delete>
 	

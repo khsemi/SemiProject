@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import semi.KHC.boardDto.BoardDto;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.mapDto.MapDto;
 import semi.KHC.noteDto.NoteDto;
 import semi.KHC.pointDto.PointDto;
 import semi.KHC.sevice.Service;
@@ -47,11 +48,12 @@ public class Controller extends HttpServlet {
 				 || category.equals("TRADE") || category.equals("JOBS") || category.equals("FOODINFO")) {
 			//View 에서 받아오는 값 
 			int page = Integer.parseInt(request.getParameter("page"));
-			
+			String sortType = request.getParameter("sortType");
 			//service를 통해 값을 전달받아 boardMap에 저장한다.
-			Map<String, Object> boardMap = service.board(category, page);
+			Map<String, Object> boardMap = service.board(category, page, sortType);
 			
 			//다시 View에 넘겨주기위해 필요한 값들을 request에 setAttribute 해준다.
+			request.setAttribute("sortType", sortType);
 			request.setAttribute("page", page);
 			request.setAttribute("category", category);
 			request.setAttribute("totalCount",boardMap.get("totalCount"));
@@ -66,11 +68,13 @@ public class Controller extends HttpServlet {
 			int page = Integer.parseInt(request.getParameter("page"));
 			//String searchType = request.getParameter("searchType");
 			String keyword = request.getParameter("keyword");
+			String sortType = request.getParameter("sortType");
 			
 			//service를 통해 값을 전달받아 boardMap에 저장한다.
-			Map<String, Object> boardMap = service.board_search(category, page, keyword);
+			Map<String, Object> boardMap = service.board_search(category, page, keyword, sortType);
 			
 			//다시 View에 넘겨주기위해 필요한 값들을 request에 setAttribute 해준다.
+			request.setAttribute("sortType", sortType);
 			request.setAttribute("page", page);
 			request.setAttribute("category", category);
 			request.setAttribute("totalCount", boardMap.get("totalCount"));
@@ -81,8 +85,32 @@ public class Controller extends HttpServlet {
 			// request,responce에 들어있는 값을 가지고 dispatch를 통해 "board.jsp" 로 보내준다.
 			dispatch("board.jsp", request, response);
 		} else if (category.equals("board_detail")) {
-			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
-			request.setAttribute("dto", dto);
+			BoardDto dto = service.board_selectOne(Integer.parseInt(request.getParameter("board_seq_id")));
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			System.out.println("board_seq_id : " + board_seq_id);
+			System.out.println("detail로 maps_id 전달됬는지 확인" +dto.getMaps_id());
+			
+			System.out.println(session != null);
+			
+			if(dto.getMaps_id()>0) {
+				MapDto mapdto = service.map_detail(dto.getMaps_id());
+				
+				//내가 해야할 곳
+				request.setAttribute("mapdto", mapdto);
+			}
+			
+			if(session != null) {
+				int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+				//System.out.println("Controller.board_detail.favorite_select : "+service.favorite_select(board_seq_id, user_seq));
+				System.out.println("user_seq : "+user_seq);
+				request.setAttribute("favorite", service.favorite_select(board_seq_id, user_seq));
+			}
+			
+			Map<String, Object> detailMap = service.board_detail(board_seq_id);
+			
+			request.setAttribute("boardDto", detailMap.get("boardDto"));
+			request.setAttribute("commentList", detailMap.get("commentList"));
+			
 			dispatch("board_detail.jsp", request, response);
 		} else if (category.equals("TIPS_insertForm") || category.equals("QA_insertForm") || category.equals("STUDY_insertForm") || category.equals("NOTICE_insertForm") || category.equals("COMMUNITY_insertForm")
 				 || category.equals("TRADE_insertForm") || category.equals("JOBS_insertForm") || category.equals("FOODINFO_insertForm")) {
@@ -96,27 +124,85 @@ public class Controller extends HttpServlet {
 				System.out.println("로그인이 되어있지 않은 상태");
 				response.sendRedirect("khc_login.jsp");
 			}
-			
 		} else if (category.equals("board_insert")) {
 			System.out.println(Integer.parseInt(request.getParameter("user_seq")));
+			int maps_id = 0;
+			int board_seq_id = 0;
+			System.out.println("컨트롤러로 값 전달(장소,위도,경도)");
+			System.out.println(request.getParameter("location"));
+			System.out.println(request.getParameter("latitude"));
+			System.out.println(request.getParameter("longtitude"));
+			System.out.println("------------------------------------------------------");
+			
+			maps_id = service.maps_insert(request.getParameter("location"), request.getParameter("latitude"), request.getParameter("longtitude") );
+            //request 한 데이터의 순서가 중요!!!
+			System.out.println("maps_id : "+maps_id +" | 일단 맵테이블 저장 성공 후 맵 시퀀스 번호 리턴받음");
 			// service.board_insert 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
-			int board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
+			
+			if(maps_id > 0) {
+				//2
+				board_seq_id = service.board_insert_map(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")),maps_id);
+				System.out.println(board_seq_id);
+			} else {
+				board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
+			}
+			request.setAttribute("maps_id",maps_id);
+			//board_seq_id = service.board_insert(request.getParameter("categoryType"), request.getParameter("title"), request.getParameter("content"), Integer.parseInt(request.getParameter("user_seq")));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
-			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+			request.setAttribute("user_seq", Integer.parseInt(request.getParameter("user_seq")));
+			dispatch("controller.do?category=board_detail&board_seq_id=" + board_seq_id, request, response);
 		} else if (category.equals("board_updateForm")) { 
-			BoardDto dto = service.board_detail(Integer.parseInt(request.getParameter("board_seq_id")));
+			BoardDto dto = service.board_selectOne(Integer.parseInt(request.getParameter("board_seq_id")));
+			if(dto.getMaps_id()>0) {
+				MapDto mapdto = service.map_detail(dto.getMaps_id());
+				request.setAttribute("mapdto", mapdto);
+
+			}
+			
 			request.setAttribute("dto", dto);
 			dispatch("board_updateForm.jsp", request, response);
 		} else if (category.equals("board_update")) {
+			int maps_id = 0;
+			int board_seq_id = 0;
+			String location = request.getParameter("location");
+			System.out.println("board_seq_id : " +Integer.parseInt(request.getParameter("board_seq_id")));
+			System.out.println("업데이트------------------------------------------------------");
 			// service.board_update 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
-			int board_seq_id = service.board_update(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"));
+			System.out.println(location);
+			if(location != null) {
+				System.out.println(request.getParameter("latitude"));
+				System.out.println(request.getParameter("longtitude"));
+				System.out.println(Integer.parseInt(request.getParameter("maps_seq_id")));
+				System.out.println("------------------------------------------------------");
+				maps_id = service.maps_update(Integer.parseInt(request.getParameter("maps_seq_id")), request.getParameter("location"), request.getParameter("latitude"), request.getParameter("longtitude"));
+				//int maps_id = service.maps_name
+				// service.board_update 는 글입력이 성공하면 입력한 글의 board_seq_id를 리턴한다.
+				System.out.println("maps_id : "+maps_id +" | 일단 맵테이블 저장 성공 후 맵 시퀀스 번호 리턴받음");
+				if(maps_id > 0) {
+					System.out.println("여기까지 넘어옴 : borad_seq_id : "+Integer.parseInt(request.getParameter("board_seq_id")));
+					 board_seq_id = service.board_update_map(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"),maps_id);
+				}
+			} else {
+				 board_seq_id = service.board_update(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"));
+			}// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
+			System.out.println(board_seq_id);
+			request.setAttribute("maps_id", maps_id);
+			
+			//board_seq_id = service.board_update(Integer.parseInt(request.getParameter("board_seq_id")),request.getParameter("title"), request.getParameter("content"));
 			// 리턴된 board_seq_id를 controller detail에 보내어 글을 입력하자마자 내가 쓴글을 보게 한다.
-			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id);
+			response.sendRedirect("controller.do?category=board_detail&board_seq_id=" + board_seq_id+"&user_seq="+Integer.parseInt(request.getParameter("user_seq")));
 		} else if (category.equals("board_delete")) {
+			int maps_seq_id = Integer.parseInt(request.getParameter("maps_id"));
+			System.out.println("delete Maps_seq_id : " + maps_seq_id);
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			System.out.println(board_seq_id);
+			if(service.maps_delete(Integer.parseInt(request.getParameter("maps_id")))) {
+				System.out.println("map 삭제완료");
+			}
 			//if(service -> dao.delete 의 결과가 true 라면, 
 			if (service.board_delete(Integer.parseInt(request.getParameter("board_seq_id")))) {
 				//response를 이용하여 controller에 category와 page를 보내주어 내가 지운 글의 category의 1page를 보여준다.
-				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1");
+				response.sendRedirect("controller.do?category=" + request.getParameter("categoryType") + "&page=1&sortType=BOARD_REGDATE");
 				// dispatch("controller.do?category="+request.getParameter("categoryType")+"&page=1",request, response);
 			}
 		} else if (category.equals("LOGIN")) {
@@ -133,7 +219,7 @@ public class Controller extends HttpServlet {
 					//로그인 정보를 세션에 담아준다.
 					session.setAttribute("userDto", userDto);
 					request.setAttribute("category", category);
-					dispatch("KHC.jsp", request, response);
+					dispatch("controller.do?category=MAIN", request, response);
 				}else {
 					request.setAttribute("user_id", user_id);
 					dispatch("khc_sendEmailForm.jsp", request, response);
@@ -152,15 +238,17 @@ public class Controller extends HttpServlet {
 			
 			dispatch("KHC.jsp", request, response);
 		} else if (category.equals("MYPAGE")) {
-//			int page = Integer.parseInt(request.getParameter("page"));
-//			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
-//			Map<String, Object> boardMap = service.board(user_seq, page);
-			//내가 쓴 글 보이기 
-//			request.setAttribute("page", page);
-//			request.setAttribute("category", request.getParameter("category"));
-//			request.setAttribute("totalCount", boardMap.get("totalCount"));
-//			request.setAttribute("boardList", boardMap.get("boardList"));
-			dispatch("khc_mypage.jsp", request, response);
+			UserDto userDto = (UserDto)session.getAttribute("userDto");
+			int page = Integer.parseInt(request.getParameter("page"));
+			int user_seq = userDto.getUser_seq();
+			
+			Map<String, Object> boardMap = service.board(user_seq, page);
+//			내가 쓴 글 보이기 
+			request.setAttribute("page", page);
+			request.setAttribute("category", request.getParameter("category"));
+			request.setAttribute("totalCount", boardMap.get("totalCount"));
+			request.setAttribute("boardList", boardMap.get("boardList"));
+			dispatch("myboard.jsp", request, response);
 		} else if (category.equals("JOIN")) {
 			dispatch("khc_join.jsp", request, response);
 		} else if (category.equals("LOGOUT")) {
@@ -171,7 +259,7 @@ public class Controller extends HttpServlet {
 				session = null;    //다시 null로 만들어줬음 다른방법을 찾아서 적용하는게 좋아보임
 			}
 			
-			dispatch("KHC.jsp", request, response);
+			dispatch("controller.do?category=MAIN", request, response);
 		} else if (category.equals("POINT")) {
 			UserDto userdto = (UserDto)session.getAttribute("userDto");
 			
@@ -374,6 +462,29 @@ public class Controller extends HttpServlet {
 			request.setAttribute("user_id", service.find_id(user_email));
 			
 			dispatch("khc_findResult_id.jsp", request, response);
+
+			System.out.println();
+		}else if(category.equals("comment_insert")) {
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			int user_seq = Integer.parseInt(request.getParameter("user_seq"));
+			String comment_content = request.getParameter("comment_content");
+			
+			//댓글 입력이 성공하면,
+			if(service.comment_insert(board_seq_id, user_seq, comment_content)) {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}else {
+				//실패하면,
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}
+		//} else if(category.equals("comment_update")) {
+			//System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
+		} else if(category.equals("comment_delete")) {
+			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
+			if(service.comment_delete(Integer.parseInt(request.getParameter("comment_seq_id")))) {
+				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
+			}
+			System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
+
 		}
 
 	}

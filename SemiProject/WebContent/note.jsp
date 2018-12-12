@@ -89,14 +89,14 @@ function openWin(btn){
 						<form action="#" method="post" id="notelist_recive">
 						<table class="table table-hover row-clickable" id="tableId">
 							<h6>받은 쪽지</h6>
-							<col width="30px">
+<%-- 							<col width="30px"> --%>
 							<col width="50px">
 							<col width="100px">
 							<col width="300px">
 							<col width="100px">
 
 							<tr>
-								<th><input type="checkbox" name="all1" onclick="allChk1(this.checked)" /></th>
+<!-- 								<th><input type="checkbox" name="all1" onclick="allChk1(this.checked)" /></th> -->
 								<th>번호
 								<th>보낸 사람
 								<th>제목
@@ -106,14 +106,14 @@ function openWin(btn){
 								<c:choose>
 									<c:when test="${empty notelist }">
 										<tr>
-											<td colspan="5" align="center">===== 쪽지가 없습니다. =====</td>
+											<td colspan="4" align="center">===== 쪽지가 없습니다. =====</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
 										<c:forEach items="${notelist }" var="dto">
 											<c:if test="${dto.recive_user_id eq userDto.user_nickname}">
 												<tr onClick="openWin('${dto.note_seq_id }');">
-													<td><input type="checkbox" name="chk1" value="#" /></td>
+<!-- 													<td><input type="checkbox" name="chk1" value="#" /></td> -->
 													<td>${dto.note_seq_id }</td>
 													<td>${dto.send_user_id }</td>
 													<td>${dto.note_title }</td>
@@ -127,7 +127,7 @@ function openWin(btn){
 							</tbody>
 						</table>
 						
-							<input type="submit" value="삭제" class="btn btn-primary"/>
+<!-- 							<input type="submit" value="삭제" class="btn btn-primary"/> -->
 						
 						</form>
 					</div>
@@ -136,14 +136,14 @@ function openWin(btn){
 						<form action="#" method="post" id="notelist_send">
 						<table class="table table-hover">
 							<h6>보낸 쪽지</h6>
-							<col width="30px">
+<%-- 							<col width="30px"> --%>
 							<col width="50px">
 							<col width="100px">
 							<col width="300px">
 							<col width="100px">
 
 							<tr>
-								<th><input type="checkbox" name="all" onclick="allChk(this.checked)" /></th>
+<!-- 								<th><input type="checkbox" name="all" onclick="allChk(this.checked)" /></th> -->
 								<th>번호
 								<th>받은 사람
 								<th>제목
@@ -153,14 +153,14 @@ function openWin(btn){
 								<c:choose>
 									<c:when test="${empty notelist }">
 										<tr>
-											<td colspan="5" align="center">===== 쪽지가 없습니다. =====</td>
+											<td colspan="4" align="center">===== 쪽지가 없습니다. =====</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
 										<c:forEach items="${notelist }" var="dto">
 											<c:if test="${dto.send_user_id eq userDto.user_nickname}">
 												<tr onClick="openWin('${dto.note_seq_id }');">
-													<td><input type="checkbox" name="chk" value="#" /></td>
+<!-- 													<td><input type="checkbox" name="chk" value="#" /></td> -->
 													<td>${dto.note_seq_id }</td>
 													<td>${dto.recive_user_id }</td>
 													<td>${dto.note_title }</td>
@@ -173,7 +173,7 @@ function openWin(btn){
 								</c:choose>
 							</tbody>
 						</table>
-							<input type="submit" value="삭제" class="btn btn-primary"/>
+<!-- 							<input type="submit" value="삭제" class="btn btn-primary"/> -->
 						
 						</form>
 						</br></br>
@@ -184,14 +184,12 @@ function openWin(btn){
 				</div>
 
 			</div>
+			</br></br></br>
+			<hr>
 			<footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>
+			</br></br></br>
 		</div>
 	</div>
 
-	<div id="pasingInfo" style="text-align: center;"></div>
-	<br>
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="js/pasing.js"></script>
-	<hr>
 </body>
 </html>

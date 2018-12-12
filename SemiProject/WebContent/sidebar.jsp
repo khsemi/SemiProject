@@ -42,13 +42,11 @@ $(function(){
 	<input type="hidden" id="category" value='${category }'>
 	<div class="sidebar" style="text-align: center;">
 		<div class="logo">
-			<h1 style="color: white;">KHCP</h1>
+			<h1 style="color: white;">KHC</h1>
 		</div>
 
 		<nav class="nav-sidebar">
 			<ul class="nav nav-sidebar">
-				<!-- 사이드바	<li id="test_board_select"><a href="sidebar.jsp">a</a></li>  -->
-				<!-- test 메뉴 <li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li> -->
 				<li id="MAIN"><a href="controller.do?category=MAIN"><span>Main</span></a></li>
 
 				<c:choose>
@@ -56,21 +54,24 @@ $(function(){
 						<li id="LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
 					</c:when>
 					<c:otherwise>
-						<li id="MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
+						<li id="MYPAGE"><a href="controller.do?category=MYPAGE&page=1"><span>Mypage</span></a></li>
 					</c:otherwise>
 				</c:choose>
 
 
-				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1">Notice</a></li>
-				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1">Community</a></li>
-				<li id="TRADE"><a href="controller.do?category=TRADE&page=1">Trade</a></li>
-				<li id="JOBS"><a href="controller.do?category=JOBS&page=1">Jobs</a></li>
-				<li id="QA"><a href="controller.do?category=QA&page=1">QA</a></li>
-				<li id="TIPS"><a href="controller.do?category=TIPS&page=1">Tips</a></li>
-				<li id="FOODINFO"><a href="controller.do?category=FOODINFO&page=1">Food Info</a></li>
-				<li id="STUDY"><a href="controller.do?category=STUDY&page=1">Study</a></li>
+				<li id="NOTICE"><a href="controller.do?category=NOTICE&page=1&sortType=BOARD_REGDATE">Notice</a></li>
+				<li id="COMMUNITY"><a href="controller.do?category=COMMUNITY&page=1&sortType=BOARD_REGDATE">Community</a></li>
+				<li id="TRADE"><a href="controller.do?category=TRADE&page=1&sortType=BOARD_REGDATE">Trade</a></li>
+				<li id="JOBS"><a href="controller.do?category=JOBS&page=1&sortType=BOARD_REGDATE">Jobs</a></li>
+				<li id="QA"><a href="controller.do?category=QA&page=1&sortType=BOARD_REGDATE">QA</a></li>
+				<li id="TIPS"><a href="controller.do?category=TIPS&page=1&sortType=BOARD_REGDATE">Tips</a></li>
+				<li id="FOODINFO"><a href="controller.do?category=FOODINFO&page=1&sortType=BOARD_REGDATE">Food Info</a></li>
+				<li id="STUDY"><a href="controller.do?category=STUDY&page=1&sortType=BOARD_REGDATE">Study</a></li>
+				
 			</ul>
 		</nav>
+		
 	</div>
+	
 </body>
 </html>

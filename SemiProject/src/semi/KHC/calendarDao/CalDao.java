@@ -119,6 +119,7 @@ public class CalDao extends JDBCTemplate {
 			pstm.setInt(1, User_seq);
 			pstm.setString(2, yyyyMM);
 			rs=pstm.executeQuery();
+			System.out.println("test");
 			while(rs.next()) {
 				CalDto tmp = new CalDto(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getDate(6),rs.getString(7));
 				res.add(tmp);
@@ -130,7 +131,7 @@ public class CalDao extends JDBCTemplate {
 			close(rs);
 			close(pstm);
 			close(con);
-			System.out.println("db종료");
+//			System.out.println("db종료");
 		}
 		return res;
 	}
@@ -146,7 +147,7 @@ public class CalDao extends JDBCTemplate {
 			pstm=con.prepareStatement(sql);
 			pstm.setInt(1, User_seq);
 			pstm.setString(2, yyyyMM);
-			System.out.println("03.query준비 " + sql);
+//			System.out.println("03.query준비 " + sql);
 			
 			rs=pstm.executeQuery();
 			while(rs.next()) {

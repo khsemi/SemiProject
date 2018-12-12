@@ -44,13 +44,14 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 	}
 
 	@Override
-	public List<BoardDto> selectPage(String category, int page) {
+	public List<BoardDto> selectPage(String category, int page, String sortType) {
 		SqlSession session = null;
 		List<BoardDto> boardList = new ArrayList<BoardDto>();
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		System.out.println("여기는 boardDao_impl sortType : " + sortType);
 		map.put("category", category);
 		map.put("page", page);
+		map.put("sortType", sortType);
 
 		try {
 			session = getSqlSessionFactory().openSession(true);
@@ -123,17 +124,19 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 	}
 
 	@Override
-	public List<BoardDto> selectPage_search(String category, int page, String keyword) {
+	public List<BoardDto> selectPage_search(String category, int page, String keyword, String sortType) {
 		SqlSession session = null;
 		// 넘어온 category를 split해주는 이유는 검색을 하면
 		// category에 "_search"가 붙기 때문이다.
 		String[] category_split = category.split("_");
 		List<BoardDto> boardList = new ArrayList<BoardDto>();
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		System.out.println("여기는 service_impl search sortType : " + sortType);
 		map.put("category", category_split[0]);
 		map.put("page", page);
 		map.put("keyword", keyword);
+		map.put("sortType", sortType);
+		
 
 		
 		try {
@@ -163,6 +166,23 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		}
 		return dto;
 	}
+	@Override
+	public BoardDto detail_m(int map_id, int board_seq_id) {
+		BoardDto dto = new BoardDto();
+
+		SqlSession session = null;
+
+		try {
+			session = getSqlSessionFactory().openSession(true); //outo commit
+			dto = session.selectOne(BOARD_NAMESPACE + "detail_m", board_seq_id);
+															//??
+		} catch (Exception e) {
+			System.out.println("detail 오류 : " + e);
+		} finally {
+			session.close();
+		}
+		return dto;
+	}
 
 	@Override
 	public int insert(BoardDto dto) {
@@ -171,6 +191,22 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		try {
 			session = getSqlSessionFactory().openSession(true);
 			session.insert(BOARD_NAMESPACE + "insert", dto);
+			// insert가 성공하면, 그 성공한 객체의 seq를 가져온다.
+			board_seq_id = dto.getBoard_seq_id();
+		} catch (Exception e) {
+			System.out.println("insert 오류 : " + e);
+		} finally {
+			session.close();
+		}
+		return board_seq_id;
+	}
+	@Override
+	public int insert_m(BoardDto dto) {
+		SqlSession session = null;
+		int board_seq_id = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.insert(BOARD_NAMESPACE + "insert_m", dto);
 			// insert가 성공하면, 그 성공한 객체의 seq를 가져온다.
 			board_seq_id = dto.getBoard_seq_id();
 		} catch (Exception e) {
@@ -196,6 +232,21 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 		}
 		return board_seq_id;
 	}
+	@Override
+	public int update_m(BoardDto dto) {
+		SqlSession session = null;
+		int board_seq_id = 0;
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.update(BOARD_NAMESPACE + "update_m", dto);
+			board_seq_id = dto.getBoard_seq_id();
+		} catch (Exception e) {
+			System.out.println("update 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return board_seq_id;
+	}
 
 	@Override
 	public int delete(int board_seq_id) {
@@ -210,6 +261,22 @@ public class BoardDao_impl extends SqlMapConfig implements BoardDao {
 			session.close();
 		}
 		return result;
+	}
+	@Override
+	public boolean updateViewCount(int board_seq_id) {
+		SqlSession session = null;
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.update(BOARD_NAMESPACE+"updateViewCount",board_seq_id);
+			
+		}catch (Exception e) {
+			System.out.println("updateViewCount_up 오류 : "+e);
+			return false;
+		}finally {
+			session.close();
+		}
+		return true;
 	}
 
 	

@@ -3,20 +3,30 @@ package semi.KHC.sevice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.*;
-import java.util.Properties;
-import util.SHA256;
-import util.Gmail;
 
 import semi.KHC.boardDao.BoardDao;
 import semi.KHC.boardDao.BoardDao_impl;
 import semi.KHC.boardDto.BoardDto;
+import semi.KHC.commentDao.CommentDao;
+import semi.KHC.commentDao.CommentDao_impl;
+import semi.KHC.commentDto.CommentDto;
+import semi.KHC.favoriteDao.FavoriteDao;
+import semi.KHC.favoriteDao.FavoriteDao_impl;
 import semi.KHC.foodticketDao.FoodticketDao;
 import semi.KHC.foodticketDao.FoodticketDao_impl;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.mapDao.MapDao;
+import semi.KHC.mapDao.MapDao_impl;
+import semi.KHC.mapDto.MapDto;
 import semi.KHC.noteDao.NoteDao;
 import semi.KHC.noteDao.NoteDao_impl;
 import semi.KHC.noteDto.NoteDto;
@@ -26,28 +36,26 @@ import semi.KHC.pointDto.PointDto;
 import semi.KHC.userDao.UserDao;
 import semi.KHC.userDao.UserDao_impl;
 import semi.KHC.userDto.UserDto;
+import util.Gmail;
+import util.SHA256;
 
 public class Service_impl implements Service{
 	
+	//일반 게시판
 	@Override
-	public Map<String, Object> board(String category, int page) {
+	public Map<String, Object> board(String category, int page, String sortType) {
+		System.out.println("여기는 service_impl sortType : " + sortType);
 		BoardDao boardDao = new BoardDao_impl();
 		Map<String, Object> result = new HashMap<String, Object>();
 		int totalCount = boardDao.totalCount(category);
 		result.put("totalCount", totalCount);
-		List<BoardDto> boardList = boardDao.selectPage(category, page);
+		List<BoardDto> boardList = boardDao.selectPage(category, page, sortType);
 		result.put("boardList", boardList);
 		
 		return result;
 	}
-	@Override
-	public List<BoardDto> boardAll(){
-		List<BoardDto> boardlist = null;
-		BoardDao boardDao = new BoardDao_impl();
-		boardlist = boardDao.selectAll();
-		return boardlist;
-	}
 	
+	//myPage
 	@Override
 	public Map<String, Object> board(int user_seq, int page) {
 		BoardDao boardDao = new BoardDao_impl();
@@ -60,14 +68,22 @@ public class Service_impl implements Service{
 	}
 	
 	@Override
-	public Map<String, Object> board_search(String category, int page, String keyword) {
+	public List<BoardDto> boardAll(){
+		List<BoardDto> boardlist = null;
+		BoardDao boardDao = new BoardDao_impl();
+		boardlist = boardDao.selectAll();
+		return boardlist;
+	}
+	
+	@Override
+	public Map<String, Object> board_search(String category, int page, String keyword, String sortType) {
 		BoardDao board = new BoardDao_impl();
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		int totalCount_search = board.totalCount_search(category, keyword);
 		result.put("totalCount", totalCount_search);
-		
-		List<BoardDto> boardList= board.selectPage_search(category,page, keyword);
+		System.out.println("여기는 service_impl search sortType : " + sortType);
+		List<BoardDto> boardList= board.selectPage_search(category,page, keyword, sortType);
 		result.put("boardList", boardList);
 		return result;
 	}
@@ -90,16 +106,23 @@ public class Service_impl implements Service{
 	}
 	
 	@Override
-	public BoardDto board_detail(int board_seq_id) {
+	public BoardDto board_selectOne(int board_seq_id) {
 		BoardDao board = new BoardDao_impl();
-		BoardDto dto = board.detail(board_seq_id);
-		return dto;
+		BoardDto boardDto = board.detail(board_seq_id);
+		return boardDto;
 	}
+	
 	@Override
 	public int board_insert(String board_category, String board_title, String board_content, int user_seq) {
 		BoardDao board = new BoardDao_impl();
 		BoardDto dto = new BoardDto(board_category, board_title, board_content, user_seq);
 		return board.insert(dto);
+	}
+	@Override
+	public int board_insert_map(String board_category, String board_title, String board_content, int user_seq, int maps_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_category, board_title, board_content, user_seq, maps_id);
+		return board.insert_m(dto);
 	}
 	@Override
 	public int board_update(int board_seq_id, String board_title, String board_content) {
@@ -108,12 +131,20 @@ public class Service_impl implements Service{
 		return board.update(dto);
 	}
 	@Override
+	public int board_update_map(int board_seq_id, String board_title, String board_content, int maps_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_seq_id, board_title,board_content,maps_id);
+		return board.update_m(dto);
+	}
+	@Override
 	public boolean board_delete(int board_seq_id) {
 		BoardDao board = new BoardDao_impl();
-		int result = board.delete(board_seq_id);
+		CommentDao commentDao = new CommentDao_impl();
 		
-		if(result > 0) {
-			return true;
+		if(commentDao.mul_delete(board_seq_id)) {
+			if(board.delete(board_seq_id) > 0) {
+				return true;
+			}
 		}
 		return false;		
 	}
@@ -284,6 +315,110 @@ public class Service_impl implements Service{
 		UserDao userDao = new UserDao_impl();
 		
 		return userDao.find_id(user_email);
+	}
+	
+	@Override
+	public boolean comment_insert(int board_seq_id, int user_seq, String comment_content) {
+		CommentDao commentDao = new CommentDao_impl();
+		return commentDao.insert(board_seq_id, user_seq, comment_content);
+	}
+	
+	@Override
+	public boolean comment_delete(int comment_seq_id) {
+		CommentDao commentDao = new CommentDao_impl();
+		return commentDao.delete(comment_seq_id);
+	}
+	
+	@Override
+	public Map<String, Object> board_detail(int board_seq_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto boardDto = null;
+		CommentDao commentDao = new CommentDao_impl();
+		Map<String, Object> detailMap = new HashMap<String, Object>();
+		
+		//detail을 클릭하면 viewCount가 하나올라가고 성공했다면,
+		if(board.updateViewCount(board_seq_id)) {
+			boardDto = board.detail(board_seq_id);
+		}
+		
+		detailMap.put("boardDto", boardDto);
+		List<CommentDto> commentList = commentDao.selectList(board_seq_id);
+		detailMap.put("commentList", commentList);
+		return detailMap;
+	}
+	
+	@Override
+	public boolean favorite_up(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		//if(favoriteDao.favorite_check(board_seq_id, user_seq)) {
+		//	System.out.println("추천 가능한 user입니다!");
+			if(favoriteDao.favorite_insert_up(board_seq_id, user_seq)) {
+				System.out.println("추천에 성공하였습니다. [ service_impl : return true ] ");
+				return true;
+			}
+		//}
+		System.out.println("추천에 실패하였습니다. [ service_impl : return false ] ");
+		return false;
+	}
+
+	@Override
+	public boolean favorite_down(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		//if(favoriteDao.favorite_check(board_seq_id, user_seq)) {
+			//System.out.println("비추천 가능한 user입니다!");
+			if(favoriteDao.favorite_insert_down(board_seq_id, user_seq)) {
+				System.out.println("비추천에 성공하였습니다. [ service_impl : return true ] ");
+				return true;
+			}
+		//}
+		System.out.println("비추천에 실패하였습니다. [ service_impl : return false ] ");
+		return false;
+	}
+
+	@Override
+	public int favorite_select(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		Integer result = favoriteDao.favorite_select(board_seq_id, user_seq);
+		//KH_FAVORITE 테이블에 SELECT 해본 후 값이 없으면 0을 리턴한다.(추천/비추천을 하지않았다는 뜻)
+		return result == null? 0 : result;
+	}
+
+	@Override
+	public boolean favorite_delete(int board_seq_id, int user_seq) {
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
+		return favoriteDao.favorite_delete(board_seq_id, user_seq);
+	}
+
+	@Override
+	public MapDto map_detail(int map_seq_id) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = map.detailMap(map_seq_id);
+		return mapdto;
+	}
+
+	@Override
+	public int maps_insert(String maps_name, String maps_x, String maps_y) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = new MapDto(maps_name, maps_x, maps_y);
+		return map.insertMap(mapdto); // => map_seq_id 리턴
+	}
+
+	@Override
+	public int maps_update(int maps_seq_id, String maps_name, String maps_x, String maps_y) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = new MapDto(maps_seq_id, maps_name, maps_x, maps_y);
+		return map.updateMap(mapdto);
+	}
+
+	@Override
+	public boolean maps_delete(int maps_seq_id) {
+		MapDao map = new MapDao_impl();
+		int result = map.deleteMap(maps_seq_id);
+		
+		if(result > 0 ) {
+			return true;
+		}
+		return false;
 	}
 	
 }

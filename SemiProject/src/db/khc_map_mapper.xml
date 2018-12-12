@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kh_map">
+	
+	<resultMap type="semi.KHC.mapDto.MapDto" id="map_Map">
+		<result property="maps_seq_id" column="MAPS_SEQ_ID" />
+		<result property="maps_name" column="MAPS_NAME"/> 
+		<result property="maps_detail" column="MAPS_DETAIL" />
+		<result property="maps_x" column="MAPS_X" />
+		<result property="maps_y" column="MAPS_Y" />
+		
+	</resultMap>
+	
+	<select id="detailmap" parameterType="int" resultMap="map_Map">
+		SELECT *
+		FROM KH_MAPS
+		WHERE MAPS_SEQ_ID = #{maps_seq_id}
+	</select>
+	
+	<insert id="insertmap" parameterType="mapDto">
+		<selectKey keyProperty="maps_seq_id" resultType="int" order="BEFORE">
+		SELECT KH_MAPS_SEQ.NEXTVAL FROM DUAL<!-- DUAL 이게 뭐임? 
+												 anser : DUAL = 가상 테이블(KH_BOARD_SEQ.NEXTVAL을 실행 할 가상테이블)-->
+		</selectKey>
+		INSERT INTO KH_MAPS 
+		VALUES(#{maps_seq_id}, #{maps_name}, '샘플1', #{maps_x}, #{maps_y})
+	</insert>
+	
+	<update id="updatemap" parameterType="mapDto">
+		<selectKey keyProperty="maps_seq_id" resultType="int" order="AFTER">
+			SELECT MAPS_SEQ_ID FROM KH_MAPS WHERE MAPS_SEQ_ID = #{maps_seq_id}
+		</selectKey>
+			UPDATE KH_MAPS SET MAPS_NAME = #{maps_name}, MAPS_X = #{maps_x}, MAPS_Y = #{maps_y} WHERE MAPS_SEQ_ID = #{maps_seq_id}
+	</update>
+	
+	<delete id="deletemap" parameterType="int">
+		DELETE FROM KH_MAPS WHERE MAPS_SEQ_ID = #{maps_seq_id}
+	</delete>
+	
+	
+	
+</mapper>
+
+ 

@@ -1,7 +1,9 @@
 package semi.KHC.userDao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -145,6 +147,47 @@ public class UserDao_impl  extends SqlMapConfig implements UserDao {
 			session.close();
 		}
 		return result_id;
+	}
+	
+	@Override
+	public boolean find_email(String user_email) {
+		SqlSession session = null;
+		UserDto userDto = new UserDto();
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			userDto = session.selectOne(USER_NAMESPACE+"findEmail", user_email);
+			
+			if(userDto == null) {
+				System.out.println("find_email 유저 dto 존재하지않음");
+				return false;
+			}
+		}catch (Exception e) {
+			System.out.println("find_email 오류 : " + e);
+			return false;
+		} finally {
+			session.close();
+		}
+		System.out.println("find_email 성공! 유저 seq : "+ userDto.getUser_seq());
+		return true;
+	}
+
+	@Override
+	public boolean user_updatePw(String user_pw, String user_email) {
+		SqlSession session = null;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("user_email", user_email);
+		map.put("user_pw", user_pw);
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.update(USER_NAMESPACE+"updatePw",map);
+		}catch (Exception e) {
+			System.out.println("find_email 오류 : " + e);
+			return false;
+		} finally {
+			session.close();
+		}
+		return true;
 	}
 
 	

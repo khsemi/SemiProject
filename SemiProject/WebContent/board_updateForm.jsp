@@ -110,8 +110,9 @@ $(function(){
 				 	</table> 
 				 	<input type="submit" class="btn btn-primary pull-right" value="완료" id="savebutton" >
 				 	<input type="button" class="btn btn-primary pull-right" value="취소" onclick="board_cancel()">
-				 	<input type="button" value="코드" class="btn btn-primary pull-right" onclick="Popup()">
-				 	
+					<c:if test="${category eq 'TIPS_insertForm' || category eq 'QA_insertForm'}">
+					<input type="button" value="코드" class="btn btn-primary pull-right" onclick="Popup()">
+					</c:if>				 	
 				</form> 
 			</div>
 			</br></br></br>

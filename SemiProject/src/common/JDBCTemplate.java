@@ -19,9 +19,9 @@ public class JDBCTemplate {
 			e.printStackTrace();
 		}
 		
-		String url="jdbc:oracle:thin:@localhost:1521:xe";
-		String id="test";
-		String pw="test";
+		String url="jdbc:oracle:thin:@8787:1521:xe";
+		String id="kh";
+		String pw="kh";
 		
 		Connection con = null;
 		

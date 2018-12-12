@@ -27,6 +27,10 @@
 		DELETE FROM KH_FAVORITE WHERE BOARD_SEQ_ID = #{board_seq_id} AND USER_SEQ = #{user_seq}
 	</delete>
 	
+	<delete id="favoriteMulDelete" parameterType="map">
+		DELETE FROM KH_FAVORITE WHERE BOARD_SEQ_ID = #{board_seq_id}
+	</delete>
+	
 	<select id="favoriteCheck" parameterType="map" resultType="int">
 		SELECT FAVORITE_SEQ_ID, BOARD_SEQ_ID, USER_SEQ, FAVORITE_COUNT
 		FROM KH_FAVORITE

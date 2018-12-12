@@ -462,6 +462,7 @@ public class Controller extends HttpServlet {
 			request.setAttribute("user_id", service.find_id(user_email));
 			
 			dispatch("khc_findResult_id.jsp", request, response);
+
 			System.out.println();
 		}else if(category.equals("comment_insert")) {
 			int board_seq_id = Integer.parseInt(request.getParameter("board_seq_id"));
@@ -483,6 +484,46 @@ public class Controller extends HttpServlet {
 				dispatch("controller.do?category=board_detail&board_seq_id="+board_seq_id, request, response);
 			}
 			System.out.println("comment_seq_id : " + Integer.parseInt(request.getParameter("comment_seq_id")));
+
+		}else if(category.equals("FINDPW")) { //khc_login.jsp에서 비밀번호 찾기 눌렀을 때
+			response.sendRedirect("khc_sendEmail.jsp");
+		}else if(category.equals("sendEmail_PW")) { //khc_updatePw.jsp에서 비밀번호 변경눌렀을 때
+			String user_email = request.getParameter("user_email");
+			
+			if(service.find_email(user_email)) { //이메일을 찾아서 이메일이 user테이블에 있으면,
+				//이메일을 저장하고, sendEmail 호출 한다.
+				if(service.user_sendEmail_pw(user_email)) { //이메일이 성공적으로 보내지면 이메일이 보내졌다는 페이지로 이동시킨다.
+					response.sendRedirect("khc_sendEmailForm.jsp");
+				}else {
+					System.out.println("비밀번호 찾기 이메일 발송 실패");
+					//response.sendRedirect("khc_sendEmailerror.jsp");
+				}
+			}else {
+				System.out.println("해당 이메일을 사용하는 계정없음.");
+				response.sendRedirect("khc_findEmailerror.jsp"); //email을 찾을 수 없다는 페이지 만드셈
+			}
+		}else if(category.equals("check_email_pw")) { 
+			String user_email = request.getParameter("user_email");
+			String code = request.getParameter("code");
+			if(service.user_checkEmail_pw(user_email, code)) { //이메일인증이 완료되면
+				//비밀번호 변경 페이지로 넘어간다.
+				//비밀번호 변경 페이지에서 새로운 비밀번호 값을 입력할 수 있다
+				request.setAttribute("user_email", user_email);
+				dispatch("khc_updatePw_form.jsp", request, response);
+			}else {
+				System.out.println("이메일 인증에 실패하였습니다.");
+			}
+			
+		}else if(category.equals("update_pw")) {
+			String user_email = request.getParameter("user_email");
+			String user_pw = request.getParameter("user_pw");
+			
+			if(service.user_updatePw(user_pw, user_email)) {
+				response.sendRedirect("khc_updatePw_result.jsp"); //비밀번호 변경이 완료 되었습니다. 로그인을 해주세요(여기다가 로그인 페이지로 넘어가는 버튼만드셈)
+			}else {
+				System.out.println("비밀번호 변경 실패(오류) ");
+				response.sendRedirect("_khc_updatePw_error.jsp"); //비밀번호 변경 실패 됨
+			}
 		}
 
 	}

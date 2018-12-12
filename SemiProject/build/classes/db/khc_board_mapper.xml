@@ -17,8 +17,13 @@
 	</resultMap>
 	
 	<select id="selectAll" resultMap="board_Map">
-		SELECT * FROM KH_BOARD JOIN KH_USER USING(USER_SEQ)
-		ORDER BY BOARD_REGDATE DESC 
+	<![CDATA[ 
+		SELECT A.BOARD_SEQ_ID, A.BOARD_CATEGORY, A.BOARD_TITLE, A.USER_SEQ, USER_NICKNAME
+    		FROM(SELECT DENSE_RANK() OVER (PARTITION BY BOARD_CATEGORY ORDER BY BOARD_SEQ_ID DESC) RN, 
+            		BOARD_SEQ_ID, BOARD_CATEGORY, BOARD_TITLE, USER_SEQ
+            		FROM KH_BOARD) A JOIN KH_USER B ON A.USER_SEQ = B.USER_SEQ
+            WHERE RN <= 5
+    ]]>
 	</select>
 	
 	<select id="totalCount" parameterType="string" resultType="int">

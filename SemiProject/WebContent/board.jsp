@@ -36,8 +36,12 @@
 		var category = $("#category").val().split("_");
 		location.href = "controller.do?category=" + category[0] + "_insertForm";
 	}
-</script>
+	
+	function clickRow(board_seq_id, user_seq) {
+		location.href="controller.do?category=board_detail&board_seq_id="+board_seq_id+"&user_seq="+user_seq;
 
+	}
+</script>
 <body>
 	<!-- 
 정렬 될 수 있는 것 4가지
@@ -105,10 +109,9 @@ BOARD.VIEW_COUNT
 							</c:when>
 							<c:otherwise>
 								<c:forEach items="${boardList }" var="dto">
-									<tr>
+									<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 										<td>${dto.board_seq_id }</td>
-										<td><a
-											href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}&user_seq=${userDto.user_seq }">${dto.board_title }</a></td>
+										<td>${dto.board_title }</td>
 										<td>${dto.user_nickname }</td>
 										<td><fmt:formatDate value="${dto.board_regdate }"
 												pattern="yy.MM.dd HH:mm" /></td>

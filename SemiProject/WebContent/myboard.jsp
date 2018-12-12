@@ -23,7 +23,10 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
+function clickRow(board_seq_id, user_seq) {
+	location.href="controller.do?category=board_detail&board_seq_id="+board_seq_id+"&user_seq="+user_seq;
 
+}
 </script>
 <body>
 <input type="hidden" id="totalCount" value='${totalCount }'>
@@ -59,9 +62,9 @@
 								</c:when>
 								<c:otherwise> 
 									<c:forEach items="${boardList }" var="dto">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id } </td>
-											<td><a href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}&user_seq=${userDto.user_seq }">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname } </td>
 											<td><fmt:formatDate value="${dto.board_regdate }" pattern="yy.MM.dd HH:mm"/></td>
 											<td>${dto.comment_count }</td>

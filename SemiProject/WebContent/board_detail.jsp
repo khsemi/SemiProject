@@ -215,16 +215,17 @@ function favorite_down(){
 				 				<td><div class="form-control" style="height:350px; width:1050px;">${boardDto.board_content }</div></td>
 				 			</tr>
 				 	</table>
-				 	<div>
+				 	<div >
 					 	<input type="button" class="btn pull-left" value="추천" onclick="favorite_up()">
 						<input type="button" class="btn pull-left" value="${boardDto.favorite_count }" name="favorite" id="favorite">
 						<input type="button" class="btn pull-left" value="비추천" onclick="favorite_down()">
-				 	</div>
+				 	
 				 		<!-- 로그인한 사람이 쓴 글일 경우에만 수정,삭제 버튼이 보이게 해준다. 또는 로그인한 계정의 타입이 admin일 경우에도 보인다. -->
-				 	<c:if test="${userDto.user_seq == boardDto.user_seq || userDto.user_type == 'ADMIN'}">
-					 	<input type="button" class="btn btn-outline-primary pull-right" value="수정" onclick="board_update()">
-					 	<input type="button" class="btn btn-outline-primary pull-right" value="삭제" onclick="board_delete()">
-				 	</c:if>
+				 		<c:if test="${userDto.user_seq == boardDto.user_seq || userDto.user_type == 'ADMIN'}">
+					 		<input type="button" class="btn btn-outline-primary pull-right" value="수정" onclick="board_update()">
+					 		<input type="button" class="btn btn-outline-primary pull-right" value="삭제" onclick="board_delete()">
+				 		</c:if>
+				 	</div>
 				</form>
 				<hr class="my-4">
 				<hr class="my-4">
@@ -260,7 +261,7 @@ function favorite_down(){
 												<input type="hidden" name="user_seq" id="user_seq" value="${userDto.user_seq }">
 												<input type="hidden" name="board_seq_id" id="board_seq_id" value="${boardDto.board_seq_id }">
 												<input type="hidden" name="comment_seq_id" id="comment_seq_id" value="${commentDto.comment_seq_id }">
-												<input type="submit" id="button" class="btn btn-success btn-wide" value="삭제">
+												<input style="float: right;" type="submit" id="button" class="btn btn-success btn-wide" value="삭제">
 											</form>
 											</div>
 										</div>
@@ -301,7 +302,7 @@ function favorite_down(){
 										</fieldset>
 									</div>
 									<div class="content-function-cog note-submit-buttons clearfix">
-										<input type="submit" name="comment_insert" id="btn-create-btn" class="btn btn-success btn-wide" value="등록">
+										<input style="float: right;" type="submit" name="comment_insert" id="btn-create-btn" class="btn btn-success btn-wide" value="등록">
 									</div>
 								</form>
 							</li>

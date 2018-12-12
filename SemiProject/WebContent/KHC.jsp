@@ -15,19 +15,24 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="css/KHC.css">
 <title>KH Community</title>
+<style type="text/css">
+
+</style>
 </head>
 <!-- 부트스트랩이 선언되기전에 jquery가 선언되어야한다. -->
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+function clickRow(board_seq_id, user_seq) {
+	location.href="controller.do?category=board_detail&board_seq_id="+board_seq_id+"&user_seq="+user_seq;
 
+}
+</script>
 <body>
-	<input type="hidden" id="totalCount" value='${totalCount }'>
-	<input type="hidden" id="page" value='${page }'>
 	<input type="hidden" id="category" value='${category }'>
-	<input type="hidden" id="searchType" value='${searchType }'>
-	<input type="hidden" id="keyword" value='${keyword }'>
+	
 	<div class="layout-container">
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
@@ -67,10 +72,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'NOTICE'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -103,10 +107,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'COMMUNITY'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -138,10 +141,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'TRADE'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -173,10 +175,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'JOBS'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -211,10 +212,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'QA'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -247,10 +247,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'TIPS'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -283,10 +282,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
 										<c:if test="${dto.board_category eq 'FOODINFO'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>
@@ -318,10 +316,9 @@
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto">
 										<c:if test="${dto.board_category eq 'STUDY'}">
-										<tr>
+										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
-											<td><a
-												href="controller.do?category=board_detail&board_seq_id=${dto.board_seq_id}">${dto.board_title }</a></td>
+											<td>${dto.board_title }</td>
 											<td>${dto.user_nickname }</td>
 										</tr>
 										</c:if>

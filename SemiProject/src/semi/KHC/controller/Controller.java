@@ -285,7 +285,6 @@ public class Controller extends HttpServlet {
 			request.setAttribute("point_val", point_val);
 			dispatch("paymentAction.jsp", request, response);
 		} else if(category.equals("user_insert")) {
-	
 			String user_id = request.getParameter("user_id");
 			if(service.user_join(user_id, request.getParameter("user_pw"), request.getParameter("user_name"), request.getParameter("user_nickname"), request.getParameter("user_address"), request.getParameter("user_email"), request.getParameter("user_phone"))) {
 				request.setAttribute("user_id", user_id);
@@ -297,8 +296,13 @@ public class Controller extends HttpServlet {
 				System.out.println("회원가입 실패! 중복된 값들이 있습니다.");
 			}
 		}else if(category.equals("sendEmail")) {
-			service.user_sendEmail(request.getParameter("user_id"));
-			dispatch("khc_sendEmailForm.jsp", request, response);
+			String user_id = request.getParameter("user_id");
+			//여기서 이메일을 보내준다.
+			if(service.user_sendEmail(user_id)) {
+				dispatch("khc_sendEmail_resultForm.jsp", request, response);
+			}else {
+				System.out.println("이메일 보내기 오류");
+			}
 		}else if(category.equals("emailCheck")) {
 			System.out.println(request.getParameter("user_id"));
 			boolean result = service.user_setEmailCheck(request.getParameter("user_id"), request.getParameter("code"));

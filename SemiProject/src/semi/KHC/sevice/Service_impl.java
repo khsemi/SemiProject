@@ -179,7 +179,7 @@ public class Service_impl implements Service{
 	public boolean user_join(String user_id, String user_pw, String user_name, String user_nickname, String user_address, String user_email, String user_phone) {
 		UserDao userDao = new UserDao_impl();
 		boolean result = userDao.join(new UserDto(user_id, user_pw, user_name, user_nickname, user_address, user_email, user_phone));
-	
+		
 		return result;
 	}
 

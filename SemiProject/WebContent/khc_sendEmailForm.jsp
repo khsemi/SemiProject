@@ -30,7 +30,6 @@
             <h2>회원가입(email 인증)페이지</h2>
          </div>
          <div class="container">
-         	<div>이메일을 확인해주세요! : ${user_id } : ${category }</div>
          	<input type="button" value="인증하기" onclick="location.href='controller.do?category=sendEmail&user_id=${user_id}'">
          </div>
          <footer class="footer">Team.진선이와 아이들 1, 2, 3, 4, 5, 6 </footer>

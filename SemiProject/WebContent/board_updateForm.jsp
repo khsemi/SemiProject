@@ -175,7 +175,6 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
     
     // 클릭한 위도, 경도 정보를 가져옵니다 
     var latlng = mouseEvent.latLng; 
-    alert(latlng);
    // alert($("#latitude").val());
 	//alert($("#longtitude").val());
     
@@ -194,8 +193,6 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
 	  //id가 longtitude 인 곳에 경도 값을 넣는다
 	
 	
-    alert($("#latitude").val());   
-	alert($("#longtitude").val());
 	//alert를 호출하려 latitude와 longtitude에 값이 제대로 전달, 저장되었는지 확인
     
 }

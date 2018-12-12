@@ -195,9 +195,7 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
     
     // 클릭한 위도, 경도 정보를 가져옵니다 
     var latlng = mouseEvent.latLng; 
-    alert(latlng);
-   // alert($("#latitude").val());
-	//alert($("#longtitude").val());
+
     
     // 마커 위치를 클릭한 위치로 옮깁니다
     marker.setPosition(latlng);
@@ -216,10 +214,6 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
 	
    // document.insert.latitude.value = latlng.getLat();
    // document.insert.longtitude.value = latlng.getlng();
-   
-    alert($("#latitude").val());   
-	alert($("#longtitude").val());
-	//alert를 호출하려 latitude와 longtitude에 값이 제대로 전달, 저장되었는지 확인
     
 }
 );

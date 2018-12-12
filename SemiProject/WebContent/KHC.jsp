@@ -37,15 +37,26 @@ function clickRow(board_seq_id, user_seq) {
 		<div id="main">
 			<!-- sidebar를 include해준다. -->
 			<jsp:include page="sidebar.jsp" />
+			<div class="container">
 			<div class="form">
-				<h2>메인페이지</h2>
+				<h2>메인페이지</h2></br></br>
 				<!-- 메인페이지에 표시될 게시판들을 div와 table을 이용해서 코딩하면된다. -->
-				<p>로그인 정보</p>
+				<p><strong>로그인 정보</strong></p>
 				<!-- 세션에 담긴 정보는 불러온다. -->
-				<p>아이디 : ${userDto.user_id }</p>
-				<p>계정번호 : ${userDto.user_seq }</p>
-				<br /> <a type="button" href="controller.do?category=LOGOUT">로그아웃</a>
+				<c:choose>
+					<c:when test="${empty userDto }">
+						<p>로그인을 해주세요!!</p>
+					</c:when>
+					<c:otherwise>
+						<p>${userDto.user_nickname }님 안녕하세요!!</p>
+						<p>아이디 : ${userDto.user_id }</p>
+						<a class="btn btn-defult" type="button" href="controller.do?category=LOGOUT">로그아웃</a>
+					</c:otherwise>
+				</c:choose>
+				
+			</div></br></br>
 			</div>
+			
 
 			<div class="row marketing">
 				<div class="col-lg-6">

@@ -52,6 +52,12 @@ public interface Service {
 	//아이디찾기
 	public String find_id(String user_email);
 	
+	// 비밀번호 이메일 찾기
+	public boolean find_email(String user_email);
+
+	// 비밀번호 변경 성공
+	public boolean user_updatePw(String user_email, String user_pw);
+	
 	// 유저 정보 수정
 	public int user_update(UserDto update_userdto);
 	
@@ -64,8 +70,12 @@ public interface Service {
 	//회원가입 email 보내기
 	public boolean user_sendEmail(String user_id);
 	
+	public boolean user_sendEmail_pw(String user_email);
+	
 	//email 인증 완료 
 	public boolean user_setEmailCheck(String user_id, String code);
+	
+	public boolean user_checkEmail_pw(String user_email, String code);
 	
 	// 포인트 충전 내역
 	public List<PointDto> point_selectAll(int user_seq);

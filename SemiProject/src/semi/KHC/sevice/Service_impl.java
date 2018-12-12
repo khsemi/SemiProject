@@ -421,4 +421,76 @@ public class Service_impl implements Service{
 		return false;
 	}
 	
+	@Override
+	public boolean find_email(String user_email) {
+		UserDao userDao = new UserDao_impl();
+		return userDao.find_email(user_email);
+	}
+	
+	@Override
+	public boolean user_sendEmail_pw(String user_email) {
+		UserDao userDao = new UserDao_impl();
+		String host = "http://localhost:8787/SemiProject/controller.do";
+		String from = "ggjs9812@gmail.com";
+		//String to = userDao.getUser_email(user_email);
+		String subject = "KH Comunity 비밀번호 변경 이메일입니다.";
+		String content = "다음 링크에 접속하여 비밀번호 변경을 완료하세요!"+
+			"<a href='"+host+"?category=check_email_pw&user_email="+user_email+"&code="+new SHA256().getSHA256(user_email)+"'> 비밀번호 변경을 완료 하세요!</a>";
+		
+		Properties p = new Properties();
+		p.put("mail.smtp.user", from);
+		p.put("mail.smtp.host", "smtp.googlemail.com");
+		p.put("mail.smtp.port", "465");
+		p.put("mail.smtp.starttls.enable","true");
+		p.put("mail.smtp.auth","true");
+		p.put("mail.smtp.debug","true");
+		p.put("mail.smtp.socketFactory.port","465");
+		p.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+		p.put("mail.smtp.socketFactory.fallback","false");
+		
+		try{
+			Authenticator auth = new Gmail();
+			Session ses = Session.getInstance(p, auth);
+			ses.setDebug(true);
+			MimeMessage msg = new MimeMessage(ses);
+			msg.setSubject(subject);
+			Address fromAddr = new InternetAddress(from);
+			msg.setFrom(fromAddr);
+			Address toAddr = new InternetAddress(user_email);
+			msg.addRecipient(Message.RecipientType.TO,toAddr);
+			msg.setContent(content,"text/html;charset=UTF8");
+			Transport.send(msg);
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean user_checkEmail_pw(String user_email, String code) {
+		//UserDao userDao = new UserDao_impl();
+		//String userEmail= userDao.getUser_email(user_id);
+		boolean isRight = (new SHA256().getSHA256(user_email).equals(code)) ? true : false;
+		
+		if(isRight == true){
+			//인증 성공시
+			return true;
+		}
+		//인증 실패시(코드 유효 시간 오버)
+		return false;
+	}
+	
+
+	@Override
+	public boolean user_updatePw(String user_pw, String user_email) {
+		UserDao userDao = new UserDao_impl();
+		
+		if(userDao.user_updatePw(user_pw, user_email)) {
+			System.out.println("service_impl user_updatePw 성공!");
+			return true;
+		}
+		return false;
+	}
+	
 }

@@ -123,4 +123,21 @@ public class FavoriteDao_impl extends SqlMapConfig implements FavoriteDao{
 		}
 		return true;
 	}
+
+	@Override
+	public boolean favorite_mul_delete(int board_seq_id) {
+		SqlSession session = null;
+		
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			session.delete(FAVORITE_NAMESPACE+"favoriteMulDelete",board_seq_id);
+			System.out.println("FavoriteDao_impl mul_delete 성공!");
+		} catch (Exception e) {
+			System.out.println("FavoriteDao_mul_delete 오류 : "+e);
+			return false;
+		}finally {
+			session.close();
+		}
+		return true;
+	}
 }

@@ -125,10 +125,12 @@ public class Service_impl implements Service{
 	public boolean board_delete(int board_seq_id) {
 		BoardDao board = new BoardDao_impl();
 		CommentDao commentDao = new CommentDao_impl();
-		
+		FavoriteDao favoriteDao = new FavoriteDao_impl();
 		if(commentDao.mul_delete(board_seq_id)) {
-			if(board.delete(board_seq_id) > 0) {
-				return true;
+			if(favoriteDao.favorite_mul_delete(board_seq_id)) {
+				if(board.delete(board_seq_id) > 0) {
+					return true;
+				}
 			}
 		}
 		return false;		

@@ -17,4 +17,6 @@ public interface FavoriteDao {
 	public boolean favorite_insert_down(int board_seq_id, int user_seq);
 	//추천 테이블에서 삭제
 	public boolean favorite_delete(int board_seq_id, int user_seq);
+	
+	public boolean favorite_mul_delete(int board_seq_id);
 }

@@ -82,7 +82,7 @@ function clickRow(board_seq_id, user_seq) {
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${boardlist }" var="dto" >
-										<c:if test="${dto.board_category eq 'NOTICE'}">
+										<c:if test="${dto.board_category eq 'NOTICE'}" >
 										<tr onclick="clickRow('${dto.board_seq_id}', '${userDto.user_seq }')">
 											<td>${dto.board_seq_id }</td>
 											<td>${dto.board_title }</td>

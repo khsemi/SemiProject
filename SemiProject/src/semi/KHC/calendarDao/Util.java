@@ -37,6 +37,7 @@ public class Util {
 				res +="</p>";
 			}
 		}
+		System.out.println(res);
 		return res;
 	}
 	

@@ -13,6 +13,12 @@ public interface UserDao {
 	//아이디찾기
 	public String find_id(String user_email);
 	
+	//비밀번호 이메일 찾기
+	public boolean find_email(String user_email);
+	
+	//비밀번호 변경 성공
+	public boolean user_updatePw(String user_pw, String user_email);	
+	
 	//회원가입 기능
 	public boolean join(UserDto userDto);
 	

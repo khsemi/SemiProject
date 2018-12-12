@@ -42,13 +42,11 @@ $(function(){
 	<input type="hidden" id="category" value='${category }'>
 	<div class="sidebar" style="text-align: center;">
 		<div class="logo">
-			<h1 style="color: white;">KHCP</h1>
+			<h1 style="color: white;">KHC</h1>
 		</div>
 
 		<nav class="nav-sidebar">
 			<ul class="nav nav-sidebar">
-				<!-- 사이드바	<li id="test_board_select"><a href="sidebar.jsp">a</a></li>  -->
-				<!-- test 메뉴 <li id="test_board_search"><a href="controller.do?category=testBoard&page=1"><span>메뉴</span></a></li> -->
 				<li id="MAIN"><a href="controller.do?category=MAIN"><span>Main</span></a></li>
 
 				<c:choose>
@@ -56,7 +54,7 @@ $(function(){
 						<li id="LOGIN"><a href="controller.do?category=LOGIN"><span>Login</span></a></li>
 					</c:when>
 					<c:otherwise>
-						<li id="MYPAGE"><a href="controller.do?category=MYPAGE"><span>Mypage</span></a></li>
+						<li id="MYPAGE"><a href="controller.do?category=MYPAGE&page=1"><span>Mypage</span></a></li>
 					</c:otherwise>
 				</c:choose>
 
@@ -69,8 +67,11 @@ $(function(){
 				<li id="TIPS"><a href="controller.do?category=TIPS&page=1&sortType=BOARD_REGDATE">Tips</a></li>
 				<li id="FOODINFO"><a href="controller.do?category=FOODINFO&page=1&sortType=BOARD_REGDATE">Food Info</a></li>
 				<li id="STUDY"><a href="controller.do?category=STUDY&page=1&sortType=BOARD_REGDATE">Study</a></li>
+				
 			</ul>
 		</nav>
+		
 	</div>
+	
 </body>
 </html>

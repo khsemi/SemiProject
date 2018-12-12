@@ -24,6 +24,9 @@ import semi.KHC.favoriteDao.FavoriteDao_impl;
 import semi.KHC.foodticketDao.FoodticketDao;
 import semi.KHC.foodticketDao.FoodticketDao_impl;
 import semi.KHC.foodticketDto.FoodticketDto;
+import semi.KHC.mapDao.MapDao;
+import semi.KHC.mapDao.MapDao_impl;
+import semi.KHC.mapDto.MapDto;
 import semi.KHC.noteDao.NoteDao;
 import semi.KHC.noteDao.NoteDao_impl;
 import semi.KHC.noteDto.NoteDto;
@@ -116,10 +119,22 @@ public class Service_impl implements Service{
 		return board.insert(dto);
 	}
 	@Override
+	public int board_insert_map(String board_category, String board_title, String board_content, int user_seq, int maps_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_category, board_title, board_content, user_seq, maps_id);
+		return board.insert_m(dto);
+	}
+	@Override
 	public int board_update(int board_seq_id, String board_title, String board_content) {
 		BoardDao board = new BoardDao_impl();
 		BoardDto dto = new BoardDto(board_seq_id, board_title, board_content);
 		return board.update(dto);
+	}
+	@Override
+	public int board_update_map(int board_seq_id, String board_title, String board_content, int maps_id) {
+		BoardDao board = new BoardDao_impl();
+		BoardDto dto = new BoardDto(board_seq_id, board_title,board_content,maps_id);
+		return board.update_m(dto);
 	}
 	@Override
 	public boolean board_delete(int board_seq_id) {
@@ -374,6 +389,110 @@ public class Service_impl implements Service{
 	public boolean favorite_delete(int board_seq_id, int user_seq) {
 		FavoriteDao favoriteDao = new FavoriteDao_impl();
 		return favoriteDao.favorite_delete(board_seq_id, user_seq);
+	}
+
+	@Override
+	public MapDto map_detail(int map_seq_id) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = map.detailMap(map_seq_id);
+		return mapdto;
+	}
+
+	@Override
+	public int maps_insert(String maps_name, String maps_x, String maps_y) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = new MapDto(maps_name, maps_x, maps_y);
+		return map.insertMap(mapdto); // => map_seq_id 리턴
+	}
+
+	@Override
+	public int maps_update(int maps_seq_id, String maps_name, String maps_x, String maps_y) {
+		MapDao map = new MapDao_impl();
+		MapDto mapdto = new MapDto(maps_seq_id, maps_name, maps_x, maps_y);
+		return map.updateMap(mapdto);
+	}
+
+	@Override
+	public boolean maps_delete(int maps_seq_id) {
+		MapDao map = new MapDao_impl();
+		int result = map.deleteMap(maps_seq_id);
+		
+		if(result > 0 ) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean find_email(String user_email) {
+		UserDao userDao = new UserDao_impl();
+		return userDao.find_email(user_email);
+	}
+	
+	@Override
+	public boolean user_sendEmail_pw(String user_email) {
+		UserDao userDao = new UserDao_impl();
+		String host = "http://localhost:8787/SemiProject/controller.do";
+		String from = "ggjs9812@gmail.com";
+		//String to = userDao.getUser_email(user_email);
+		String subject = "KH Comunity 비밀번호 변경 이메일입니다.";
+		String content = "다음 링크에 접속하여 비밀번호 변경을 완료하세요!"+
+			"<a href='"+host+"?category=check_email_pw&user_email="+user_email+"&code="+new SHA256().getSHA256(user_email)+"'> 비밀번호 변경을 완료 하세요!</a>";
+		
+		Properties p = new Properties();
+		p.put("mail.smtp.user", from);
+		p.put("mail.smtp.host", "smtp.googlemail.com");
+		p.put("mail.smtp.port", "465");
+		p.put("mail.smtp.starttls.enable","true");
+		p.put("mail.smtp.auth","true");
+		p.put("mail.smtp.debug","true");
+		p.put("mail.smtp.socketFactory.port","465");
+		p.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+		p.put("mail.smtp.socketFactory.fallback","false");
+		
+		try{
+			Authenticator auth = new Gmail();
+			Session ses = Session.getInstance(p, auth);
+			ses.setDebug(true);
+			MimeMessage msg = new MimeMessage(ses);
+			msg.setSubject(subject);
+			Address fromAddr = new InternetAddress(from);
+			msg.setFrom(fromAddr);
+			Address toAddr = new InternetAddress(user_email);
+			msg.addRecipient(Message.RecipientType.TO,toAddr);
+			msg.setContent(content,"text/html;charset=UTF8");
+			Transport.send(msg);
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean user_checkEmail_pw(String user_email, String code) {
+		//UserDao userDao = new UserDao_impl();
+		//String userEmail= userDao.getUser_email(user_id);
+		boolean isRight = (new SHA256().getSHA256(user_email).equals(code)) ? true : false;
+		
+		if(isRight == true){
+			//인증 성공시
+			return true;
+		}
+		//인증 실패시(코드 유효 시간 오버)
+		return false;
+	}
+	
+
+	@Override
+	public boolean user_updatePw(String user_pw, String user_email) {
+		UserDao userDao = new UserDao_impl();
+		
+		if(userDao.user_updatePw(user_pw, user_email)) {
+			System.out.println("service_impl user_updatePw 성공!");
+			return true;
+		}
+		return false;
 	}
 	
 }

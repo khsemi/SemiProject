@@ -41,6 +41,7 @@ function CheckForm(Join) {
 </script>
 </head>
 <%
+
    int year = Integer.parseInt(request.getParameter("year"));
    int month = Integer.parseInt(request.getParameter("month"));
    int date = Integer.parseInt(request.getParameter("date"));

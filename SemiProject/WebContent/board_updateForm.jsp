@@ -107,13 +107,20 @@ function CheckForm(Join) {
 				 			</tr>
 				 			
 				 			<c:if test="${dto.board_category eq 'FOODINFO' || dto.board_category eq 'STUDY' }">
-						 	<tr>
-						 		<td><input name="location" type="text" class="form-control" placeholder="장소" name="location" maxlength="50" value ="${mapdto.maps_name }"></td>
-						 	</tr>
-				 			
-				 			<tr>
-				 				<td><div id="map" style="width: 100%; height: 350px;"></div></td>
-				 			</tr>
+						 	
+				 			<c:choose>
+				 				<c:when test="${mapdto.maps_x eq null}">
+				 				</c:when>
+				 				<c:otherwise>
+				 				
+				 				<tr>
+						 			<td><input name="location" type="text" class="form-control" placeholder="장소" name="location" maxlength="50" value ="${mapdto.maps_name }"></td>
+							 	</tr>
+					 			<tr>
+				 					<td><div id="map" style="width: 100%; height: 350px;"></div></td>
+				 				</tr>
+				 				</c:otherwise>				 				
+				 			</c:choose>
 				 			</c:if>
 				 			<tr>	
 				 				<td><textarea name="content" id="smarteditor" class="form-control" placeholder="내용" name="content" maxlength="2048" style="height:350px">${dto.board_content }</textarea> </td>

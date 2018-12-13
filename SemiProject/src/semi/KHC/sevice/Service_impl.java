@@ -44,7 +44,7 @@ public class Service_impl implements Service{
 	//일반 게시판
 	@Override
 	public Map<String, Object> board(String category, int page, String sortType) {
-		System.out.println("여기는 service_impl sortType : " + sortType);
+//		System.out.println("여기는 service_impl sortType : " + sortType);
 		BoardDao boardDao = new BoardDao_impl();
 		Map<String, Object> result = new HashMap<String, Object>();
 		int totalCount = boardDao.totalCount(category);
@@ -82,7 +82,7 @@ public class Service_impl implements Service{
 		
 		int totalCount_search = board.totalCount_search(category, keyword);
 		result.put("totalCount", totalCount_search);
-		System.out.println("여기는 service_impl search sortType : " + sortType);
+//		System.out.println("여기는 service_impl search sortType : " + sortType);
 		List<BoardDto> boardList= board.selectPage_search(category,page, keyword, sortType);
 		result.put("boardList", boardList);
 		return result;
@@ -154,14 +154,28 @@ public class Service_impl implements Service{
 	@Override
 	public List<PointDto> point_selectAll(int user_seq) {
 		PointDao dao = new PointDao_impl();
-		List<PointDto> pointlist = dao.selectAll(user_seq);
+		List<PointDto> pointlist = null;
+		
+		try {
+			pointlist = dao.selectAll(user_seq);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return pointlist;
 	}
 	@Override
 	public int point(int user_seq, String point_state) {
 		PointDao dao = new PointDao_impl();
-		int point = dao.select(user_seq, point_state);
+		int point = 0;
+		
+		try {
+			point = dao.select(user_seq, point_state);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return point;
 	}
@@ -186,6 +200,7 @@ public class Service_impl implements Service{
 	@Override
 	public boolean user_sendEmail(String user_id) {
 		UserDao userDao = new UserDao_impl();
+//		String host = "http://192.168.10.4:8787/SemiProject/controller.do";
 		String host = "http://localhost:8787/SemiProject/controller.do";
 		String from = "ggjs9812@gmail.com";
 		String to = userDao.getUser_email(user_id);
@@ -433,6 +448,7 @@ public class Service_impl implements Service{
 	public boolean user_sendEmail_pw(String user_email) {
 		UserDao userDao = new UserDao_impl();
 		String host = "http://localhost:8787/SemiProject/controller.do";
+//		String host = "http://192.168.10.4:8787/SemiProject/controller.do";
 		String from = "ggjs9812@gmail.com";
 		//String to = userDao.getUser_email(user_email);
 		String subject = "KH Comunity 비밀번호 변경 이메일입니다.";

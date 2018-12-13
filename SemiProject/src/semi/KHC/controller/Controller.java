@@ -29,7 +29,6 @@ import semi.KHC.calendarDto.CalDto;
 @WebServlet("/controller.do")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private HttpSession session = null;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("text/html; charset=UTF-8");
@@ -37,7 +36,7 @@ public class Controller extends HttpServlet {
 		Service service = new Service_impl();
 		 semi.KHC.calendarDao.CalDao dao = new semi.KHC.calendarDao.CalDao();
 		
-		
+		HttpSession session = request.getSession(false);
 		//command 값을 받아온다.
 		String category = request.getParameter("category");
 		
@@ -442,7 +441,6 @@ public class Controller extends HttpServlet {
 
 			String yyyyMMdd = year + Util.istwo(month) + Util.istwo(date);
 
-			HttpSession session = request.getSession();
 			session.setAttribute("ymd", yyyyMMdd);
 
 			List<CalDto> list = dao.selectAll(userdto.getUser_seq(), yyyyMMdd);

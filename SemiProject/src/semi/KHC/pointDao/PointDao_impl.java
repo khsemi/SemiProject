@@ -45,7 +45,6 @@ public class PointDao_impl extends SqlMapConfig implements PointDao {
 			point = session.selectOne(POINT_NAMESPACE+"select", map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} finally {
 			session.close();
 		}

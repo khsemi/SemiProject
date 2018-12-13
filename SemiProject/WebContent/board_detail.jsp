@@ -196,8 +196,8 @@ function favorite_down(){
 				 			
 				 			<!-- 스터디 모집 -->
 				 			<c:if test="${boardDto.board_category eq 'STUDY' }">
-				 			<c:if test="${boardDto.maps_id eq '0' }">
-				 			</c:if>
+				 				<c:if test="${boardDto.maps_id eq '0' }">
+				 				</c:if>
 				 			<c:if test="${boardDto.maps_id ne '0' }">
 				 			<tr>				 				
 				 				<td>
@@ -382,7 +382,7 @@ daum.maps.event.addListener(marker, 'mouseover', function() {
 daum.maps.event.addListener(marker, 'mouseout', function() {
     // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
     infowindow.close();
-});
+})
 </script>
 	
 </body>

@@ -67,7 +67,18 @@ $(function(){
 	
 }
 
+function CheckForm(Join) {
 
+	//체크박스 체크여부 확인 [하나]
+	var select1 = document.updateform.title;
+	if (select1.value == "") {	
+		alert('제목을 입력해 주세요.');
+		select1.focus();
+		return false; 
+	}
+
+	
+}
 	
 </script>
 <body>
@@ -78,7 +89,7 @@ $(function(){
 			<jsp:include page="sidebar.jsp"></jsp:include>
 			<div class="form">
 				<h2> ${dto.board_category } </h2>
-				<form method="post" id="frm" action="controller.do?category=board_update" id="board_updateForm">
+				<form method="post" id="frm" action="controller.do?category=board_update" id="board_updateForm" name="updateform" onSubmit="return CheckForm(this)">
 					<input type = "hidden" name = "maps_seq_id" id ="maps_seq_id" value = "${mapdto.maps_seq_id }">
 					<input type="hidden" name="board_seq_id" id="board_seq_id" value="${dto.board_seq_id }">
 					<input type="hidden" id="latitude" name="latitude" value="0">

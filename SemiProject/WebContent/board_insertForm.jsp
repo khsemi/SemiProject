@@ -75,6 +75,20 @@ $(function(){
 	
 }
 
+function CheckForm(Join) {
+
+	//체크박스 체크여부 확인 [하나]
+	var select1 = document.insertform.title;
+	if (select1.value == "") {	
+		alert('제목을 입력해 주세요.');
+		select1.focus();
+		return false; 
+	}
+
+	
+}
+
+
 </script>
 <body>
 <input type="hidden" id="categoryVal" value="${category }">
@@ -84,7 +98,7 @@ $(function(){
 			<jsp:include page="sidebar.jsp"></jsp:include>
 			<div class="form">
 				<h2> 글 입력:: ${userDto.user_seq } </h2>
-				<form id="frm" method="post" action="controller.do?category=board_insert">
+				<form id="frm" method="post" action="controller.do?category=board_insert" name="insertform" onSubmit="return CheckForm(this)">
 					<input type="hidden" name="user_seq" value="${userDto.user_seq }">
 					<input type="hidden" id="latitude" name="latitude" value="0">
 					<input type="hidden" id="longtitude" name="longtitude" value="0">

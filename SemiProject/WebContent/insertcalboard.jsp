@@ -14,7 +14,31 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+function CheckForm(Join) {
 
+	//체크박스 체크여부 확인 [하나]
+	var select1 = document.insertcal.title;
+	var select2 = document.insertcal.content;
+	if (select1.value == "") {	
+		alert('제목을 입력해 주세요.');
+		select1.focus();
+		return false; 
+	}
+	if (select2.value == "") {	
+		alert('내용을 입력해 주세요.');
+		select2.focus();
+		return false; 
+	}
+
+	
+
+	
+}
+	
+
+
+</script>
 </head>
 <%
    int year = Integer.parseInt(request.getParameter("year"));
@@ -36,9 +60,9 @@
 
 				<h1>일정 작성</h1>
 
-				<form action="controller.do" method="post">
+				<form action="controller.do" method="post" name="insertcal" onSubmit="return CheckForm(this)">
 					<input type="hidden" name="category" value="insertcal" />
-					<table class="table" style="border: 1px;">
+					<table class="table" style="border: 1px;">	
 						<tr>
 							<th>닉네임</th>
 							<td class="form-control">${userDto.user_nickname }</td>

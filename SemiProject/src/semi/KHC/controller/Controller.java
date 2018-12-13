@@ -521,10 +521,11 @@ public class Controller extends HttpServlet {
 			String user_pw = request.getParameter("user_pw");
 			
 			if(service.user_updatePw(user_pw, user_email)) {
+				System.out.println("비밀번호 변경 성공");
 				response.sendRedirect("khc_updatePw_result.jsp"); //비밀번호 변경이 완료 되었습니다. 로그인을 해주세요(여기다가 로그인 페이지로 넘어가는 버튼만드셈)
 			}else {
 				System.out.println("비밀번호 변경 실패(오류) ");
-				response.sendRedirect("_khc_updatePw_error.jsp"); //비밀번호 변경 실패 됨
+				response.sendRedirect("khc_updatePw_error.jsp"); //비밀번호 변경 실패 됨,404
 			}
 		}
 

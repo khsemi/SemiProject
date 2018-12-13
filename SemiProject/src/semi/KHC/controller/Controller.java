@@ -495,7 +495,7 @@ public class Controller extends HttpServlet {
 			if(service.find_email(user_email)) { //이메일을 찾아서 이메일이 user테이블에 있으면,
 				//이메일을 저장하고, sendEmail 호출 한다.
 				if(service.user_sendEmail_pw(user_email)) { //이메일이 성공적으로 보내지면 이메일이 보내졌다는 페이지로 이동시킨다.
-					response.sendRedirect("khc_sendEmailForm.jsp");
+					response.sendRedirect("khc_sendEmailForm_pw.jsp");
 				}else {
 					System.out.println("비밀번호 찾기 이메일 발송 실패");
 					//response.sendRedirect("khc_sendEmailerror.jsp");

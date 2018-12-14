@@ -224,7 +224,11 @@ public class Controller extends HttpServlet {
 					dispatch("khc_sendEmailForm.jsp", request, response);
 				}
 			} else {
-				
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('로그인 실패!');");
+				out.println("alert('아이디 또는 패스워드를 확인해주세요.');");
+				out.println("</script>");
 				dispatch("khc_login.jsp", request, response);
 			}
 			
@@ -465,8 +469,13 @@ public class Controller extends HttpServlet {
 			
 		}else if(category.equals("FIND_ID")) {
 			String user_email = request.getParameter("user_email");
-			
-			request.setAttribute("user_id", service.find_id(user_email));
+			String user_id = service.find_id(user_email);
+			if(user_id != null) {
+				request.setAttribute("user_id", user_id);
+			} else {
+				user_id = "이메일 정보에 맞는 아이디가 없습니다.";
+				request.setAttribute("user_id", user_id);
+			}
 			
 			dispatch("khc_findResult_id.jsp", request, response);
 
@@ -502,12 +511,10 @@ public class Controller extends HttpServlet {
 				if(service.user_sendEmail_pw(user_email)) { //이메일이 성공적으로 보내지면 이메일이 보내졌다는 페이지로 이동시킨다.
 					response.sendRedirect("khc_sendEmailForm_pw.jsp");
 				}else {
-					System.out.println("비밀번호 찾기 이메일 발송 실패");
-					//response.sendRedirect("khc_sendEmailerror.jsp");
+					dispatch("findPwError.jsp", request, response);
 				}
 			}else {
-				System.out.println("해당 이메일을 사용하는 계정없음.");
-				response.sendRedirect("khc_findEmailerror.jsp"); //email을 찾을 수 없다는 페이지 만드셈
+				dispatch("findPwError.jsp", request, response);
 			}
 		}else if(category.equals("check_email_pw")) { 
 			String user_email = request.getParameter("user_email");

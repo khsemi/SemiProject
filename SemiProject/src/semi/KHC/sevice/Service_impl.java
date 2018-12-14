@@ -316,6 +316,11 @@ public class Service_impl implements Service{
 		UserDao userdao = new UserDao_impl();
 		return userdao.userList();
 	}
+	@Override
+	public List<UserDto> userSearchList(String keyword) {
+		UserDao userdao = new UserDao_impl();
+		return userdao.userSearchList(keyword);
+	}
 	
 	@Override
 	public NoteDto noteDetail(int note_seq_id) {

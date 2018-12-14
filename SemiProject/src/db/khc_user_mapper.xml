@@ -70,6 +70,12 @@
 		WHERE USER_STATE = 'TRUE'
 	</select>
 	
+	<select id="userSearchList" parameterType="String" resultMap="user_Map">
+		SELECT *
+		FROM KH_USER 
+		WHERE USER_STATE = 'TRUE' AND USER_NICKNAME LIKE '%'||#{keyword}||'%'
+	</select>
+	
 	
 	
 </mapper>

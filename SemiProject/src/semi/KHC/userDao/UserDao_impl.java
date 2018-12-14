@@ -190,10 +190,19 @@ public class UserDao_impl  extends SqlMapConfig implements UserDao {
 		return true;
 	}
 
-	
-
-	
-
-	
+	@Override
+	public List<UserDto> userSearchList(String keyword) {
+		SqlSession session = null;
+		List<UserDto> userlist = new ArrayList<UserDto>();
+		try {
+			session = getSqlSessionFactory().openSession(true);
+			userlist = session.selectList(USER_NAMESPACE+"userSearchList", keyword);
+		} catch (Exception e) {
+			System.out.println("select 오류 : "+e);
+		} finally {
+			session.close();
+		}
+		return userlist;
+	}
 
 }

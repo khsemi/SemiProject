@@ -39,5 +39,6 @@ public interface UserDao {
 	
 	//회원 리스트 출력
 	public List<UserDto> userList();
+	public List<UserDto> userSearchList(String keyword);
 	
 }

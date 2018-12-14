@@ -94,6 +94,7 @@ public interface Service {
 	public List<NoteDto> note_selectAll(String user_id);
 	
 	public List<UserDto> userList();
+	public List<UserDto> userSearchList(String keyword);
 	
 	public NoteDto noteDetail(int note_seq_id);
 	

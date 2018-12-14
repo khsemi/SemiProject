@@ -21,8 +21,8 @@ public class JDBCTemplate {
 		
 //		String url="jdbc:oracle:thin:@192.168.10.4:1521:xe";
 		String url="jdbc:oracle:thin:@localhost:1521:xe";
-		String id="kh";
-		String pw="kh";
+		String id="test";
+		String pw="test";
 		
 		Connection con = null;
 		

@@ -46,8 +46,8 @@
 			</div>
 
 			<div class="container container-fluid">
-				<form class="needs-validation" action="#" method="post">
-					<input type="text" class="" placeholder="Search...">
+				<form class="needs-validation" action="controller.do?category=PROFILESEARCH_KEYWORD" method="post">
+					<input type="text" class="" name="keyword" placeholder="닉네임으로 검색">
 					<button type="submit" class="btn">검색</button>
 				</form>
 				<table class="table table-hover">

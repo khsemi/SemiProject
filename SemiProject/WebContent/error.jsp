@@ -14,6 +14,6 @@
 	<h1 style="color:red;">Error!!</h1>
 	
 	<%=request.getAttribute("msg") %>
-	<a href = "calendat.jsp">처음으로...</a>
+	<a href = "controller.do?category=CALENDAR">처음으로...</a>
 </body>
 </html>

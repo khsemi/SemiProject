@@ -383,6 +383,11 @@ public class Controller extends HttpServlet {
 			List<UserDto> list = service.userList();
 			request.setAttribute("userlist", list);
 			dispatch("profileSearch.jsp", request, response);
+		} else if(category.equals("PROFILESEARCH_KEYWORD")) {
+			String keyword = request.getParameter("keyword");
+			List<UserDto> list = service.userSearchList(keyword);
+			request.setAttribute("userlist", list);
+			dispatch("profileSearch.jsp", request, response);
 		} else if(category.equals("NOTEDETAIL")) {
 			int note_seq_id = Integer.parseInt(request.getParameter("note_seq_id"));
 			NoteDto notedto = null;

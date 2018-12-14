@@ -124,8 +124,19 @@ BOARD.VIEW_COUNT
 						</c:choose>
 					</tbody>
 				</table>
-				<input type="button" class="btn btn-primary pull-right" value="글쓰기"
-					onclick="board_insert()">
+			
+				<c:choose>
+					<c:when test="${category eq 'NOTICE'}">
+						<c:if test="${userDto.user_type eq 'ADMIN'}">
+							<input type="button" class="btn btn-primary pull-right" value="글쓰기"
+								onclick="board_insert()"> 
+						</c:if>
+					</c:when>
+					<c:otherwise>
+						<input type="button" class="btn btn-primary pull-right" value="글쓰기"
+							onclick="board_insert()">
+					</c:otherwise>
+				</c:choose>
 				<!-- pasing -->
 				<nav aria-label="..." style="text-align: center;">
 					<ul class="pagination" id="pasing"></ul>

@@ -32,14 +32,14 @@
 			<!-- sidebar를 include해준다. -->
 			<jsp:include page="sidebar.jsp" />
 			<div class="form">
-				<h2>회원가입 이메일 인증 완료</h2>
+				<h2>회원가입 이메일 발송</h2>
 			</div>
 			<div class="container" >
 				<div class="col-lg-4"></div>
 				<div class="col-lg-4">
 					<div class="jumbotron" style="padding-top: 20px;">
-					<h3 style="text-align: center"></h3>
-					<a href = "khc_login.jsp">로그인 하러 가기</a>
+					<h3 style="text-align: center">회원가입 이메일 발송 --- { 완료 } ---</h3>
+					<h5 style="text-align: center">!이메일함을 확인하여 주세요!</h5>
 					</div>
 				</div>
 			</div>
